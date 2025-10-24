@@ -17,4 +17,6 @@ The backend of league oracle web application. League oracle is a platform where 
 -   Hibernate
 -   MySQL
 -   Docker
+-   Jenkins
 -   AWS EC2
+
