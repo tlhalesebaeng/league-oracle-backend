@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
+import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ public class LeagueController {
     public final LeagueServiceInterface leagueService;
 
     @PostMapping("")
-    public ResponseEntity<League> createLeague() {
+    public ResponseEntity<ApiResponse> createLeague() {
         League league = leagueService.createLeague(null);
-        return ResponseEntity.ok(league);
+        return ResponseEntity.ok(new ApiResponse("success", league));
     }
 }
