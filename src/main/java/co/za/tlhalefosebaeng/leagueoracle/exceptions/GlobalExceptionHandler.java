@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler({ HttpMessageNotReadableException.class })
@@ -24,5 +26,19 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new MessageResponse(error.getDefaultMessage()));
+    }
+
+    @ExceptionHandler({ SQLIntegrityConstraintViolationException.class })
+    public ResponseEntity<MessageResponse> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
+        String errorMessage = "";
+        if(e.getErrorCode() == 1062) {
+            // Handle duplicate key constraint violation
+            errorMessage = "Some field already exists! Please use a different one";
+        } else if(e.getErrorCode() == 1048) {
+            // Handle null key constraint violation
+            errorMessage = "Invalid input data! Please check fields and try again";
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(errorMessage));
     }
 }
