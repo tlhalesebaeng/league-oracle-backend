@@ -34,4 +34,11 @@ public class LeagueController {
         League league = leagueService.getLeague(leagueId);
         return ResponseEntity.ok(new ApiResponse("success", league));
     }
+
+    @PatchMapping("/{leagueId}")
+    public ResponseEntity<ApiResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest league) {
+        League updatedLeague = leagueService.updateLeague(leagueId, league);
+        return ResponseEntity.ok(new ApiResponse("success", updatedLeague));
+    }
+
 }
