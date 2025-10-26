@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.endpoint.prefix}/leagues")
@@ -19,6 +21,12 @@ public class LeagueController {
     public ResponseEntity<ApiResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
         League createdLeague = leagueService.createLeague(league);
         return ResponseEntity.ok(new ApiResponse("success", createdLeague));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse> getAllLeagues() {
+        List<League> leagues = leagueService.getAllLeagues();
+        return ResponseEntity.ok(new ApiResponse("success", leagues));
     }
 
     @GetMapping("/{leagueId}")
