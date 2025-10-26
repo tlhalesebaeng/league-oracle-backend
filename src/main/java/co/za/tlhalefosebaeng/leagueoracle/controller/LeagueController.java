@@ -21,7 +21,7 @@ public class LeagueController {
     @PostMapping("")
     public ResponseEntity<ApiResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
         League createdLeague = leagueService.createLeague(league);
-        return ResponseEntity.ok(new ApiResponse("success", createdLeague));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", createdLeague));
     }
 
     @GetMapping("")
