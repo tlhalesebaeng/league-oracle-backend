@@ -6,6 +6,7 @@ import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,11 @@ public class LeagueController {
     public ResponseEntity<ApiResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest league) {
         League updatedLeague = leagueService.updateLeague(leagueId, league);
         return ResponseEntity.ok(new ApiResponse("success", updatedLeague));
+    }
+
+    @DeleteMapping("/{leagueId}")
+    public void deleteLeague(@PathVariable Long leagueId){
+        leagueService.deleteLeague(leagueId);
     }
 
 }
