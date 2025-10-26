@@ -7,10 +7,7 @@ import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +19,11 @@ public class LeagueController {
     public ResponseEntity<ApiResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
         League createdLeague = leagueService.createLeague(league);
         return ResponseEntity.ok(new ApiResponse("success", createdLeague));
+    }
+
+    @GetMapping("/{leagueId}")
+    public ResponseEntity<ApiResponse> getLeague(@PathVariable Long leagueId) {
+        League league = leagueService.getLeague(leagueId);
+        return ResponseEntity.ok(new ApiResponse("success", league));
     }
 }
