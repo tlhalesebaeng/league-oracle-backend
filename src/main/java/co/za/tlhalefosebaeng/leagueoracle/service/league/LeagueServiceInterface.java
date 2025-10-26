@@ -5,4 +5,5 @@ import co.za.tlhalefosebaeng.leagueoracle.model.League;
 
 public interface LeagueServiceInterface {
     League createLeague(LeagueRequest league);
+    League getLeague(Long leagueId);
 }
