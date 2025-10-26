@@ -14,6 +14,14 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    // Handle custom runtime exceptions
+    @ExceptionHandler({ ResourceNotFoundException.class })
+    public ResponseEntity<MessageResponse> handleCustomExceptions(ResourceNotFoundException e) {
+        return ResponseEntity.status(e.getCode()).body(new MessageResponse(e.getMessage()));
+    }
+
+    // Handle app exceptions
+
     @ExceptionHandler({ HttpMessageNotReadableException.class })
     public ResponseEntity<MessageResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Request body not readable"));
