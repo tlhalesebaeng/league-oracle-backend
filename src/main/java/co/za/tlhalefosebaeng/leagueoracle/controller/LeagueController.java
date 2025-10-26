@@ -43,8 +43,9 @@ public class LeagueController {
     }
 
     @DeleteMapping("/{leagueId}")
-    public void deleteLeague(@PathVariable Long leagueId){
+    public ResponseEntity<Object> deleteLeague(@PathVariable Long leagueId){
         leagueService.deleteLeague(leagueId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
 }
