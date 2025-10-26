@@ -10,4 +10,5 @@ public interface LeagueServiceInterface {
     League getLeague(Long leagueId);
     List<League> getAllLeagues();
     League updateLeague(Long leagueId, LeagueRequest league);
+    void deleteLeague(Long leagueId);
 }

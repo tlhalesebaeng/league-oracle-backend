@@ -41,4 +41,10 @@ public class LeagueService implements LeagueServiceInterface {
         leagueToUpdate.setName(league.getName());
         return leagueRepo.save(leagueToUpdate);
     }
+
+    @Override
+    public void deleteLeague(Long leagueId) {
+        League leagueToDelete = this.getLeague(leagueId);
+        leagueRepo.delete(leagueToDelete);
+    }
 }
