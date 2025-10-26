@@ -9,4 +9,5 @@ public interface LeagueServiceInterface {
     League createLeague(LeagueRequest league);
     League getLeague(Long leagueId);
     List<League> getAllLeagues();
+    League updateLeague(Long leagueId, LeagueRequest league);
 }

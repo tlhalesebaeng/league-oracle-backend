@@ -33,4 +33,12 @@ public class LeagueService implements LeagueServiceInterface {
     public List<League> getAllLeagues() {
         return leagueRepo.findAll();
     }
+
+    @Override
+    public League updateLeague(Long leagueId, LeagueRequest league) {
+        League leagueToUpdate = this.getLeague(leagueId);
+        // We should only update the league name. There are endpoints to update other properties of the league
+        leagueToUpdate.setName(league.getName());
+        return leagueRepo.save(leagueToUpdate);
+    }
 }
