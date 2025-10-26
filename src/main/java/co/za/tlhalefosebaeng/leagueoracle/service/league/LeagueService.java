@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,10 @@ public class LeagueService implements LeagueServiceInterface {
     public League getLeague(Long leagueId) {
         Optional<League> league = leagueRepo.findById(leagueId);
         return league.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "League not found! Please check league ID and try again."));
+    }
+
+    @Override
+    public List<League> getAllLeagues() {
+        return leagueRepo.findAll();
     }
 }
