@@ -9,6 +9,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
@@ -48,5 +49,10 @@ public class GlobalExceptionHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(errorMessage));
+    }
+
+    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
+    public ResponseEntity<MessageResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid field type provided! Please check your field(s) and try again"));
     }
 }
