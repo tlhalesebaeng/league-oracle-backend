@@ -1,12 +1,17 @@
 package co.za.tlhalefosebaeng.leagueoracle.dto.league;
 
+import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class LeagueRequest {
     @NotBlank(message = "Name required! Please provide a league name")
     private String name;
+
+    private List<Team> teams;
 }
