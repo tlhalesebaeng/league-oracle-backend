@@ -3,6 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.league;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
+import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,16 @@ public class LeagueService implements LeagueServiceInterface {
     public League createLeague(LeagueRequest league) {
         League pendingLeague = new League();
         pendingLeague.setName(league.getName());
+
+        // Assign the reference of the pending league to all teams
+        for(Team team : league.getTeams()) {
+            team.setLeague(pendingLeague);
+        }
+
+        // Assign the refence of teams to the league
+        pendingLeague.setTeams(league.getTeams());
+
+        // Save the league and return the saved league
         return leagueRepo.save(pendingLeague);
     }
 
