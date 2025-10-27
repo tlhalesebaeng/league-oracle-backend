@@ -8,7 +8,7 @@ import java.util.List;
 public interface LeagueServiceInterface {
     League createLeague(LeagueRequest league);
     League getLeague(Long leagueId);
-    List<League> getAllLeagues();
+    List<League> getAllLeagues(String name);
     League updateLeague(Long leagueId, LeagueRequest league);
     void deleteLeague(Long leagueId);
 }

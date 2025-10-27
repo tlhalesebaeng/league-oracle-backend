@@ -30,7 +30,8 @@ public class LeagueService implements LeagueServiceInterface {
     }
 
     @Override
-    public List<League> getAllLeagues() {
+    public List<League> getAllLeagues(String name) {
+        if(name != null) return leagueRepo.findAllByLeagueName(name);
         return leagueRepo.findAll();
     }
 
