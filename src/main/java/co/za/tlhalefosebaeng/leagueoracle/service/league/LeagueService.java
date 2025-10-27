@@ -1,6 +1,8 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.league;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
@@ -17,8 +19,36 @@ import java.util.Optional;
 public class LeagueService implements LeagueServiceInterface {
     private final LeagueRepository leagueRepo;
 
+    // Helper method to convert a league team to a team response DTO
+    private TeamResponse convertTeamToDto(Team team) {
+        TeamResponse teamResponse = new TeamResponse();
+        teamResponse.setId(team.getId());
+        teamResponse.setName(team.getName());
+        teamResponse.setWins(team.getWins());
+        teamResponse.setDraws(team.getDraws());
+        teamResponse.setLoses(team.getLoses());
+        teamResponse.setGoalsForward(team.getGoalsForward());
+        teamResponse.setGoalsAgainst(team.getGoalsAgainst());
+        teamResponse.setPlayedGames();
+        teamResponse.setPoints();
+        teamResponse.setGoalDifference();
+        return teamResponse;
+    }
+
+    // Helper method to convert a league to the league response DTO
+    private LeagueResponse convertLeagueToDto(League league) {
+        LeagueResponse leagueResponse = new LeagueResponse();
+        leagueResponse.setName(league.getName());
+
+        // Convert the league teams to team response DTO
+        List<TeamResponse> teamResponses = league.getTeams().stream().map(this::convertTeamToDto).toList();
+        leagueResponse.setTeams(teamResponses);
+
+        return leagueResponse;
+    }
+
     @Override
-    public League createLeague(LeagueRequest league) {
+    public LeagueResponse createLeague(LeagueRequest league) {
         League pendingLeague = new League();
         pendingLeague.setName(league.getName());
 
@@ -31,7 +61,8 @@ public class LeagueService implements LeagueServiceInterface {
         pendingLeague.setTeams(league.getTeams());
 
         // Save the league and return the saved league
-        return leagueRepo.save(pendingLeague);
+
+        return convertLeagueToDto(leagueRepo.save(pendingLeague));
     }
 
     @Override
