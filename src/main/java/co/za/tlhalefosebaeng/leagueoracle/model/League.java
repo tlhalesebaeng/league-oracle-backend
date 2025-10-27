@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +20,7 @@ public class League {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Team> teams;
 }
