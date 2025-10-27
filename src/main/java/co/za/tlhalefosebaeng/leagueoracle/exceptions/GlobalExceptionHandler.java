@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,16 +27,19 @@ public class GlobalExceptionHandler {
 
     // Handle app exceptions
 
+    // A spring exception raises when a resource was not found (e.g. a provided URL has no mapper)
     @ExceptionHandler({ NoResourceFoundException.class })
     public ResponseEntity<MessageResponse> handleNoResourceFoundException(NoResourceFoundException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getResourcePath() + " not found"));
     }
 
+    // A spring exception thrown when the http message cannot be read for conversion (e.g. the required body of a post request was not provided)
     @ExceptionHandler({ HttpMessageNotReadableException.class })
     public ResponseEntity<MessageResponse> handleHttpMessageNotReadableException(){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Request body not readable"));
     }
 
+    // A spring exception thrown when validation on object fields of an argument annotated with @Valid fails
     @ExceptionHandler({ MethodArgumentNotValidException.class })
     public ResponseEntity<MessageResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         // Retrieve the first error message from the exception
@@ -47,6 +49,7 @@ public class GlobalExceptionHandler {
                 .body(new MessageResponse(error.getDefaultMessage()));
     }
 
+    // A java exception thrown when an entity constraint has been violated
     @ExceptionHandler({ SQLIntegrityConstraintViolationException.class })
     public ResponseEntity<MessageResponse> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         String errorMessage = "";
@@ -61,11 +64,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(errorMessage));
     }
 
+    // A spring type mismatch exception raised while resolving a controller method argument
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
     public ResponseEntity<MessageResponse> handleMethodArgumentTypeMismatchException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid field type provided! Please check your field(s) and try again"));
     }
 
+    // A general exception - used to handle uncaught exceptions
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<MessageResponse> handleUnknownExceptions(Exception e) {
         if(!apiEnvironment.equals("production")) System.out.println(e);
