@@ -33,8 +33,11 @@ public class LeagueController {
 
     @GetMapping("/{leagueId}")
     public ResponseEntity<ApiResponse> getLeague(@PathVariable Long leagueId) {
+        // Get the league by id using the league service
         League league = leagueService.getLeague(leagueId);
-        return ResponseEntity.ok(new ApiResponse("success", league));
+
+        // Convert the league to a league response dto and return it as part of the response entity
+        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
     }
 
     @PatchMapping("/{leagueId}")
