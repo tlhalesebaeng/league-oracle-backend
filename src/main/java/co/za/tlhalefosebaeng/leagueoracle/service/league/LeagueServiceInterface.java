@@ -2,6 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.league;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface LeagueServiceInterface {
     League updateLeague(Long leagueId, LeagueRequest league);
     void deleteLeague(Long leagueId);
     LeagueResponse convertLeagueToDto(League league);
+    League addTeamToLeague(Long leagueId, TeamRequest team);
 }
