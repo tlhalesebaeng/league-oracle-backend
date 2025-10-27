@@ -50,7 +50,7 @@ public class LeagueController {
     @PatchMapping("/{leagueId}")
     public ResponseEntity<ApiResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest league) {
         League updatedLeague = leagueService.updateLeague(leagueId, league);
-        return ResponseEntity.ok(new ApiResponse("success", updatedLeague));
+        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(updatedLeague)));
     }
 
     @DeleteMapping("/{leagueId}")
