@@ -1,6 +1,8 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
 import co.za.tlhalefosebaeng.leagueoracle.response.MessageResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -47,6 +51,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new MessageResponse(error.getDefaultMessage()));
+    }
+
+    // A spring exception that reports the result of constraint violations
+    @ExceptionHandler({ ConstraintViolationException.class })
+    public ResponseEntity<MessageResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        List<ConstraintViolation<?>> violations = new ArrayList<>(e.getConstraintViolations());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse(violations.get(0).getMessage()));
     }
 
     // A java exception thrown when an entity constraint has been violated
