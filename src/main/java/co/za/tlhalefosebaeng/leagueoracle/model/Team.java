@@ -21,11 +21,11 @@ public class Team {
     @NotBlank(message = "Name required! Please provide a team name.")
     private String name;
 
-    private Integer wins;
-    private Integer draws;
-    private Integer loses;
-    private Integer goalsForward;
-    private Integer goalsAgainst;
+    private int wins;
+    private int draws;
+    private int loses;
+    private int goalsForward;
+    private int goalsAgainst;
 
     @ManyToOne
     @JoinColumn(name = "league_id")
