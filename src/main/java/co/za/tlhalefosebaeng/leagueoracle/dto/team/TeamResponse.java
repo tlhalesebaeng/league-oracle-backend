@@ -2,9 +2,11 @@ package co.za.tlhalefosebaeng.leagueoracle.dto.team;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class TeamResponse {
     private Long id;
     private String name;
@@ -16,4 +18,17 @@ public class TeamResponse {
     private int playedGames;
     private int points;
     private int goalDifference;
+
+    public void setPlayedGames() {
+        this.playedGames = this.wins + this.draws + this.loses;
+    }
+
+    public void setPoints() {
+        this.points = (this.wins * 3) + this.draws;
+    }
+
+    public void setGoalDifference() {
+        this.goalDifference = this.goalsForward - this.goalsAgainst;
+    }
+
 }
