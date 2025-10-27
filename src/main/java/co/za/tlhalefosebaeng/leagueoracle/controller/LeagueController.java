@@ -21,8 +21,11 @@ public class LeagueController {
 
     @PostMapping("")
     public ResponseEntity<ApiResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
-        LeagueResponse createdLeague = leagueService.createLeague(league);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", createdLeague));
+        // Persist the league on the database and receive the saved league
+        League createdLeague = leagueService.createLeague(league);
+
+        // Convert the league to a league response dto and return it
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", leagueService.convertLeagueToDto(createdLeague)));
     }
 
     @GetMapping("")

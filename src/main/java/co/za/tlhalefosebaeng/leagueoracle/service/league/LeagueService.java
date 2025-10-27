@@ -50,7 +50,7 @@ public class LeagueService implements LeagueServiceInterface {
     }
 
     @Override
-    public LeagueResponse createLeague(LeagueRequest league) {
+    public League createLeague(LeagueRequest league) {
         League pendingLeague = new League();
         pendingLeague.setName(league.getName());
 
@@ -63,8 +63,7 @@ public class LeagueService implements LeagueServiceInterface {
         pendingLeague.setTeams(league.getTeams());
 
         // Save the league and return the saved league
-
-        return convertLeagueToDto(leagueRepo.save(pendingLeague));
+        return leagueRepo.save(pendingLeague);
     }
 
     @Override
