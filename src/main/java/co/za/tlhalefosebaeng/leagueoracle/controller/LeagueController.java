@@ -2,6 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
@@ -57,6 +58,17 @@ public class LeagueController {
     public ResponseEntity<Object> deleteLeague(@PathVariable Long leagueId){
         leagueService.deleteLeague(leagueId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    // Endpoints involving league teams
+
+    @PostMapping("/{leagueId}/teams")
+    public ResponseEntity<ApiResponse> addTeamToLeague(@PathVariable Long leagueId, @RequestBody TeamRequest team){
+        // Add the team to the league corresponding to this leagueId
+        League league = leagueService.addTeamToLeague(leagueId, team);
+
+        // Convert the league to a league response dto and return it
+        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
     }
 
 }
