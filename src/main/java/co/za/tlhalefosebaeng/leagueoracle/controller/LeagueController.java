@@ -27,7 +27,7 @@ public class LeagueController {
 
     @GetMapping("")
     public ResponseEntity<ApiResponse> getAllLeagues(@RequestParam(required = false) String name) {
-        List<League> leagues = leagueService.getAllLeagues(name);
+        List<LeagueResponse> leagues = leagueService.getAllLeagues(name);
         return ResponseEntity.ok(new ApiResponse("success", leagues));
     }
 
