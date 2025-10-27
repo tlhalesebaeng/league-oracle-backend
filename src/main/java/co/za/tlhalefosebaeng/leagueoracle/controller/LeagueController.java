@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
@@ -20,7 +21,7 @@ public class LeagueController {
 
     @PostMapping("")
     public ResponseEntity<ApiResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
-        League createdLeague = leagueService.createLeague(league);
+        LeagueResponse createdLeague = leagueService.createLeague(league);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", createdLeague));
     }
 
