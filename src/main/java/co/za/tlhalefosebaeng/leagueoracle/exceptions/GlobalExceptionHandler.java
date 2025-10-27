@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
 import co.za.tlhalefosebaeng.leagueoracle.response.MessageResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -15,6 +16,9 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @Value("${api.environment}")
+    private String apiEnvironment;
+
     // Handle custom runtime exceptions
     @ExceptionHandler({ ResourceNotFoundException.class })
     public ResponseEntity<MessageResponse> handleCustomExceptions(ResourceNotFoundException e) {
@@ -54,5 +58,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
     public ResponseEntity<MessageResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid field type provided! Please check your field(s) and try again"));
+    }
+
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<MessageResponse> handleUnknownExceptions(Exception e) {
+        if(!apiEnvironment.equals("production")) System.out.println(e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Something went really bad! Please try again later"));
     }
 }
