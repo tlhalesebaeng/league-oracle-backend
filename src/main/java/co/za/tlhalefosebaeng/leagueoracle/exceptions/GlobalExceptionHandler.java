@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     // Handle app exceptions
 
     @ExceptionHandler({ HttpMessageNotReadableException.class })
-    public ResponseEntity<MessageResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+    public ResponseEntity<MessageResponse> handleHttpMessageNotReadableException(){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Request body not readable"));
     }
 
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
-    public ResponseEntity<MessageResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+    public ResponseEntity<MessageResponse> handleMethodArgumentTypeMismatchException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid field type provided! Please check your field(s) and try again"));
     }
 
