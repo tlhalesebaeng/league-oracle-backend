@@ -74,14 +74,9 @@ public class LeagueService implements LeagueServiceInterface {
     }
 
     @Override
-    public List<LeagueResponse> getAllLeagues(String name) {
-        // Get all the leagues from the database
-        List<League> leagues = null;
-        if(name != null) leagues = leagueRepo.findAllByLeagueName(name);
-        else leagues = leagueRepo.findAll();
-
-        // Convert the leagues to the league response dto and return them
-        return leagues.stream().map(this::convertLeagueToDto).toList();
+    public List<League> getAllLeagues(String name) {
+        if(name != null) return leagueRepo.findAllByLeagueName(name);
+        return leagueRepo.findAll();
     }
 
     @Override

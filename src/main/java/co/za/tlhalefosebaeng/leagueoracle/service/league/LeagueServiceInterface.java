@@ -9,7 +9,7 @@ import java.util.List;
 public interface LeagueServiceInterface {
     LeagueResponse createLeague(LeagueRequest league);
     League getLeague(Long leagueId);
-    List<LeagueResponse> getAllLeagues(String name);
+    List<League> getAllLeagues(String name);
     League updateLeague(Long leagueId, LeagueRequest league);
     void deleteLeague(Long leagueId);
     LeagueResponse convertLeagueToDto(League league);

@@ -27,8 +27,12 @@ public class LeagueController {
 
     @GetMapping("")
     public ResponseEntity<ApiResponse> getAllLeagues(@RequestParam(required = false) String name) {
-        List<LeagueResponse> leagues = leagueService.getAllLeagues(name);
-        return ResponseEntity.ok(new ApiResponse("success", leagues));
+        // Get all leagues by name from the league service
+        List<League> leagues = leagueService.getAllLeagues(name);
+
+        // Convert all the leagues to the league response dtos and return them as part of the response entity
+        List<LeagueResponse> leagueResponses = leagues.stream().map(leagueService::convertLeagueToDto).toList();
+        return ResponseEntity.ok(new ApiResponse("success", leagueResponses));
     }
 
     @GetMapping("/{leagueId}")
