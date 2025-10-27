@@ -36,7 +36,8 @@ public class LeagueService implements LeagueServiceInterface {
     }
 
     // Helper method to convert a league to the league response DTO
-    private LeagueResponse convertLeagueToDto(League league) {
+    @Override
+    public LeagueResponse convertLeagueToDto(League league) {
         LeagueResponse leagueResponse = new LeagueResponse();
         leagueResponse.setId(league.getId());
         leagueResponse.setName(league.getName());

@@ -12,4 +12,5 @@ public interface LeagueServiceInterface {
     List<LeagueResponse> getAllLeagues(String name);
     League updateLeague(Long leagueId, LeagueRequest league);
     void deleteLeague(Long leagueId);
+    LeagueResponse convertLeagueToDto(League league);
 }
