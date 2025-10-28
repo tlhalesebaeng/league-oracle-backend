@@ -14,5 +14,4 @@ public interface LeagueServiceInterface {
     League updateLeague(Long leagueId, LeagueRequest league);
     void deleteLeague(Long leagueId);
     LeagueResponse convertLeagueToDto(League league);
-    League addTeamToLeague(Long leagueId, AddTeamRequest team);
 }
