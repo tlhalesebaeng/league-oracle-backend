@@ -1,4 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.repository;
 
-public interface TeamRepository {
+import co.za.tlhalefosebaeng.leagueoracle.model.Team;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TeamRepository extends JpaRepository<Team, Long> {
 }
