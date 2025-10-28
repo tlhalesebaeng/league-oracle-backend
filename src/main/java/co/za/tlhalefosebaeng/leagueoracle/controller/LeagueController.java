@@ -2,7 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
-import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
@@ -63,7 +63,7 @@ public class LeagueController {
     // Endpoints involving league teams
 
     @PostMapping("/{leagueId}/teams")
-    public ResponseEntity<ApiResponse> addTeamToLeague(@PathVariable Long leagueId, @RequestBody TeamRequest team){
+    public ResponseEntity<ApiResponse> addTeamToLeague(@PathVariable Long leagueId, @RequestBody AddTeamRequest team){
         // Add the team to the league corresponding to this leagueId
         League league = leagueService.addTeamToLeague(leagueId, team);
 

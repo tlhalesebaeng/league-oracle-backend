@@ -2,7 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.league;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
-import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
@@ -96,7 +96,7 @@ public class LeagueService implements LeagueServiceInterface {
     // Services involving league teams
 
     @Override
-    public League addTeamToLeague(Long leagueId, TeamRequest team) {
+    public League addTeamToLeague(Long leagueId, AddTeamRequest team) {
         // Get the league from the database
         League league = this.getLeague(leagueId);
 

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TeamRequest {
+public class AddTeamRequest {
     @NotBlank(message = "Team name required! Please provide a team name")
     private String name;
 }
