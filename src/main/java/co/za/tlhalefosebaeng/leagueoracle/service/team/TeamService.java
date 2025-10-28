@@ -6,18 +6,21 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
+import co.za.tlhalefosebaeng.leagueoracle.repository.TeamRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TeamService implements TeamServiceInterface{
     private final LeagueServiceInterface leagueService;
     private final LeagueRepository leagueRepo;
+    private final TeamRepository teamRepo;
 
     @Override
     public League addTeamToLeague(Long leagueId, AddTeamRequest team) {
@@ -61,5 +64,13 @@ public class TeamService implements TeamServiceInterface{
         if(team.getGoalsAgainst() != newTeam.getGoalsAgainst()) newTeam.setGoalsAgainst(team.getGoalsAgainst());
 
         return leagueRepo.save(league);
+    }
+
+    @Override
+    public void deleteTeam(Long teamId) {
+        Optional<Team> team = teamRepo.findById(teamId);
+        team.ifPresentOrElse(teamRepo::delete, () -> {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "League not found! Please check league ID and try again.");
+        });
     }
 }
