@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 
@@ -20,7 +21,12 @@ public class Fixture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Date date;
+
+    @ColumnDefault("TBC")
     private String venue;
+
+    @ColumnDefault("TBC")
     private String field;
 }
