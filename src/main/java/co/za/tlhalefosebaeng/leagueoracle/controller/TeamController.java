@@ -6,6 +6,7 @@ import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class TeamController {
     public ResponseEntity<ApiResponse> addTeamToLeague(
             @RequestParam Long leagueId,
             @PathVariable Long teamId,
-            @RequestBody UpdateTeamRequest team
+            @Valid @RequestBody UpdateTeamRequest team
     ) {
         // Update the league team
         League league = teamService.updateLeagueTeam(leagueId, teamId, team);
