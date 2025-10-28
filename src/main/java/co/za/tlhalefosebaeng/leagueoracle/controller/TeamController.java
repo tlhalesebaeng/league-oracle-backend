@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
@@ -16,6 +17,7 @@ public class TeamController {
     private final TeamServiceInterface teamService;
     private final LeagueServiceInterface leagueService;
 
+    // All the team endpoint should return the league because we will never query the team without needing league details
     @PostMapping("")
     public ResponseEntity<ApiResponse> addTeamToLeague(@RequestParam Long leagueId, @RequestBody AddTeamRequest team){
         // Add the team to the league corresponding to this leagueId
@@ -24,4 +26,18 @@ public class TeamController {
         // Convert the league to a league response dto and return it
         return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
     }
+
+    @PatchMapping("/{teamId}")
+    public ResponseEntity<ApiResponse> addTeamToLeague(
+            @RequestParam Long leagueId,
+            @PathVariable Long teamId,
+            @RequestBody UpdateTeamRequest team
+    ) {
+        // Update the league team
+        League league = teamService.updateLeagueTeam(leagueId, teamId, team);
+
+        // Convert the league to a league response dto and return it
+        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
+    }
+
 }
