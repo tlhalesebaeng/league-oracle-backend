@@ -2,7 +2,6 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
-import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
