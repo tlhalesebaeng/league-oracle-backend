@@ -1,14 +1,10 @@
 package co.za.tlhalefosebaeng.leagueoracle.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 
@@ -23,10 +19,6 @@ public class Fixture {
     private Long id;
 
     private Date date;
-
-    @ColumnDefault("TBC")
     private String venue;
-
-    @ColumnDefault("TBC")
     private String field;
 }
