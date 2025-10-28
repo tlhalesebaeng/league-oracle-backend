@@ -60,15 +60,4 @@ public class LeagueController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    // Endpoints involving league teams
-
-    @PostMapping("/{leagueId}/teams")
-    public ResponseEntity<ApiResponse> addTeamToLeague(@PathVariable Long leagueId, @RequestBody AddTeamRequest team){
-        // Add the team to the league corresponding to this leagueId
-        League league = leagueService.addTeamToLeague(leagueId, team);
-
-        // Convert the league to a league response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
-    }
-
 }
