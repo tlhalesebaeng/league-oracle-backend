@@ -53,7 +53,7 @@ public class TeamService implements TeamServiceInterface{
         if(newTeam == null) throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Team not found! Please check team ID and try again.");
 
         // Update properties of the existing team
-        if(team.getName() != null && !team.getName().isBlank()) newTeam.setName(team.getName());
+        if(team.getName() != null) newTeam.setName(team.getName());
         if(team.getWins() != newTeam.getWins()) newTeam.setWins(team.getWins());
         if(team.getDraws() != newTeam.getDraws()) newTeam.setDraws(team.getDraws());
         if(team.getLoses() != newTeam.getLoses()) newTeam.setLoses(team.getLoses());
