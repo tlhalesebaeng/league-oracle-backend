@@ -8,6 +8,7 @@ import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,12 @@ public class TeamController {
 
         // Convert the league to a league response dto and return it
         return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
+    }
+
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<Object> addTeamToLeague(@PathVariable Long teamId) {
+        teamService.deleteTeam(teamId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
 }
