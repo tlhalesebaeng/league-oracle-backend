@@ -26,11 +26,22 @@ public class FixtureService implements FixtureServiceInterface {
         League league = leagueService.getLeague(leagueId);
 
         List<Fixture> fixtures = new ArrayList<>();
+        int size = league.getTeams().size();
 
-        Fixture fixture = new Fixture();
-        fixture.setLeague(league);
+        for(int i = 0; i < size; i++) {
+            for(int j = size - 1; j > 0; j--) {
+                if(i != j) { // A team cannot play itself
+                    Fixture fixture = new Fixture();
+                    fixture.setLeague(league);
+                    fixture.setHomeTeam(league.getTeams().get(i));
+                    fixture.setAwayTeam(league.getTeams().get(j));
 
-        fixtures.add(fixtureRepo.save(fixture));
+                    // Add the saved fixture to the fixture list
+                    fixtures.add(fixtureRepo.save(fixture));
+                }
+
+            }
+        }
 
         return fixtures;
     }
