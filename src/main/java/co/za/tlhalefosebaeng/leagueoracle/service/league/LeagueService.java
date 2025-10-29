@@ -61,7 +61,7 @@ public class LeagueService implements LeagueServiceInterface {
         pendingLeague.setTeams(league.getTeams());
 
         // Save the league and return the saved league
-        return leagueRepo.save(pendingLeague);
+        return this.saveLeague(pendingLeague);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class LeagueService implements LeagueServiceInterface {
         League leagueToUpdate = this.getLeague(leagueId);
         // We should only update the league name. There are endpoints to update other properties of the league
         leagueToUpdate.setName(league.getName());
-        return leagueRepo.save(leagueToUpdate);
+        return this.saveLeague(leagueToUpdate);
     }
 
     @Override
