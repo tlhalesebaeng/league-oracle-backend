@@ -62,4 +62,14 @@ public class FixtureService implements FixtureServiceInterface {
 
         return fixtures;
     }
+
+    @Override
+    public List<Fixture> getAllLeagueFixtures(Long leagueId) {
+        // Confirm that the league with the given id exists using the league service
+        League league = leagueService.getLeague(leagueId);
+
+        // Find all the fixtures that belong to the retrieved league using the league repository
+        return fixtureRepo.findAllByLeagueId(league.getId());
+    }
+
 }
