@@ -24,6 +24,7 @@ public class TeamService implements TeamServiceInterface{
     private final TeamRepository teamRepo;
 
     // Helper method to convert a league team to a team response DTO
+    @Override
     public TeamResponse convertTeamToDto(Team team) {
         TeamResponse teamResponse = new TeamResponse();
         teamResponse.setId(team.getId());
