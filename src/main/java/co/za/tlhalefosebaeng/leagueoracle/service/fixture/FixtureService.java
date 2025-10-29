@@ -1,11 +1,13 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 
+import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
+import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,22 @@ import java.util.List;
 public class FixtureService implements FixtureServiceInterface {
     private final FixtureRepository fixtureRepo;
     private final LeagueServiceInterface leagueService;
+    private final TeamServiceInterface teamService;
+
+    @Override
+    public FixtureResponse convertFixtureToDto(Fixture fixture) {
+        FixtureResponse fixtureResponse = new FixtureResponse();
+
+        fixtureResponse.setId(fixture.getId());
+        fixtureResponse.setDate(fixture.getDate());
+        fixtureResponse.setVenue(fixture.getVenue());
+        fixtureResponse.setField(fixture.getField());
+        fixtureResponse.setName(fixture.getLeague().getName());
+        fixtureResponse.setHomeTeam(teamService.convertTeamToDto(fixture.getHomeTeam()));
+        fixtureResponse.setAwayTeam(teamService.convertTeamToDto(fixture.getAwayTeam()));
+
+        return fixtureResponse;
+    }
 
     @Override
     public List<Fixture> generateLeagueFixtures(Long leagueId) {
