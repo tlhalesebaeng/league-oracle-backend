@@ -25,9 +25,9 @@ public class FixtureService implements FixtureServiceInterface {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
+        // Generate fixtures
         List<Fixture> fixtures = new ArrayList<>();
         int size = league.getTeams().size();
-
         for(int i = 0; i < size; i++) {
             for(int j = size - 1; j > 0; j--) {
                 if(i != j) { // A team cannot play itself
@@ -39,7 +39,6 @@ public class FixtureService implements FixtureServiceInterface {
                     // Add the saved fixture to the fixture list
                     fixtures.add(fixtureRepo.save(fixture));
                 }
-
             }
         }
 
