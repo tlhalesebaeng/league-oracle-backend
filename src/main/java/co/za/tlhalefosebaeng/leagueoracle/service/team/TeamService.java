@@ -6,7 +6,6 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
-import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
 import co.za.tlhalefosebaeng.leagueoracle.repository.TeamRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamService implements TeamServiceInterface{
     private final LeagueServiceInterface leagueService;
-    private final LeagueRepository leagueRepo;
     private final TeamRepository teamRepo;
 
     // Helper method to convert a league team to a team response DTO
@@ -52,7 +50,7 @@ public class TeamService implements TeamServiceInterface{
 
         // Add the team to the list of teams and return the newly saved league
         league.getTeams().add(newTeam);
-        return leagueRepo.save(league);
+        return leagueService.saveLeague(league);
     }
 
     @Override
@@ -81,7 +79,7 @@ public class TeamService implements TeamServiceInterface{
         if(team.getGoalsForward() != newTeam.getGoalsForward()) newTeam.setGoalsForward(team.getGoalsForward());
         if(team.getGoalsAgainst() != newTeam.getGoalsAgainst()) newTeam.setGoalsAgainst(team.getGoalsAgainst());
 
-        return leagueRepo.save(league);
+        return leagueService.saveLeague(league);
     }
 
     @Override
