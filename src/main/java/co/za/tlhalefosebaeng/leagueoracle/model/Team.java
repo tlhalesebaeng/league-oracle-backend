@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,4 +33,11 @@ public class Team {
     @JoinColumn(name = "league_id")
     @JsonIgnore
     private League league;
+
+    // No need to cascade any operation because league is a parent of both team and fixture entities, it has relevant cascade types
+    @OneToMany(mappedBy = "homeTeam")
+    List<Fixture> homeFixtures;
+
+    @OneToMany(mappedBy = "awayTeam")
+    List<Fixture> awayFixtures;
 }

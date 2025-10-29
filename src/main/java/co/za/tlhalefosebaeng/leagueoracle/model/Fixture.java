@@ -27,4 +27,15 @@ public class Fixture {
     @JoinColumn(name = "league_id")
     @JsonIgnore
     private League league;
+
+    @ManyToOne
+    @JoinColumn(name = "home_team")
+    @JsonIgnore
+    private Team homeTeam;
+
+    @ManyToOne
+    @JoinColumn(name = "away_team")
+    @JsonIgnore
+    private Team awayTeam;
+
 }
