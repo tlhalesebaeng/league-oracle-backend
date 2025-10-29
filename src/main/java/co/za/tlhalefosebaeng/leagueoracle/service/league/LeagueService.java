@@ -7,6 +7,7 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
+import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,22 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LeagueService implements LeagueServiceInterface {
     private final LeagueRepository leagueRepo;
-
-    // Helper method to convert a league team to a team response DTO
-    private TeamResponse convertTeamToDto(Team team) {
-        TeamResponse teamResponse = new TeamResponse();
-        teamResponse.setId(team.getId());
-        teamResponse.setName(team.getName());
-        teamResponse.setWins(team.getWins());
-        teamResponse.setDraws(team.getDraws());
-        teamResponse.setLoses(team.getLoses());
-        teamResponse.setGoalsForward(team.getGoalsForward());
-        teamResponse.setGoalsAgainst(team.getGoalsAgainst());
-        teamResponse.setPlayedGames();
-        teamResponse.setPoints();
-        teamResponse.setGoalDifference();
-        return teamResponse;
-    }
+    private final TeamService teamService;
 
     // Helper method to convert a league to the league response DTO
     @Override
@@ -43,7 +29,7 @@ public class LeagueService implements LeagueServiceInterface {
         leagueResponse.setName(league.getName());
 
         // Convert the league teams to team response DTO
-        List<TeamResponse> teamResponses = league.getTeams().stream().map(this::convertTeamToDto).toList();
+        List<TeamResponse> teamResponses = league.getTeams().stream().map(teamService::convertTeamToDto).toList();
         leagueResponse.setTeams(teamResponses);
 
         return leagueResponse;

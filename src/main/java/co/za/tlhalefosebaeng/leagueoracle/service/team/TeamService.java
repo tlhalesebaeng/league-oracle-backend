@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.team;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
@@ -21,6 +22,22 @@ public class TeamService implements TeamServiceInterface{
     private final LeagueServiceInterface leagueService;
     private final LeagueRepository leagueRepo;
     private final TeamRepository teamRepo;
+
+    // Helper method to convert a league team to a team response DTO
+    public TeamResponse convertTeamToDto(Team team) {
+        TeamResponse teamResponse = new TeamResponse();
+        teamResponse.setId(team.getId());
+        teamResponse.setName(team.getName());
+        teamResponse.setWins(team.getWins());
+        teamResponse.setDraws(team.getDraws());
+        teamResponse.setLoses(team.getLoses());
+        teamResponse.setGoalsForward(team.getGoalsForward());
+        teamResponse.setGoalsAgainst(team.getGoalsAgainst());
+        teamResponse.setPlayedGames();
+        teamResponse.setPoints();
+        teamResponse.setGoalDifference();
+        return teamResponse;
+    }
 
     @Override
     public League addTeamToLeague(Long leagueId, AddTeamRequest team) {
