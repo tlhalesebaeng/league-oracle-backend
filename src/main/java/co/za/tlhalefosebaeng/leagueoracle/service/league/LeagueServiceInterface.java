@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public interface LeagueServiceInterface {
+    League saveLeague(League league);
     League createLeague(LeagueRequest league);
     League getLeague(Long leagueId);
     List<League> getAllLeagues(String name);
