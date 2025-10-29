@@ -14,22 +14,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class LeagueService implements LeagueServiceInterface {
     private final LeagueRepository leagueRepo;
-    private final TeamServiceInterface teamService;
 
     // Helper method to convert a league to the league response DTO
     @Override
-    public LeagueResponse convertLeagueToDto(League league) {
+    public LeagueResponse convertLeagueToDto(League league, Function<Team, TeamResponse> convertTeamToDto) {
         LeagueResponse leagueResponse = new LeagueResponse();
         leagueResponse.setId(league.getId());
         leagueResponse.setName(league.getName());
 
         // Convert the league teams to team response DTO
-        List<TeamResponse> teamResponses = league.getTeams().stream().map(teamService::convertTeamToDto).toList();
+        List<TeamResponse> teamResponses = league.getTeams().stream().map(convertTeamToDto).toList();
         leagueResponse.setTeams(teamResponses);
 
         return leagueResponse;
