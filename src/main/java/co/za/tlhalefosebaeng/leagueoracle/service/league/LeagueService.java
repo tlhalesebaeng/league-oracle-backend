@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -29,7 +30,12 @@ public class LeagueService implements LeagueServiceInterface {
         leagueResponse.setName(league.getName());
 
         // Convert the league teams to team response DTO
-        List<TeamResponse> teamResponses = league.getTeams().stream().map(convertTeamToDto).toList();
+        List<TeamResponse> teamResponses = new ArrayList<>();
+        for(Team team : league.getTeams()) {
+            teamResponses.add(convertTeamToDto.apply(team));
+        }
+
+        // Set the league response's teams to the convert team response dtos
         leagueResponse.setTeams(teamResponses);
 
         return leagueResponse;
