@@ -40,6 +40,13 @@ public class LeagueService implements LeagueServiceInterface {
         return leagueResponse;
     }
 
+    // Helper method to assist with saving the league. This will allow us to save leagues
+    // on other services without directly using the league repo
+    @Override
+    public League saveLeague(League league) {
+        return leagueRepo.save(league);
+    }
+
     @Override
     public League createLeague(LeagueRequest league) {
         League pendingLeague = new League();
