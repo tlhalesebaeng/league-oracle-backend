@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
+import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
@@ -25,8 +26,11 @@ public class TeamController {
         // Add the team to the league corresponding to this leagueId
         League league = teamService.addTeamToLeague(leagueId, team);
 
+        // Convert the league to a league response dto
+        LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
+
         // Convert the league to a league response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
+        return ResponseEntity.ok(new ApiResponse("success", leagueResponse));
     }
 
     @PatchMapping("/{teamId}")
@@ -38,8 +42,11 @@ public class TeamController {
         // Update the league team
         League league = teamService.updateLeagueTeam(leagueId, teamId, team);
 
+        // Convert the league to a league response dto
+        LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
+
         // Convert the league to a league response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", leagueService.convertLeagueToDto(league)));
+        return ResponseEntity.ok(new ApiResponse("success", leagueResponse));
     }
 
     @DeleteMapping("/{teamId}")
