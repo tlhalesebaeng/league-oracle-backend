@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,11 @@ public class LeagueController {
         List<League> leagues = leagueService.getAllLeagues(name);
 
         // Convert all the leagues to the league response dtos and return them as part of the response entity
-        List<LeagueResponse> leagueResponses = leagues.stream().map(leagueService::convertLeagueToDto).toList();
+        List<LeagueResponse> leagueResponses = new ArrayList<>();
+        for(League league : leagues) {
+            leagueResponses.add(leagueService.convertLeagueToDto(league));
+        }
+
         return ResponseEntity.ok(new ApiResponse("success", leagueResponses));
     }
 
