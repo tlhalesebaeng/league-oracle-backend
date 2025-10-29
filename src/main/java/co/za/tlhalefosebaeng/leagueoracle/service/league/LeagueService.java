@@ -7,7 +7,7 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
-import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamService;
+import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LeagueService implements LeagueServiceInterface {
     private final LeagueRepository leagueRepo;
-    private final TeamService teamService;
+    private final TeamServiceInterface teamService;
 
     // Helper method to convert a league to the league response DTO
     @Override
