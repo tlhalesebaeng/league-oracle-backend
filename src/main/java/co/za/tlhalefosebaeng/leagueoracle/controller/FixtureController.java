@@ -41,7 +41,7 @@ public class FixtureController {
             fixtureResponses.add(fixtureService.convertFixtureToDto(fixture));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", fixtureResponses));
+        return ResponseEntity.ok(new ApiResponse("success", fixtureResponses));
     }
 
     @GetMapping("/{fixtureId}")
