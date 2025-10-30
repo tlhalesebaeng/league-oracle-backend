@@ -12,4 +12,5 @@ public interface FixtureServiceInterface {
     List<Fixture> getAllLeagueFixtures(Long leagueId);
     Fixture getFixture(Long fixtureId);
     Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest);
+    void deleteFixture(Long fixtureId);
 }
