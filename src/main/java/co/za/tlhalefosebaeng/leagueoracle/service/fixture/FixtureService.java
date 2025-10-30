@@ -1,16 +1,19 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +71,15 @@ public class FixtureService implements FixtureServiceInterface {
 
         // Find all the fixtures that belong to the retrieved league using the league repository
         return fixtureRepo.findAllByLeagueId(league.getId());
+    }
+
+    @Override
+    public Fixture getLeagueById(Long fixtureId) {
+        // Get the fixture from the database using the repo
+        Optional<Fixture> fixture = fixtureRepo.findById(fixtureId);
+
+        // Return the fixture if it exists otherwise throw the relevant exception
+        return fixture.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Fixture not found! Please check fixture ID and try again"));
     }
 
 }
