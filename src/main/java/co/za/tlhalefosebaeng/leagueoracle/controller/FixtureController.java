@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
+import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
@@ -48,6 +49,15 @@ public class FixtureController {
     public ResponseEntity<ApiResponse> getFixture(@PathVariable Long fixtureId) {
         // Get the fixture by the id from the database using the league service
         Fixture fixture = fixtureService.getLeagueById(fixtureId);
+
+        // Convert the fixture to a fixture response and return it
+        return ResponseEntity.ok(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
+    }
+
+    @PatchMapping("/{fixtureId}")
+    public ResponseEntity<ApiResponse> updateFixture(@PathVariable Long fixtureId, @RequestBody UpdateFixtureRequest fixtureRequest) {
+        // Update the provided fixture fields using the fixture service
+        Fixture fixture = fixtureService.updateFixture(fixtureId, fixtureRequest);
 
         // Convert the fixture to a fixture response and return it
         return ResponseEntity.ok(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
