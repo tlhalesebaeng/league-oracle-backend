@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
+import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
@@ -80,6 +81,22 @@ public class FixtureService implements FixtureServiceInterface {
 
         // Return the fixture if it exists otherwise throw the relevant exception
         return fixture.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Fixture not found! Please check fixture ID and try again"));
+    }
+
+    @Override
+    public Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest) {
+        // Get the fixture with the provided id, this will also confirm that the fixture exists
+        Fixture fixture = this.getLeagueById(fixtureId);
+
+        // Set the fields if they are provided. The dto makes sure that these fields are not empty
+        if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());
+        if(fixtureRequest.getTime() != null) {
+            // Update the time of the fixture date
+        }
+        if(fixtureRequest.getVenue() != null) fixture.setVenue(fixtureRequest.getVenue());
+        if(fixtureRequest.getField() != null) fixture.setField(fixtureRequest.getField());
+
+        return fixtureRepo.save(fixture);
     }
 
 }
