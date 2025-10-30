@@ -100,4 +100,10 @@ public class FixtureService implements FixtureServiceInterface {
         return fixtureRepo.save(fixture);
     }
 
+    @Override
+    public void deleteFixture(Long fixtureId) {
+        Fixture fixture = this.getFixture(fixtureId);
+        fixtureRepo.delete(fixture);
+    }
+
 }
