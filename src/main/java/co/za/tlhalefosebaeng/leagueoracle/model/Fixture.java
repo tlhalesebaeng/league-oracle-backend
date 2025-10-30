@@ -20,8 +20,8 @@ public class Fixture {
     private Long id;
 
     private Date date;
-    private String venue;
-    private String field;
+    private String venue = "TBC";
+    private String field = "TBC";
 
     @ManyToOne
     @JoinColumn(name = "league_id")
