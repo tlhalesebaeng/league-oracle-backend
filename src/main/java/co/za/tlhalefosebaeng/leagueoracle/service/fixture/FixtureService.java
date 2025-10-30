@@ -29,6 +29,7 @@ public class FixtureService implements FixtureServiceInterface {
 
         fixtureResponse.setId(fixture.getId());
         fixtureResponse.setDate(fixture.getDate());
+        fixtureResponse.setTime(fixture.getDate());
         fixtureResponse.setVenue(fixture.getVenue());
         fixtureResponse.setField(fixture.getField());
         fixtureResponse.setName(fixture.getLeague().getName());
