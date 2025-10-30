@@ -62,4 +62,11 @@ public class FixtureController {
         // Convert the fixture to a fixture response and return it
         return ResponseEntity.ok(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
     }
+
+    @DeleteMapping("/{fixtureId}")
+    public ResponseEntity<Object> deleteFixture(@PathVariable Long fixtureId) {
+        // Delete the fixture using the fixture service
+        fixtureService.deleteFixture(fixtureId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
 }
