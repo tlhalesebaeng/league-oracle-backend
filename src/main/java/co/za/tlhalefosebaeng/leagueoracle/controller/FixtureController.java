@@ -48,7 +48,7 @@ public class FixtureController {
     @GetMapping("/{fixtureId}")
     public ResponseEntity<ApiResponse> getFixture(@PathVariable Long fixtureId) {
         // Get the fixture by the id from the database using the league service
-        Fixture fixture = fixtureService.getLeagueById(fixtureId);
+        Fixture fixture = fixtureService.getFixture(fixtureId);
 
         // Convert the fixture to a fixture response and return it
         return ResponseEntity.ok(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));

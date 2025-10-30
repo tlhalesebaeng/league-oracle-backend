@@ -75,7 +75,7 @@ public class FixtureService implements FixtureServiceInterface {
     }
 
     @Override
-    public Fixture getLeagueById(Long fixtureId) {
+    public Fixture getFixture(Long fixtureId) {
         // Get the fixture from the database using the repo
         Optional<Fixture> fixture = fixtureRepo.findById(fixtureId);
 
@@ -86,7 +86,7 @@ public class FixtureService implements FixtureServiceInterface {
     @Override
     public Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest) {
         // Get the fixture with the provided id, this will also confirm that the fixture exists
-        Fixture fixture = this.getLeagueById(fixtureId);
+        Fixture fixture = this.getFixture(fixtureId);
 
         // Set the fields if they are provided. The dto makes sure that these fields are not empty
         if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());

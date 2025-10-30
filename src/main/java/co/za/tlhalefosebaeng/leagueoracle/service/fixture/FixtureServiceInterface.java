@@ -10,6 +10,6 @@ public interface FixtureServiceInterface {
     List<Fixture> generateLeagueFixtures(Long leagueId);
     FixtureResponse convertFixtureToDto(Fixture fixture);
     List<Fixture> getAllLeagueFixtures(Long leagueId);
-    Fixture getLeagueById(Long fixtureId);
+    Fixture getFixture(Long fixtureId);
     Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest);
 }
