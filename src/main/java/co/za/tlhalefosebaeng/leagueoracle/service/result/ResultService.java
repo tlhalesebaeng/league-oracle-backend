@@ -1,13 +1,36 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.result;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.AddResultRequest;
+import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
+import co.za.tlhalefosebaeng.leagueoracle.repository.ResultRepository;
+import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ResultService implements ResultServiceInterface {
+    private final ResultRepository resultRepo;
+    private final FixtureServiceInterface fixtureService;
+
     @Override
     public Result addResult(Long fixtureId, AddResultRequest resultRequest) {
-        return null;
+        // Get the fixture with the given id from the database using the fixture service. This
+        // will also confirm that the fixture exists otherwise it will throw the relevant exception
+        Fixture fixture = fixtureService.getFixture(fixtureId);
+
+        // Create a new instance of result and set the properties accordingly
+        Result result = new Result();
+        result.setHomeTeam(fixture.getHomeTeam());
+        result.setAwayTeam(fixture.getAwayTeam());
+        result.setHomeTeamScore(resultRequest.getHomeTeamScore());
+        result.setAwayTeamScore(resultRequest.getAwayTeamScore());
+
+        // Delete the fixture using the fixture id
+        fixtureService.deleteFixture(fixture.getId());
+
+        // Save the result and return it
+        return resultRepo.save(result);
     }
 }
