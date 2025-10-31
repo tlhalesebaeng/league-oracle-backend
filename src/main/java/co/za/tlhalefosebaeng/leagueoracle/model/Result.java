@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.model;
 
+import co.za.tlhalefosebaeng.leagueoracle.utils.AppDates;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,4 +32,16 @@ public class Result {
     @JoinColumn(name = "away_team")
     @JsonIgnore
     private Team awayTeam;
+
+    public void setDate(String date){
+        this.date = AppDates.convertDate(date);
+    }
+
+    public String getDate() {
+        // Avoid null pointer exception
+        if(this.date == null) return null;
+
+        // Convert the local date and time to string and return them in the correct format
+        return AppDates.retrieveDate(this.date.toLocalDate(), this.date.toLocalTime());
+    }
 }
