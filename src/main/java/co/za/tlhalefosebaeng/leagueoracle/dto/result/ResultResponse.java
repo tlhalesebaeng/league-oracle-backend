@@ -12,6 +12,7 @@ public class ResultResponse {
     private Long id;
     private String date;
     private String time;
+    private String name; // The name of the league this result belongs to
     private Integer homeTeamScore;
     private Integer awayTeamScore;
     private TeamResponse homeTeam;
