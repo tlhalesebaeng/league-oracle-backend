@@ -11,4 +11,5 @@ public interface ResultServiceInterface {
     Result addResult(Long fixtureId, AddResultRequest resultRequest);
     List<Result> getLeagueResults(Long leagueId);
     Result getResult(Long resultId);
+    Result updateResult(Long resultId, AddResultRequest resultRequest);
 }
