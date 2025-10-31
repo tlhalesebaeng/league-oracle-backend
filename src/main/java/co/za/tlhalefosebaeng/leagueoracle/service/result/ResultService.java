@@ -2,6 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.result;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.AddResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
@@ -10,9 +11,11 @@ import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterfac
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +70,14 @@ public class ResultService implements ResultServiceInterface {
 
         // Retrieve all the results that belong to the above league
         return resultRepo.findAllByLeagueId(league.getId());
+    }
+
+    @Override
+    public Result getResult(Long resultId) {
+        // Get the result from the database using the result repository
+        Optional<Result> result = resultRepo.findById(resultId);
+
+        // Return the result or throw a resource not found exception
+        return result.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Result not found! Please check result ID and try again"));
     }
 }
