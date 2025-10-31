@@ -10,4 +10,5 @@ public interface ResultServiceInterface {
     ResultResponse convertResultToDto(Result result);
     Result addResult(Long fixtureId, AddResultRequest resultRequest);
     List<Result> getLeagueResults(Long leagueId);
+    Result getResult(Long resultId);
 }
