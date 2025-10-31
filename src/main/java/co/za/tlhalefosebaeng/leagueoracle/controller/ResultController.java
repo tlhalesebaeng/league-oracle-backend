@@ -40,4 +40,13 @@ public class ResultController {
         return ResponseEntity.ok(new ApiResponse("success", convertedResults));
     }
 
+    @GetMapping("{resultId}")
+    public ResponseEntity<ApiResponse> getResult(@PathVariable Long resultId) {
+        // Get the result from the database using the result service
+        Result result = resultService.getResult(resultId);
+
+        // Convert the result into a result response dto and return it
+        return ResponseEntity.ok(new ApiResponse("success", resultService.convertResultToDto(result)));
+    }
+
 }
