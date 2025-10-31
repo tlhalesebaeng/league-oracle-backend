@@ -40,4 +40,10 @@ public class Team {
 
     @OneToMany(mappedBy = "awayTeam")
     List<Fixture> awayFixtures;
+
+    @OneToMany(mappedBy = "homeTeam")
+    List<Result> homeResults;
+
+    @OneToMany(mappedBy = "awayTeam")
+    List<Result> awayResults;
 }

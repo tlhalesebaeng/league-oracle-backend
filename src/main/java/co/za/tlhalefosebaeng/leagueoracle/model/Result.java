@@ -1,9 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +21,14 @@ public class Result {
     private LocalDateTime date;
     private Integer homeTeamScore;
     private Integer awayTeamScore;
+
+    @ManyToOne
+    @JoinColumn(name = "home_team")
+    @JsonIgnore
+    private Team homeTeam;
+
+    @ManyToOne
+    @JoinColumn(name = "away_team")
+    @JsonIgnore
+    private Team awayTeam;
 }
