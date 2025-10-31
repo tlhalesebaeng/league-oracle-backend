@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -79,5 +80,24 @@ public class ResultService implements ResultServiceInterface {
 
         // Return the result or throw a resource not found exception
         return result.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Result not found! Please check result ID and try again"));
+    }
+
+    @Override
+    public Result updateResult(Long resultId, AddResultRequest resultRequest) {
+        // Get the result with the given id from the database using the getResult method
+        Result result = this.getResult(resultId);
+
+        // Update the result fields when there are differences. We only set the team scores to keep integrity and reliability
+        // of the system since only the scores of the fixture are what should really be changed
+        if(!Objects.equals(result.getHomeTeamScore(), resultRequest.getHomeTeamScore())) {
+            result.setHomeTeamScore(resultRequest.getHomeTeamScore());
+        }
+
+        if(!Objects.equals(result.getAwayTeamScore(), resultRequest.getAwayTeamScore())) {
+            result.setAwayTeamScore(resultRequest.getAwayTeamScore());
+        }
+
+        // Update the result and return the newly saved result
+        return resultRepo.save(result);
     }
 }
