@@ -3,12 +3,16 @@ package co.za.tlhalefosebaeng.leagueoracle.service.result;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.AddResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
+import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
 import co.za.tlhalefosebaeng.leagueoracle.repository.ResultRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
+import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +20,7 @@ public class ResultService implements ResultServiceInterface {
     private final ResultRepository resultRepo;
     private final FixtureServiceInterface fixtureService;
     private final TeamServiceInterface teamService;
+    private final LeagueServiceInterface leagueService;
 
     @Override
     public ResultResponse convertResultToDto(Result result) {
@@ -53,5 +58,14 @@ public class ResultService implements ResultServiceInterface {
 
         // Save the result and return it
         return resultRepo.save(result);
+    }
+
+    @Override
+    public List<Result> getLeagueResults(Long leagueId) {
+        // Get the league corresponding to provided league id. This will also confirm that the league exists and throw a relevant exception otherwise
+        League league = leagueService.getLeague(leagueId);
+
+        // Retrieve all the results that belong to the above league
+        return resultRepo.findAllByLeagueId(league.getId());
     }
 }
