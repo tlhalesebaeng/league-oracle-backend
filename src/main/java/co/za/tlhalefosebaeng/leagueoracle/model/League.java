@@ -26,4 +26,7 @@ public class League {
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Fixture> fixtures;
+
+    @OneToMany(mappedBy = "league", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Result> results;
 }

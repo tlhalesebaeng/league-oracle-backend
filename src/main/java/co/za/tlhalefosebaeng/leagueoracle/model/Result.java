@@ -33,6 +33,11 @@ public class Result {
     @JsonIgnore
     private Team awayTeam;
 
+    @ManyToOne
+    @JoinColumn(name = "league_id")
+    @JsonIgnore
+    private League league;
+
     public void setDate(String date){
         this.date = AppDates.convertDate(date);
     }
