@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
-import co.za.tlhalefosebaeng.leagueoracle.dto.result.AddResultRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
@@ -20,7 +20,7 @@ public class ResultController {
     private final ResultServiceInterface resultService;
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> addResult(@RequestParam Long fixtureId, @RequestBody AddResultRequest resultRequest) {
+    public ResponseEntity<ApiResponse> addResult(@RequestParam Long fixtureId, @RequestBody ResultRequest resultRequest) {
         // Add results of a fixture to the database using the result service
         Result result = resultService.addResult(fixtureId, resultRequest);
 
@@ -50,7 +50,7 @@ public class ResultController {
     }
 
     @PatchMapping("{resultId}")
-    public ResponseEntity<ApiResponse> updateResult(@PathVariable Long resultId, @RequestBody AddResultRequest resultRequest) {
+    public ResponseEntity<ApiResponse> updateResult(@PathVariable Long resultId, @RequestBody ResultRequest resultRequest) {
         // Update the fields of the result with the given id using the result service
         Result result = resultService.updateResult(resultId, resultRequest);
 

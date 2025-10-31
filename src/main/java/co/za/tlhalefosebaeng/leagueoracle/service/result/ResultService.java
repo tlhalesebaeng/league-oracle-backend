@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.result;
 
-import co.za.tlhalefosebaeng.leagueoracle.dto.result.AddResultRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
@@ -43,7 +43,7 @@ public class ResultService implements ResultServiceInterface {
     }
 
     @Override
-    public Result addResult(Long fixtureId, AddResultRequest resultRequest) {
+    public Result addResult(Long fixtureId, ResultRequest resultRequest) {
         // Get the fixture with the given id from the database using the fixture service. This
         // will also confirm that the fixture exists otherwise it will throw the relevant exception
         Fixture fixture = fixtureService.getFixture(fixtureId);
@@ -83,7 +83,7 @@ public class ResultService implements ResultServiceInterface {
     }
 
     @Override
-    public Result updateResult(Long resultId, AddResultRequest resultRequest) {
+    public Result updateResult(Long resultId, ResultRequest resultRequest) {
         // Get the result with the given id from the database using the getResult method
         Result result = this.getResult(resultId);
 

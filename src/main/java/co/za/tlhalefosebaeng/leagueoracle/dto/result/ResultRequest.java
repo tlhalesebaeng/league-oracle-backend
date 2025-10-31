@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddResultRequest {
+public class ResultRequest {
     private Integer homeTeamScore;
     private Integer awayTeamScore;
 }
