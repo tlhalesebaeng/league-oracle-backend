@@ -49,4 +49,12 @@ public class ResultController {
         return ResponseEntity.ok(new ApiResponse("success", resultService.convertResultToDto(result)));
     }
 
+    @PatchMapping("{resultId}")
+    public ResponseEntity<ApiResponse> updateResult(@PathVariable Long resultId, @RequestBody AddResultRequest resultRequest) {
+        // Update the fields of the result with the given id using the result service
+        Result result = resultService.updateResult(resultId, resultRequest);
+
+        // Convert the result into a result response dto and return it
+        return ResponseEntity.ok(new ApiResponse("success", resultService.convertResultToDto(result)));
+    }
 }
