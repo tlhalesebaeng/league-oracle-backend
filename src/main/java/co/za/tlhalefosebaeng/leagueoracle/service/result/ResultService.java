@@ -22,6 +22,8 @@ public class ResultService implements ResultServiceInterface {
         ResultResponse resultResponse = new ResultResponse();
 
         resultResponse.setId(result.getId());
+        resultResponse.setDate(result.getDate());
+        resultResponse.setTime(result.getDate());
         resultResponse.setHomeTeamScore(result.getHomeTeamScore());
         resultResponse.setAwayTeamScore(result.getAwayTeamScore());
         resultResponse.setHomeTeam(teamService.convertTeamToDto(result.getHomeTeam()));
@@ -38,6 +40,7 @@ public class ResultService implements ResultServiceInterface {
 
         // Create a new instance of result and set the properties accordingly
         Result result = new Result();
+        result.setDate(fixture.getDate());
         result.setHomeTeam(fixture.getHomeTeam());
         result.setAwayTeam(fixture.getAwayTeam());
         result.setHomeTeamScore(resultRequest.getHomeTeamScore());
