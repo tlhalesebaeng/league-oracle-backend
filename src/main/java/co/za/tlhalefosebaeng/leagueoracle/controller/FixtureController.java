@@ -42,7 +42,7 @@ public class FixtureController {
             fixtureResponses.add(fixtureService.convertFixtureToDto(fixture));
         }
 
-        return ResponseEntity.ok(new ApiResponse("success", fixtureResponses));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", fixtureResponses));
     }
 
     @GetMapping("/{fixtureId}")
@@ -51,7 +51,7 @@ public class FixtureController {
         Fixture fixture = fixtureService.getFixture(fixtureId);
 
         // Convert the fixture to a fixture response and return it
-        return ResponseEntity.ok(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
     }
 
     @PatchMapping("/{fixtureId}")
@@ -60,7 +60,7 @@ public class FixtureController {
         Fixture fixture = fixtureService.updateFixture(fixtureId, fixtureRequest);
 
         // Convert the fixture to a fixture response and return it
-        return ResponseEntity.ok(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
     }
 
     @DeleteMapping("/{fixtureId}")

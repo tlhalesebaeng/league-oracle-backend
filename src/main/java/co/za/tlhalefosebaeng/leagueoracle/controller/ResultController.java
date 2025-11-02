@@ -37,7 +37,7 @@ public class ResultController {
         for(Result result : results) {
             convertedResults.add(resultService.convertResultToDto(result));
         }
-        return ResponseEntity.ok(new ApiResponse("success", convertedResults));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", convertedResults));
     }
 
     @GetMapping("{resultId}")
@@ -46,7 +46,7 @@ public class ResultController {
         Result result = resultService.getResult(resultId);
 
         // Convert the result into a result response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", resultService.convertResultToDto(result)));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", resultService.convertResultToDto(result)));
     }
 
     @PatchMapping("{resultId}")
@@ -55,6 +55,6 @@ public class ResultController {
         Result result = resultService.updateResult(resultId, resultRequest);
 
         // Convert the result into a result response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", resultService.convertResultToDto(result)));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", resultService.convertResultToDto(result)));
     }
 }

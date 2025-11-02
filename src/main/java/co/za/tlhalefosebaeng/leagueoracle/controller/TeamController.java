@@ -30,7 +30,7 @@ public class TeamController {
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
 
         // Convert the league to a league response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", leagueResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponse));
     }
 
     @PatchMapping("/{teamId}")
@@ -46,7 +46,7 @@ public class TeamController {
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
 
         // Convert the league to a league response dto and return it
-        return ResponseEntity.ok(new ApiResponse("success", leagueResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponse));
     }
 
     @DeleteMapping("/{teamId}")
