@@ -39,7 +39,7 @@ public class TeamService implements TeamServiceInterface{
     }
 
     @Override
-    public League addTeamToLeague(Long leagueId, AddTeamRequest team) {
+    public League addTeam(Long leagueId, AddTeamRequest team) {
         // Get the league from the database
         League league = leagueService.getLeague(leagueId);
 
@@ -54,7 +54,7 @@ public class TeamService implements TeamServiceInterface{
     }
 
     @Override
-    public League updateLeagueTeam(Long leagueId, Long teamId, UpdateTeamRequest team) {
+    public League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest team) {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 

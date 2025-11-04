@@ -7,8 +7,8 @@ import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 
 public interface TeamServiceInterface {
-    League addTeamToLeague(Long leagueId, AddTeamRequest team);
-    League updateLeagueTeam(Long leagueId, Long teamId, UpdateTeamRequest team);
+    League addTeam(Long leagueId, AddTeamRequest team);
+    League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest team);
     void deleteTeam(Long teamId);
     TeamResponse convertTeamToDto(Team team);
 }
