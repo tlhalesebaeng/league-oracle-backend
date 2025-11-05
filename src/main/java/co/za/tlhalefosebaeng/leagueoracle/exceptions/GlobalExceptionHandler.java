@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     // A spring exception raises when a resource was not found (e.g. a provided URL has no mapper)
     @ExceptionHandler({ NoResourceFoundException.class })
     public ResponseEntity<MessageResponse> handleNoResourceFoundException(NoResourceFoundException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getResourcePath() + " not found"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("/" + e.getResourcePath() + " not found"));
     }
 
     // A spring exception thrown when the http message cannot be read for conversion (e.g. the required body of a post request was not provided)
