@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
+import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +28,14 @@ public class AppConfig {
         // Make the application stateless
         http.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        // Authorize all the routes on the protected routes class and permit all other routes
+        http.authorizeHttpRequests(customizer -> customizer
+                .requestMatchers(ProtectedRoutes.get().toArray(String[]::new))
+                .authenticated()
+                .anyRequest()
+                .permitAll()
+        );
+        
         return http.build();
     }
 }
