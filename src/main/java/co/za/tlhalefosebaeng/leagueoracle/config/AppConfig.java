@@ -17,6 +17,9 @@ public class AppConfig {
         // Disable protection against csrf (cross site request forgery)
         http.csrf(AbstractHttpConfigurer::disable);
 
+        // Disable the default login form provided when the user is unauthenticated
+        http.formLogin(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
 }
