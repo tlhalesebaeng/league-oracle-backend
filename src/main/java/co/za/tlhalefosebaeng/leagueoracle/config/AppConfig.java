@@ -21,6 +21,9 @@ public class AppConfig {
         // Disable the default login form provided when the user is unauthenticated
         http.formLogin(AbstractHttpConfigurer::disable);
 
+        // Disable basic plain text http authentication
+        http.httpBasic(AbstractHttpConfigurer::disable);
+
         // Make the application stateless
         http.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
