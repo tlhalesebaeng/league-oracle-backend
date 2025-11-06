@@ -1,4 +1,4 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.user;
 
-public class UserService {
+public class UserService implements UserServiceInterface{
 }
