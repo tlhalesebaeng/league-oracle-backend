@@ -11,7 +11,6 @@ import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterfac
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,7 +78,7 @@ public class ResultService implements ResultServiceInterface {
         Optional<Result> result = resultRepo.findById(resultId);
 
         // Return the result or throw a resource not found exception
-        return result.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Result not found! Please check result ID and try again"));
+        return result.orElseThrow(() -> new ResourceNotFoundException("Result not found! Please check result ID and try again"));
     }
 
     @Override

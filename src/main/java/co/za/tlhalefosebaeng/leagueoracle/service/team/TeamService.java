@@ -9,7 +9,6 @@ import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.TeamRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -69,7 +68,7 @@ public class TeamService implements TeamServiceInterface{
         }
 
         // Throw a relevant exception when the league has no team with the given team id
-        if(newTeam == null) throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Team not found! Please check team ID and try again.");
+        if(newTeam == null) throw new ResourceNotFoundException("Team not found! Please check team ID and try again.");
 
         // Update properties of the existing team
         if(team.getName() != null) newTeam.setName(team.getName());
@@ -86,7 +85,7 @@ public class TeamService implements TeamServiceInterface{
     public void deleteTeam(Long teamId) {
         Optional<Team> team = teamRepo.findById(teamId);
         team.ifPresentOrElse(teamRepo::delete, () -> {
-            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "League not found! Please check league ID and try again.");
+            throw new ResourceNotFoundException("League not found! Please check league ID and try again.");
         });
     }
 }

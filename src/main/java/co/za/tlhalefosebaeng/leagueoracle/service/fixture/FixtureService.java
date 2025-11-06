@@ -9,7 +9,6 @@ import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class FixtureService implements FixtureServiceInterface {
         Optional<Fixture> fixture = fixtureRepo.findById(fixtureId);
 
         // Return the fixture if it exists otherwise throw the relevant exception
-        return fixture.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Fixture not found! Please check fixture ID and try again"));
+        return fixture.orElseThrow(() -> new ResourceNotFoundException("Fixture not found! Please check fixture ID and try again"));
     }
 
     @Override
