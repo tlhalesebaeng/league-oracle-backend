@@ -6,6 +6,7 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Service
 public class UserService implements UserServiceInterface{
     private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User getUserByEmail(String email) {
@@ -36,7 +38,7 @@ public class UserService implements UserServiceInterface{
         newUser.setFullName(user.getFullName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // Save the user and return the saved user
         return userRepo.save(newUser);
