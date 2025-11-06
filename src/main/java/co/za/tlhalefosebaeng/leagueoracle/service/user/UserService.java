@@ -17,7 +17,10 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public User getUserByEmail(String email) {
+        // Get the user from the database using the user repository
         Optional<User> user = userRepo.findByEmail(email);
+
+        // Return the user or throw the relevant exception if the user is not found i.e. the user object is null
         return user.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User not found! Please the email and try again"));
     }
 
