@@ -3,6 +3,8 @@ package co.za.tlhalefosebaeng.leagueoracle.config;
 import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,6 +14,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
+
+    // Register an authentication provider bean to the authentication manager
+    public AuthenticationProvider authProvider() {
+        // Instantiate a new DAO (Data Access Object) provider
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        // Return the instance of the provider
+        return provider;
+    }
 
     // Register a security filter chain bean to the application context. This will allow us to configure the filter chain
     @Bean
@@ -35,6 +46,9 @@ public class AppConfig {
                 .anyRequest()
                 .permitAll()
         );
+
+        // Set the custom authentication provider
+        http.authenticationProvider(authProvider());
         
         return http.build();
     }
