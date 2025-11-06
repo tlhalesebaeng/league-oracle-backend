@@ -1,6 +1,5 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
@@ -9,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @Setter
 public class ResourceNotFoundException extends RuntimeException {
     private HttpStatus code;
-    public ResourceNotFoundException(HttpStatus code, String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
-        this.code = code;
+        this.code = HttpStatus.BAD_REQUEST;
     }
 }
