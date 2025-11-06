@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
 import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -9,16 +10,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
+    private final UserDetailsService userDetailsService;
 
     // Register an authentication provider bean to the authentication manager
     public AuthenticationProvider authProvider() {
         // Instantiate a new DAO (Data Access Object) provider
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
         // Return the instance of the provider
         return provider;
