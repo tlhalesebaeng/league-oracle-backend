@@ -2,6 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.config;
 
 import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
@@ -19,10 +22,21 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AppConfig {
     private final UserDetailsService userDetailsService;
 
+    @Value("${api.password-encoder.strength}")
+    private Integer encoderStrength;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(encoderStrength);
+    }
+
     // Register an authentication provider bean to the authentication manager
     public AuthenticationProvider authProvider() {
         // Instantiate a new DAO (Data Access Object) provider
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+
+        // Set the password encoder. This helps with password encryption and decryption
+        provider.setPasswordEncoder(passwordEncoder());
 
         // Return the instance of the provider
         return provider;
