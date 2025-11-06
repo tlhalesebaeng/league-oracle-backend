@@ -26,8 +26,8 @@ public class GlobalExceptionHandler {
 
     // Handle custom runtime exceptions
     @ExceptionHandler({ ResourceNotFoundException.class, PasswordsNotMatchingException.class })
-    public ResponseEntity<MessageResponse> handleCustomExceptions(ResourceNotFoundException e) {
-        return ResponseEntity.status(e.getCode()).body(new MessageResponse(e.getMessage()));
+    public ResponseEntity<MessageResponse> handleCustomExceptions(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getMessage()));
     }
 
     // Handle app exceptions
