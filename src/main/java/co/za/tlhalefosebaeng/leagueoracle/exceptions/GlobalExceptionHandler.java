@@ -25,7 +25,11 @@ public class GlobalExceptionHandler {
     private String apiEnvironment;
 
     // Handle custom runtime exceptions
-    @ExceptionHandler({ ResourceNotFoundException.class, PasswordsNotMatchingException.class })
+    @ExceptionHandler({
+            ResourceNotFoundException.class,
+            PasswordsNotMatchingException.class,
+            IncorrectCredentialsException.class
+    })
     public ResponseEntity<MessageResponse> handleCustomExceptions(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getMessage()));
     }
