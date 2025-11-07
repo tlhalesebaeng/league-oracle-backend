@@ -1,12 +1,12 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.jwt;
 
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
-import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -47,7 +47,7 @@ public class JwtService implements JwtServiceInterface {
     }
 
     @Override
-    public boolean validateToken(String token, AppUserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails) {
         // Get all the claims from the token
         Claims claims = getAllClaims(token);
 
@@ -61,8 +61,8 @@ public class JwtService implements JwtServiceInterface {
         return usernamesMatch && tokenNotExpired;
     }
 
-    // Helper method to extract all claims from the token
-    private Claims getAllClaims(String token) {
+    @Override
+    public Claims getAllClaims(String token) {
         // Instantiate a new instance of jwt parser builder and set the signing key which will be used to decode the token
         JwtParserBuilder jwtBuilder = Jwts.parserBuilder();
         jwtBuilder.setSigningKey(this.getKey());
