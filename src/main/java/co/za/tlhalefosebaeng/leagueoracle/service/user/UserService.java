@@ -1,7 +1,9 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.user;
 
+import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.UserResponse;
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.IncorrectCredentialsException;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.PasswordsNotMatchingException;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
@@ -55,5 +57,21 @@ public class UserService implements UserServiceInterface{
 
         // Save the user and return the saved user
         return userRepo.save(newUser);
+    }
+
+    @Override
+    public User login(LoginRequest details) {
+        // Get the user from the database using user repository and confirm that the user exists
+        Optional<User> user = userRepo.findByEmail(details.getEmail());
+        User savedUser = user.orElseThrow(() -> new IncorrectCredentialsException("Invalid credentials! Please check your email or password and try again"));
+
+
+        // Confirm that the passwords are the same otherwise throw a relevant exception
+        if(!passwordEncoder.matches(details.getPassword(), savedUser.getPassword())) {
+            throw new IncorrectCredentialsException("Invalid credentials! Please check your email or password and try again");
+        }
+
+        // When all checks are successful return the user
+        return savedUser;
     }
 }
