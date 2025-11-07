@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
+import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
@@ -33,5 +34,18 @@ public class UserController {
 
         // Convert the user object to a user response dto and return it as part of the api response
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", userService.convertUserToDto(newUser)));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest details, HttpServletResponse response) {
+        // Get the user from the database using the user service
+        User user = userService.login(details);
+
+        // Generate the token and set it as a cookie in the response
+        String jwt = jwtService.generateToken(user);
+        response.addCookie(new Cookie("access_jwt", jwt));
+
+        // Convert the user object to a user response dto and return it as part of the api response
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", userService.convertUserToDto(user)));
     }
 }
