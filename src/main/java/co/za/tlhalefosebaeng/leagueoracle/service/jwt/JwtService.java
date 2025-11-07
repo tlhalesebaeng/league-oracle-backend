@@ -1,17 +1,18 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.jwt;
 
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetails;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Service
 public class JwtService implements JwtServiceInterface {
     @Value("${jwt.secret}")
@@ -44,5 +45,31 @@ public class JwtService implements JwtServiceInterface {
 
         // Build the token and return it
         return jwtBuilder.compact();
+    }
+
+    @Override
+    public boolean validateToken(String token, AppUserDetails userDetails) {
+        // Get all the claims from the token
+        Claims claims = getAllClaims(token);
+
+        // Extract the subject from all the claims check if the username from the user details is similar to it
+        boolean usernamesMatch = userDetails.getUsername().equals(claims.getSubject());
+
+        // Extract the token expiration and check that it's before the current date
+        boolean tokenNotExpired = claims.getExpiration().before(new Date());
+
+        // Get the results of the two above checks and return it
+        return usernamesMatch && tokenNotExpired;
+    }
+
+    // Helper method to extract all claims from the token
+    private Claims getAllClaims(String token) {
+        // Instantiate a new instance of jwt parser builder and set the signing key which will be used to decode the token
+        JwtParserBuilder jwtBuilder = Jwts.parserBuilder();
+        jwtBuilder.setSigningKey(this.getKey());
+
+        // Get an instance of what allows us to convert the jwt to a readable format and use it to return the claims
+        JwtParser jwtParser = jwtBuilder.build();
+        return jwtParser.parseClaimsJws(token).getBody();
     }
 }
