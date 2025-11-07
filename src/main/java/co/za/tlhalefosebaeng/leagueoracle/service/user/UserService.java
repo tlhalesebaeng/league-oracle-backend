@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.user;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.auth.UserResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.PasswordsNotMatchingException;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
@@ -16,6 +17,18 @@ import java.util.Optional;
 public class UserService implements UserServiceInterface{
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserResponse convertUserToDto(User user) {
+        // Instantiate a new user instance
+        UserResponse userResponse = new UserResponse();
+
+        // Set the properties of the user response and return the user response instance
+        userResponse.setFullName(user.getFullName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setEmail(user.getEmail());
+        return userResponse;
+    }
 
     @Override
     public User getUserByEmail(String email) {
