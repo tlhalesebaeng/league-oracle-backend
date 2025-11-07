@@ -36,8 +36,7 @@ public class JwtService implements JwtServiceInterface {
         JwtBuilder jwtBuilder = Jwts.builder();
 
         // Set the subject of the token which is what is used to identify a user
-        // Use the user ID to avoid making the email of the user publicly available
-        jwtBuilder.setSubject(String.valueOf(user.getId()));
+        jwtBuilder.setSubject(user.getEmail());
 
         jwtBuilder.setIssuedAt(new Date(System.currentTimeMillis())); // Set the time which the token was issued at
         jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + expirationTime)); // Set the expiration time of the token
