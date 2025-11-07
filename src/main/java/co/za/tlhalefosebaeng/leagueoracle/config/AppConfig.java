@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
+import co.za.tlhalefosebaeng.leagueoracle.filters.JwtFilter;
 import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +16,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
     private final UserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
 
     @Value("${api.password-encoder.strength}")
     private Integer encoderStrength;
@@ -65,6 +68,9 @@ public class AppConfig {
                 .permitAll()
         );
 
+        // Add the jwt filter before the filter that extracts the username and password from the request
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        
         // Set the custom authentication provider
         http.authenticationProvider(authProvider());
         
