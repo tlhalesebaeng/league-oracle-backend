@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
+    private final DelegatedAuthenticationEntryPoint authEntryPoint;
 
     @Value("${api.password-encoder.strength}")
     private Integer encoderStrength;
@@ -70,7 +71,10 @@ public class AppConfig {
 
         // Add the jwt filter before the filter that extracts the username and password from the request
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        
+
+        // Allow exception handling and use the delegated authentication entry point as the authentication entry point
+        http.exceptionHandling(customizer -> customizer.authenticationEntryPoint(authEntryPoint));
+
         // Set the custom authentication provider
         http.authenticationProvider(authProvider());
         
