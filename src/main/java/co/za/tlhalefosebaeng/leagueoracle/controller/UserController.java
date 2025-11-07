@@ -24,6 +24,7 @@ public class UserController {
         // Sign the user up using the user service
         User newUser = userService.addUser(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", newUser));
+        // Convert the user object to a user response dto and return it as part of the api response
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", userService.convertUserToDto(newUser)));
     }
 }
