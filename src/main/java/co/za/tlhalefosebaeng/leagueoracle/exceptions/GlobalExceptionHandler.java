@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -35,6 +37,12 @@ public class GlobalExceptionHandler {
     }
 
     // Handle app exceptions
+
+    // A spring authentication thrown when an authentication request is rejected
+    @ExceptionHandler({ InsufficientAuthenticationException.class })
+    public ResponseEntity<MessageResponse> handleAuthenticationException(InsufficientAuthenticationException e){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new MessageResponse("You are not logged in! Please login to continue"));
+    }
 
     // A spring exception raises when a resource was not found (e.g. a provided URL has no mapper)
     @ExceptionHandler({ NoResourceFoundException.class })
