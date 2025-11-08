@@ -3,6 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.league;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.DuplicateTeamNamesException;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
@@ -48,6 +49,11 @@ public class LeagueService implements LeagueServiceInterface {
 
     @Override
     public League createLeague(LeagueRequest league) {
+        // Confirm that the team names are unique
+        if(!league.validateTeam()) {
+            throw new DuplicateTeamNamesException("Invalid details! Teams should have different names");
+        }
+
         League pendingLeague = new League();
         pendingLeague.setName(league.getName());
 
