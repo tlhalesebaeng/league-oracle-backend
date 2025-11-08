@@ -26,6 +26,7 @@ public class UserService implements UserServiceInterface{
         UserResponse userResponse = new UserResponse();
 
         // Set the properties of the user response and return the user response instance
+        userResponse.setId(user.getId());
         userResponse.setFullName(user.getFullName());
         userResponse.setLastName(user.getLastName());
         userResponse.setEmail(user.getEmail());
