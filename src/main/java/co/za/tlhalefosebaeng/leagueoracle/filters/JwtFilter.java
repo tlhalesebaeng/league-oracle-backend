@@ -2,6 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.filters;
 
 import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
+import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -25,6 +27,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Do not perform this filter for routes that are not protected
+        if(!ProtectedRoutes.get().contains(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // Get the token from the cookie
         String token = null;
         if(request.getCookies() != null) {
