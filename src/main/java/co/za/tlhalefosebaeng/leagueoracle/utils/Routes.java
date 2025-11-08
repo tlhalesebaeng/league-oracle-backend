@@ -5,7 +5,26 @@ import java.util.List;
 public class Routes {
     public static List<RouteDefinition> getProtected() {
         // Return an unmodifiable list of routes that should be authorized
-        return List.of();
+        return List.of(
+                // League Routes
+                new RouteDefinition("/api/v1/leagues", "POST"),
+                new RouteDefinition("/api/v1/leagues/{leagueId}", "PATCH"),
+                new RouteDefinition("/api/v1/leagues/{leagueId}", "DELETE"),
+
+                // Team Routes
+                new RouteDefinition("/api/v1/teams", "POST"),
+                new RouteDefinition("/api/v1/teams/{teamId}", "PATCH"),
+                new RouteDefinition("/api/v1/teams/{teamId}", "DELETE"),
+
+                // Fixture Routes
+                new RouteDefinition("/api/v1/fixtures", "POST"),
+                new RouteDefinition("/api/v1/fixtures/{fixtureId}", "PATCH"),
+                new RouteDefinition("/api/v1/fixtures/{fixtureId}", "DELETE"),
+
+                // Result Routes
+                new RouteDefinition("/api/v1/results", "POST"),
+                new RouteDefinition("/api/v1/results/{resultId}", "POST")
+        );
     }
 
     // Helper method to check if a route is part of the protected routes
