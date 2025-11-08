@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,16 +85,7 @@ public class GlobalExceptionHandler {
     // A java exception thrown when an entity constraint has been violated
     @ExceptionHandler({ SQLIntegrityConstraintViolationException.class })
     public ResponseEntity<MessageResponse> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
-        String errorMessage = "";
-        if(e.getErrorCode() == 1062) {
-            // Handle duplicate key constraint violation
-            errorMessage = "Some field already exists! Please use a different one";
-        } else if(e.getErrorCode() == 1048) {
-            // Handle null key constraint violation
-            errorMessage = "Invalid input data! Please check fields and try again";
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(errorMessage));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(this.deriveSQLExceptionMessage(e)));
     }
 
     // A spring type mismatch exception raised while resolving a controller method argument
@@ -107,5 +99,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<MessageResponse> handleUnknownExceptions(Exception e) {
         if(!apiEnvironment.equals("production")) System.out.println(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Something went really bad! Please try again later"));
+    }
+
+    // Helper method to derive an error message from the sql exception
+    private String deriveSQLExceptionMessage(SQLException e) {
+        String errorMessage = "";
+        if(e.getErrorCode() == 1062) {
+            // Handle duplicate key constraint violation
+            errorMessage = "Some field already exists! Please use a different one";
+        } else if(e.getErrorCode() == 1048) {
+            // Handle null key constraint violation
+            errorMessage = "Invalid input data! Please check fields and try again";
+        }
+
+        return errorMessage;
     }
 }
