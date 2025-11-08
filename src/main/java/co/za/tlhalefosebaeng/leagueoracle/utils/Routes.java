@@ -12,7 +12,7 @@ public class Routes {
     public static boolean isProtected(String method, String URI) {
         for(RouteDefinition route : getProtected()) {
             // Check if the route is part of the protected routes. The request should have similar URI and http method as the protected route
-            if(route.getMethod().matches(method) && route.getURI().equals(URI)){
+            if(route.matches(method, URI)){
                 return true; // The route is found so it is protected
             }
         }
