@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
 import co.za.tlhalefosebaeng.leagueoracle.filters.JwtFilter;
-import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
+import co.za.tlhalefosebaeng.leagueoracle.utils.Routes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -63,7 +63,7 @@ public class AppConfig {
 
         // Authorize all the routes on the protected routes class and permit all other routes
         http.authorizeHttpRequests(customizer -> {
-            ProtectedRoutes.get().forEach(
+            Routes.getProtected().forEach(
                     route -> customizer.requestMatchers(route.getMethod(), route.getURI()).authenticated()
             );
             customizer.anyRequest().permitAll();
