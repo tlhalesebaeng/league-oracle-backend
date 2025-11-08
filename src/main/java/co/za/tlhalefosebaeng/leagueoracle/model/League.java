@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class League {
     private String name;
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Team> teams;
+    private Set<Team> teams;
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Fixture> fixtures;
