@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             ResourceNotFoundException.class,
             PasswordsNotMatchingException.class,
-            IncorrectCredentialsException.class
+            IncorrectCredentialsException.class,
+            DuplicateTeamNamesException.class
     })
     public ResponseEntity<MessageResponse> handleCustomExceptions(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getMessage()));
