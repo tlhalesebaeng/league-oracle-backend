@@ -88,11 +88,13 @@ public class ResultService implements ResultServiceInterface {
 
         // Update the result fields when there are differences. We only set the team scores to keep integrity and reliability
         // of the system since only the scores of the fixture are what should really be changed
-        if(!Objects.equals(result.getHomeTeamScore(), resultRequest.getHomeTeamScore())) {
+        Integer homeTeamScore = resultRequest.getHomeTeamScore();
+        if(!Objects.equals(result.getHomeTeamScore(), homeTeamScore)) {
             result.setHomeTeamScore(resultRequest.getHomeTeamScore());
         }
 
-        if(!Objects.equals(result.getAwayTeamScore(), resultRequest.getAwayTeamScore())) {
+        Integer awayTeamScore = resultRequest.getAwayTeamScore();
+        if(!Objects.equals(result.getAwayTeamScore(), awayTeamScore)) {
             result.setAwayTeamScore(resultRequest.getAwayTeamScore());
         }
 
