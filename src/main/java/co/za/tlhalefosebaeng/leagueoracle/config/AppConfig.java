@@ -62,12 +62,12 @@ public class AppConfig {
         http.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Authorize all the routes on the protected routes class and permit all other routes
-        http.authorizeHttpRequests(customizer -> customizer
-                .requestMatchers(ProtectedRoutes.get().toArray(String[]::new))
-                .authenticated()
-                .anyRequest()
-                .permitAll()
-        );
+        http.authorizeHttpRequests(customizer -> {
+            ProtectedRoutes.get().forEach(
+                    route -> customizer.requestMatchers(route.getMethod(), route.getURI()).authenticated()
+            );
+            customizer.anyRequest().permitAll();
+        });
 
         // Add the jwt filter before the filter that extracts the username and password from the request
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
