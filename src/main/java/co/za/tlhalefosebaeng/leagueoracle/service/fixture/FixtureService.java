@@ -5,6 +5,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
+import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
@@ -45,16 +46,15 @@ public class FixtureService implements FixtureServiceInterface {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
-        // Generate fixtures
+        // Generate fixtures. The collection we used for storing teams does not store them in the order they arrive, this increases randomization of the fixture generator
         List<Fixture> fixtures = new ArrayList<>();
-        int size = league.getTeams().size();
-        for(int i = 0; i < size; i++) {
-            for(int j = size - 1; j > 0; j--) {
-                if(i != j) { // A team cannot play itself
+        for(Team homeTeam : league.getTeams()) {
+            for(Team awayTeam : league.getTeams()) {
+                if(homeTeam.getName().equals(awayTeam.getName())) { // A team cannot play itself
                     Fixture fixture = new Fixture();
                     fixture.setLeague(league);
-                    fixture.setHomeTeam(league.getTeams().get(i));
-                    fixture.setAwayTeam(league.getTeams().get(j));
+                    fixture.setHomeTeam(homeTeam);
+                    fixture.setAwayTeam(awayTeam);
 
                     // Add the saved fixture to the fixture list
                     fixtures.add(fixtureRepo.save(fixture));
