@@ -5,6 +5,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
 import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.result.ResultServiceInterface;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ResultController {
     private final ResultServiceInterface resultService;
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> addResult(@RequestParam Long fixtureId, @RequestBody ResultRequest resultRequest) {
+    public ResponseEntity<ApiResponse> addResult(@RequestParam Long fixtureId, @Valid @RequestBody ResultRequest resultRequest) {
         // Add results of a fixture to the database using the result service
         Result result = resultService.addResult(fixtureId, resultRequest);
 
