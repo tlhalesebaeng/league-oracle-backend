@@ -55,10 +55,10 @@ public class JwtService implements JwtServiceInterface {
         boolean usernamesMatch = userDetails.getUsername().equals(claims.getSubject());
 
         // Extract the token expiration and check that it's before the current date
-        boolean tokenNotExpired = claims.getExpiration().before(new Date());
+        boolean tokenExpired = claims.getExpiration().before(new Date());
 
         // Get the results of the two above checks and return it
-        return usernamesMatch && tokenNotExpired;
+        return usernamesMatch && !tokenExpired;
     }
 
     @Override
