@@ -90,9 +90,6 @@ public class FixtureService implements FixtureServiceInterface {
 
         // Set the fields if they are provided. The dto makes sure that these fields are not empty
         if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());
-        if(fixtureRequest.getTime() != null) {
-            // Update the time of the fixture date
-        }
         if(fixtureRequest.getVenue() != null) fixture.setVenue(fixtureRequest.getVenue());
         if(fixtureRequest.getField() != null) fixture.setField(fixtureRequest.getField());
 
