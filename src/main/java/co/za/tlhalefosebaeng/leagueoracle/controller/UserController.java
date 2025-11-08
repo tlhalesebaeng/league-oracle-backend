@@ -8,6 +8,7 @@ import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class UserController {
     private final JwtServiceInterface jwtService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest user, HttpServletResponse response){
+    public ResponseEntity<ApiResponse> signup(@Valid @RequestBody SignupRequest user, HttpServletResponse response){
         // Sign the user up using the user service
         User newUser = userService.addUser(user);
 
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest details, HttpServletResponse response) {
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest details, HttpServletResponse response) {
         // Get the user from the database using the user service
         User user = userService.login(details);
 
