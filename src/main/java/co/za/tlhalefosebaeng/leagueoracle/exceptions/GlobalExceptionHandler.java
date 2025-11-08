@@ -4,6 +4,7 @@ import co.za.tlhalefosebaeng.leagueoracle.response.MessageResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -80,6 +81,18 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new MessageResponse(violations.get(0).getMessage()));
+    }
+
+    // A spring exception thrown when the integrity of an entity has been violated
+    @ExceptionHandler({ DataIntegrityViolationException.class })
+    public ResponseEntity<MessageResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        Throwable cause = e.getRootCause();
+
+        if(cause instanceof SQLException sqlException) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(this.deriveSQLExceptionMessage(sqlException)));
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Something went really bad! Please try again later"));
     }
 
     // A java exception thrown when an entity constraint has been violated
