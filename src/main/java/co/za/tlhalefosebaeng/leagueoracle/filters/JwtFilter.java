@@ -3,6 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.filters;
 import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
 import co.za.tlhalefosebaeng.leagueoracle.utils.ProtectedRoutes;
+import co.za.tlhalefosebaeng.leagueoracle.utils.RouteDefinition;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -28,8 +28,16 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Do not perform this filter for routes that are not protected
-        if(!ProtectedRoutes.get().contains(request.getRequestURI())) {
-            filterChain.doFilter(request, response);
+        boolean routeIsProtected = false;
+        for(RouteDefinition route : ProtectedRoutes.get()) {
+            // Check if the route is part of the protected routes. The request should have similar URI and http method as the protected route
+            if(route.getURI().equals(request.getRequestURI()) && route.getMethod().matches(request.getMethod())){
+                routeIsProtected = true; // The route is found so it is protected
+                break; // End the loop since we already confirmed that the route is protected
+            }
+        }
+        if(!routeIsProtected) {
+            filterChain.doFilter(request, response); // Perform the next filter in the filter chain
             return;
         }
 
