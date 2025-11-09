@@ -94,9 +94,17 @@ public class TeamService implements TeamServiceInterface{
 
     @Override
     public void deleteTeam(Long teamId) {
-        Optional<Team> team = teamRepo.findById(teamId);
-        team.ifPresentOrElse(teamRepo::delete, () -> {
-            throw new AppException(HttpStatus.BAD_REQUEST ,"League not found! Please check league ID and try again.");
-        });
+        // Get the team from the database using the team repo otherwise throw the relevant exception
+        Team team = teamRepo.findById(teamId).orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST ,"Team not found! Please check team ID and try again"));
+
+        // Get the league with the team league's id from the database using the league service
+        League league = leagueService.getLeague(team.getLeague().getId());
+
+        // Confirm the creator of this league - Only logged-in creator of league should be able to delete a team
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
+        teamRepo.delete(team); // Delete the team using the repo
     }
 }
