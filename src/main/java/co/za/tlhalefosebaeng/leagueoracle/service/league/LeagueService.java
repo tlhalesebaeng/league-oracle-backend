@@ -107,7 +107,7 @@ public class LeagueService implements LeagueServiceInterface {
         League leagueToUpdate = this.getLeague(leagueId);
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to update the league
-        if(!isCreator(leagueToUpdate)) {
+        if(!this.isCreator(leagueToUpdate)) {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
@@ -122,7 +122,7 @@ public class LeagueService implements LeagueServiceInterface {
         League leagueToDelete = this.getLeague(leagueId);
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to delete the league
-        if(!isCreator(leagueToDelete)) {
+        if(!this.isCreator(leagueToDelete)) {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
