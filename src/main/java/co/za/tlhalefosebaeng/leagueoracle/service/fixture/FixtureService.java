@@ -52,6 +52,11 @@ public class FixtureService implements FixtureServiceInterface {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
+        // Confirm that the league has no fixtures already
+        if(!league.getFixtures().isEmpty()) {
+            throw new AppException(HttpStatus.BAD_REQUEST, "Cannot create league fixtures! The league already has fixtures");
+        }
+
         // Generate fixtures. The collection we used for storing teams does not store them in the order they arrive, this increases randomization of the fixture generator
         List<Fixture> fixtures = new ArrayList<>();
         for(Team homeTeam : league.getTeams()) {
