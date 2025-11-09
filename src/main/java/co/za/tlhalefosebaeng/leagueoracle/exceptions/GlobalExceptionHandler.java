@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
 import co.za.tlhalefosebaeng.leagueoracle.response.MessageResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +50,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ HttpMessageNotReadableException.class })
     public ResponseEntity<MessageResponse> handleHttpMessageNotReadableException(){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Request body not readable"));
+    }
+
+    // A spring exception thrown when a resource exists but the http method handler is not found under the mappers of that resource
+    @ExceptionHandler({ HttpRequestMethodNotSupportedException.class })
+    public ResponseEntity<MessageResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request){
+        // Derive a descriptive message to send back to the user
+        String message = "HTTP method " + e.getMethod() + " not supported for resource " + request.getRequestURI();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(message));
     }
 
     // A spring exception thrown when validation on object fields of an argument annotated with @Valid fails
