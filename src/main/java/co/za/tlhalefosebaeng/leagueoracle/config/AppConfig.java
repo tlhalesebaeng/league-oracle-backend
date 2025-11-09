@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
 import co.za.tlhalefosebaeng.leagueoracle.filters.JwtFilter;
-import co.za.tlhalefosebaeng.leagueoracle.utils.Routes;
+import co.za.tlhalefosebaeng.leagueoracle.service.routes.RoutesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
     private final DelegatedAuthenticationEntryPoint authEntryPoint;
-    private final Routes routes;
+    private final RoutesService routesService;
 
     @Value("${api.password-encoder.strength}")
     private Integer encoderStrength;
@@ -64,7 +64,7 @@ public class AppConfig {
 
         // Authorize all the routes on the protected routes class and permit all other routes
         http.authorizeHttpRequests(customizer -> {
-            routes.getProtected().forEach(
+            routesService.getProtected().forEach(
                     route -> customizer.requestMatchers(route.getMethod(), route.getURI()).authenticated()
             );
             customizer.anyRequest().permitAll();
