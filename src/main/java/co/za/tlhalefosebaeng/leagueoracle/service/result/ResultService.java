@@ -48,6 +48,14 @@ public class ResultService implements ResultServiceInterface {
         // will also confirm that the fixture exists otherwise it will throw the relevant exception
         Fixture fixture = fixtureService.getFixture(fixtureId);
 
+        // Get the league with fixture league's id from the database using the league service
+        League league = leagueService.getLeague(fixture.getLeague().getId());
+
+        // Confirm the creator of this league - Only logged-in creator of the league should be able to add league results
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
         // Create a new instance of result and set the properties accordingly
         Result result = new Result();
         result.setLeague(fixture.getLeague());
@@ -86,6 +94,14 @@ public class ResultService implements ResultServiceInterface {
     public Result updateResult(Long resultId, ResultRequest resultRequest) {
         // Get the result with the given id from the database using the getResult method
         Result result = this.getResult(resultId);
+
+        // Get the league with the result league's id from the database using the league service
+        League league = leagueService.getLeague(result.getLeague().getId());
+
+        // Confirm the creator of this league - Only logged-in creator of the league should be able to update league results
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
 
         // Update the result fields when there are differences. We only set the team scores to keep integrity and reliability
         // of the system since only the scores of the fixture are what should really be changed
