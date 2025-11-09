@@ -52,6 +52,13 @@ public class TeamService implements TeamServiceInterface{
             throw new AppException(HttpStatus.BAD_REQUEST, "Cannot add teams anymore! This league already has started");
         }
 
+        // Confirm that the league does not have a team that has a name similar to the add team request dto name
+        for(Team t : league.getTeams()) {
+            if(t.getName().equals(team.getName())) {
+                throw new AppException(HttpStatus.BAD_REQUEST, "Team names should be unique! Please check your team name and try again");
+            }
+        }
+
         // Set the necessary team properties
         Team newTeam = new Team();
         newTeam.setLeague(league);
