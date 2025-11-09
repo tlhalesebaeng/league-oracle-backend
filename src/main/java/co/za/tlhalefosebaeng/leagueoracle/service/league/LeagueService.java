@@ -9,11 +9,9 @@ import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
+import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +24,7 @@ import java.util.function.Function;
 public class LeagueService implements LeagueServiceInterface {
     private final LeagueRepository leagueRepo;
     private final UserServiceInterface userService;
+    private final AppUserDetailsService userDetailsService;
 
     // Helper method to convert a league to the league response DTO
     @Override
@@ -65,10 +64,8 @@ public class LeagueService implements LeagueServiceInterface {
         League pendingLeague = new League();
         pendingLeague.setName(league.getName());
 
-        // Get the details of the logged-in user from the security context and set the creator of the league
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = userService.getUserByEmail(userDetails.getUsername());
+        // Get the details of the logged-in user from the user details service and set the creator of the league
+        User user = userService.getUserByEmail(userDetailsService.getPrincipal().getUsername());
         pendingLeague.setCreator(user);
 
         // Assign the reference of the pending league to all teams
