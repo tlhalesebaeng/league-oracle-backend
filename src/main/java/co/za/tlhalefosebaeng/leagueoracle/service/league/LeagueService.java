@@ -119,8 +119,15 @@ public class LeagueService implements LeagueServiceInterface {
 
     @Override
     public void deleteLeague(Long leagueId) {
+        // Get the league using the provided id. This is to confirm that the league exists
         League leagueToDelete = this.getLeague(leagueId);
-        leagueRepo.delete(leagueToDelete);
+
+        // Confirm the creator of this league - Only logged-in creator of league should be able to delete the league
+        if(!isCreator(leagueToDelete)) {
+            throw new NotCreatorException("You have to be the league creator to perform this operation");
+        }
+
+        leagueRepo.delete(leagueToDelete); // Delete the league using the league repo
     }
 
 }
