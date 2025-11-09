@@ -1,12 +1,13 @@
-package co.za.tlhalefosebaeng.leagueoracle.utils;
+package co.za.tlhalefosebaeng.leagueoracle.service.routes;
 
+import co.za.tlhalefosebaeng.leagueoracle.utils.RouteDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class Routes {
+public class RoutesService {
     @Value("${api.endpoint.prefix}")
     private String prefix;
 
