@@ -30,7 +30,7 @@ public class Routes {
 
                 // Result Routes
                 new RouteDefinition(prefix + "/results", "POST"),
-                new RouteDefinition(prefix + "/results/{resultId}", "POST")
+                new RouteDefinition(prefix + "/results/{resultId}", "PATCH")
         );
     }
 
