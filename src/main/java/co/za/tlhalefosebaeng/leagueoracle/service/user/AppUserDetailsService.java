@@ -4,6 +4,8 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,5 +25,12 @@ public class AppUserDetailsService implements UserDetailsService {
 
         // Create an instance of app user details, assign the user field using the constructor and return it
         return new AppUserDetails(user);
+    }
+
+    // Method to get the details of the currently logged-in user
+    public UserDetails getPrincipal() {
+        // Get the principal user from the security context and return it
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetails) auth.getPrincipal();
     }
 }
