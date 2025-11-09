@@ -1,4 +1,4 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
-public class AppException {
+public class AppException extends RuntimeException{
 }
