@@ -42,14 +42,14 @@ public class TeamService implements TeamServiceInterface{
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
-        // Check if the league has fixtures. If it does we should not be able to add any team
-        if(!league.getFixtures().isEmpty()) {
-            throw new AppException(HttpStatus.BAD_REQUEST, "Cannot add teams anymore! This league already has started");
-        }
-
         // Confirm the creator of this league - Only logged-in creator of league should be able to add teams of a league
         if(!leagueService.isCreator(league)) {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
+        // Check if the league has fixtures. If it does we should not be able to add any team
+        if(!league.getFixtures().isEmpty()) {
+            throw new AppException(HttpStatus.BAD_REQUEST, "Cannot add teams anymore! This league already has started");
         }
 
         // Set the necessary team properties
