@@ -1,4 +1,8 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
-public class AppException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class AppException extends RuntimeException {
+    private HttpStatus status;
+    private String message;
 }
