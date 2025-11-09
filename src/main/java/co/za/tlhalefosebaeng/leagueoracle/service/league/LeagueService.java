@@ -102,6 +102,15 @@ public class LeagueService implements LeagueServiceInterface {
     }
 
     @Override
+    public List<League> getMyLeagues() {
+        // Get the logged-in user
+        User user = userService.getUserByEmail(userDetailsService.getPrincipal().getUsername());
+
+        // Find all the leagues that have a creator that's similar to the logged-in user
+        return leagueRepo.findAllByCreatorId(user.getId());
+    }
+
+    @Override
     public League updateLeague(Long leagueId, LeagueRequest league) {
         // Get the league using the provided id. This will confirm that the league exists
         League leagueToUpdate = this.getLeague(leagueId);
