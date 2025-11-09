@@ -3,14 +3,16 @@ package co.za.tlhalefosebaeng.leagueoracle.service.routes;
 import co.za.tlhalefosebaeng.leagueoracle.utils.RouteDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
-public class RoutesService {
+@Service
+public class RoutesService implements RoutesServiceInterface {
     @Value("${api.endpoint.prefix}")
     private String prefix;
 
+    @Override
     public List<RouteDefinition> getProtected() {
         // Return an unmodifiable list of routes that should be authorized
         return List.of(
@@ -37,6 +39,7 @@ public class RoutesService {
     }
 
     // Helper method to check if a route is part of the protected routes
+    @Override
     public boolean isProtected(String method, String URI) {
         for(RouteDefinition route : this.getProtected()) {
             // Check if the route is part of the protected routes. The request should have similar URI and http method as the protected route
