@@ -15,6 +15,7 @@ public class Routes {
         return List.of(
                 // League Routes
                 new RouteDefinition(prefix + "/leagues", "POST"),
+                new RouteDefinition(prefix + "/leagues/mine", "GET"),
                 new RouteDefinition(prefix + "/leagues/{leagueId}", "PATCH"),
                 new RouteDefinition(prefix + "/leagues/{leagueId}", "DELETE"),
 
