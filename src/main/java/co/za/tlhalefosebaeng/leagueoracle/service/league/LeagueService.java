@@ -4,6 +4,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.DuplicateTeamNamesException;
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.NotCreatorException;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
@@ -44,6 +45,15 @@ public class LeagueService implements LeagueServiceInterface {
         leagueResponse.setTeams(teamResponses);
 
         return leagueResponse;
+    }
+
+    // Method to verify that the logged-in user is the creator of the given league.
+    // This method should be used under protected routes only as the logged-in user details are required
+    @Override
+    public boolean isCreator(League league) {
+        String email = league.getCreator().getEmail(); // Get the email of the leagues creator
+        String username = userDetailsService.getPrincipal().getUsername(); // Get the username of the principal user
+        return username.equals(email); // Emails are unique so if they match then the principal user is the creator of the league
     }
 
     // Helper method to assist with saving the league. This will allow us to save leagues
