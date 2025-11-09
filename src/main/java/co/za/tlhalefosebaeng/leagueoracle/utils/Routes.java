@@ -1,32 +1,36 @@
 package co.za.tlhalefosebaeng.leagueoracle.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class Routes {
+    @Value("${api.endpoint.prefix}")
+    private String prefix;
+
     public List<RouteDefinition> getProtected() {
         // Return an unmodifiable list of routes that should be authorized
         return List.of(
                 // League Routes
-                new RouteDefinition("/api/v1/leagues", "POST"),
-                new RouteDefinition("/api/v1/leagues/{leagueId}", "PATCH"),
-                new RouteDefinition("/api/v1/leagues/{leagueId}", "DELETE"),
+                new RouteDefinition(prefix + "/leagues", "POST"),
+                new RouteDefinition(prefix + "/leagues/{leagueId}", "PATCH"),
+                new RouteDefinition(prefix + "/leagues/{leagueId}", "DELETE"),
 
                 // Team Routes
-                new RouteDefinition("/api/v1/teams", "POST"),
-                new RouteDefinition("/api/v1/teams/{teamId}", "PATCH"),
-                new RouteDefinition("/api/v1/teams/{teamId}", "DELETE"),
+                new RouteDefinition(prefix + "/teams", "POST"),
+                new RouteDefinition(prefix + "/teams/{teamId}", "PATCH"),
+                new RouteDefinition(prefix + "/teams/{teamId}", "DELETE"),
 
                 // Fixture Routes
-                new RouteDefinition("/api/v1/fixtures", "POST"),
-                new RouteDefinition("/api/v1/fixtures/{fixtureId}", "PATCH"),
-                new RouteDefinition("/api/v1/fixtures/{fixtureId}", "DELETE"),
+                new RouteDefinition(prefix + "/fixtures", "POST"),
+                new RouteDefinition(prefix + "/fixtures/{fixtureId}", "PATCH"),
+                new RouteDefinition(prefix + "/fixtures/{fixtureId}", "DELETE"),
 
                 // Result Routes
-                new RouteDefinition("/api/v1/results", "POST"),
-                new RouteDefinition("/api/v1/results/{resultId}", "POST")
+                new RouteDefinition(prefix + "/results", "POST"),
+                new RouteDefinition(prefix + "/results/{resultId}", "POST")
         );
     }
 
