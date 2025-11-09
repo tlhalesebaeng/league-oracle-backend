@@ -19,4 +19,5 @@ public interface LeagueServiceInterface {
     void deleteLeague(Long leagueId);
     LeagueResponse convertLeagueToDto(League league, Function<Team, TeamResponse> convertTeamToDto);
     boolean isCreator(League league);
+    List<League> getMyLeagues();
 }
