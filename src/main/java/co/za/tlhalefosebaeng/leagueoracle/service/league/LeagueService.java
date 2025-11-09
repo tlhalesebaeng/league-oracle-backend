@@ -3,9 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.league;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
-import co.za.tlhalefosebaeng.leagueoracle.exceptions.DuplicateTeamNamesException;
-import co.za.tlhalefosebaeng.leagueoracle.exceptions.NotCreatorException;
-import co.za.tlhalefosebaeng.leagueoracle.exceptions.ResourceNotFoundException;
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
@@ -13,6 +11,7 @@ import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class LeagueService implements LeagueServiceInterface {
     public League createLeague(LeagueRequest league) {
         // Confirm that the team names are unique
         if(!league.validateTeam()) {
-            throw new DuplicateTeamNamesException("Invalid details! Teams should have different names");
+            throw new AppException(HttpStatus.BAD_REQUEST, "Invalid details! Teams should have different names");
         }
 
         // Instantiate a new league instance that will be saved on the database and set its name
@@ -93,7 +92,7 @@ public class LeagueService implements LeagueServiceInterface {
     @Override
     public League getLeague(Long leagueId) {
         Optional<League> league = leagueRepo.findById(leagueId);
-        return league.orElseThrow(() -> new ResourceNotFoundException("League not found! Please check league ID and try again."));
+        return league.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST, "League not found! Please check league ID and try again."));
     }
 
     @Override
@@ -109,7 +108,7 @@ public class LeagueService implements LeagueServiceInterface {
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to update the league
         if(!isCreator(leagueToUpdate)) {
-            throw new NotCreatorException("You have to be the league creator to perform this operation");
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
         // We should only update the league name. There are endpoints to update other properties of the league
@@ -124,7 +123,7 @@ public class LeagueService implements LeagueServiceInterface {
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to delete the league
         if(!isCreator(leagueToDelete)) {
-            throw new NotCreatorException("You have to be the league creator to perform this operation");
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
         leagueRepo.delete(leagueToDelete); // Delete the league using the league repo
