@@ -47,6 +47,11 @@ public class FixtureService implements FixtureServiceInterface {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
+        // Confirm the creator of this league - Only logged-in creator of league should be able to generate fixtures
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
         // Generate fixtures. The collection we used for storing teams does not store them in the order they arrive, this increases randomization of the fixture generator
         List<Fixture> fixtures = new ArrayList<>();
         for(Team homeTeam : league.getTeams()) {
@@ -89,6 +94,14 @@ public class FixtureService implements FixtureServiceInterface {
         // Get the fixture with the provided id, this will also confirm that the fixture exists
         Fixture fixture = this.getFixture(fixtureId);
 
+        // Get the league with fixture league's id from the database using the league service
+        League league = leagueService.getLeague(fixture.getLeague().getId());
+
+        // Confirm the creator of this league - Only logged-in creator of the league should be able to update league fixtures
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
         // Set the fields if they are provided. The dto makes sure that these fields are not empty
         if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());
         if(fixtureRequest.getVenue() != null) fixture.setVenue(fixtureRequest.getVenue());
@@ -99,8 +112,18 @@ public class FixtureService implements FixtureServiceInterface {
 
     @Override
     public void deleteFixture(Long fixtureId) {
+        // Get the fixture from the database. This will also confirm that the fixture exists
         Fixture fixture = this.getFixture(fixtureId);
-        fixtureRepo.delete(fixture);
+
+        // Get the league with the fixture league's id from the database using the league service
+        League league = leagueService.getLeague(fixture.getLeague().getId());
+
+        // Confirm the creator of this league - Only logged-in creator of league should be able to delete a fixture
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
+        fixtureRepo.delete(fixture); // Delete the fixture using the fixture repo
     }
 
 }
