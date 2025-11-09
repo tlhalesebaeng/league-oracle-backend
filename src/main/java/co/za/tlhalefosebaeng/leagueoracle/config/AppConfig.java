@@ -25,6 +25,7 @@ public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
     private final DelegatedAuthenticationEntryPoint authEntryPoint;
+    private final Routes routes;
 
     @Value("${api.password-encoder.strength}")
     private Integer encoderStrength;
@@ -63,7 +64,7 @@ public class AppConfig {
 
         // Authorize all the routes on the protected routes class and permit all other routes
         http.authorizeHttpRequests(customizer -> {
-            Routes.getProtected().forEach(
+            routes.getProtected().forEach(
                     route -> customizer.requestMatchers(route.getMethod(), route.getURI()).authenticated()
             );
             customizer.anyRequest().permitAll();

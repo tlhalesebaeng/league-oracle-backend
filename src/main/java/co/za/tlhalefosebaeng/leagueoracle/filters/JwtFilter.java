@@ -23,11 +23,12 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtServiceInterface jwtService;
     private final AppUserDetailsService userDetailsService;
+    private final Routes routes;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Do not perform this filter for routes that are not protected
-        if(!Routes.isProtected(request.getMethod(), request.getRequestURI())) {
+        if(!routes.isProtected(request.getMethod(), request.getRequestURI())) {
             filterChain.doFilter(request, response); // Perform the next filter in the filter chain
             return;
         }
