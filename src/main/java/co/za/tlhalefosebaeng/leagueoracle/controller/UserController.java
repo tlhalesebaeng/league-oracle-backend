@@ -7,7 +7,6 @@ import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.cookie.CookieService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
