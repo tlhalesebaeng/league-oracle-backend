@@ -27,28 +27,10 @@ public class GlobalExceptionHandler {
     @Value("${api.environment}")
     private String apiEnvironment;
 
-    // Handle custom runtime exceptions
-    @ExceptionHandler({
-            ResourceNotFoundException.class,
-            PasswordsNotMatchingException.class,
-            IncorrectCredentialsException.class,
-            DuplicateTeamNamesException.class
-    })
-    public ResponseEntity<MessageResponse> handleCustomExceptions(Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getMessage()));
-    }
-
-    @ExceptionHandler({ NotCreatorException.class })
-    public ResponseEntity<MessageResponse> handleUnauthorizedCustomExceptions(Exception e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(e.getMessage()));
-    }
-
     @ExceptionHandler({ AppException.class })
     public ResponseEntity<MessageResponse> handleAppException(AppException e) {
         return ResponseEntity.status(e.getStatus()).body(new MessageResponse(e.getMessage()));
     }
-
-    // Handle app exceptions
 
     // A spring authentication thrown when an authentication request is rejected
     @ExceptionHandler({ InsufficientAuthenticationException.class })
