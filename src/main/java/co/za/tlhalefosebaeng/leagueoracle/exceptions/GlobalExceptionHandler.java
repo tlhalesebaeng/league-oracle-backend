@@ -38,6 +38,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getMessage()));
     }
 
+    @ExceptionHandler({ NotCreatorException.class })
+    public ResponseEntity<MessageResponse> handleUnauthorizedCustomExceptions(Exception e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(e.getMessage()));
+    }
+
     // Handle app exceptions
 
     // A spring authentication thrown when an authentication request is rejected
