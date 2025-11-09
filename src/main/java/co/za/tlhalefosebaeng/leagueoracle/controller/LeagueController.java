@@ -47,6 +47,20 @@ public class LeagueController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponses));
     }
 
+    @GetMapping("/mine")
+    public ResponseEntity<ApiResponse> getMyLeagues() {
+        // Get all the leagues that the logged-in user has created
+        List<League> leagues = leagueService.getMyLeagues();
+
+        // Convert all the leagues to the league response dtos and return them as part of the response entity
+        List<LeagueResponse> leagueResponses = new ArrayList<>();
+        for(League league : leagues) {
+            leagueResponses.add(leagueService.convertLeagueToDto(league, teamService::convertTeamToDto));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponses));
+    }
+
     @GetMapping("/{leagueId}")
     public ResponseEntity<ApiResponse> getLeague(@PathVariable Long leagueId) {
         // Get the league by id using the league service
