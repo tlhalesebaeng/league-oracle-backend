@@ -63,6 +63,11 @@ public class TeamService implements TeamServiceInterface{
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
+        // Confirm the creator of this league - Only logged-in creator of league should be able to update teams of a league
+        if(!leagueService.isCreator(league)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
+        }
+
         // Use linear search to store the team that has the provided team id
         // Linear search will perform well since leagues have very few teams
         Team newTeam = null;
