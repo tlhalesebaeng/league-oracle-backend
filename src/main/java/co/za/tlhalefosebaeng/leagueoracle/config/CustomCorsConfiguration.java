@@ -1,4 +1,12 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
-public class CustomCorsConfiguration {
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+public class CustomCorsConfiguration implements CorsConfigurationSource {
+    @Override
+    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+        return null;
+    }
 }
