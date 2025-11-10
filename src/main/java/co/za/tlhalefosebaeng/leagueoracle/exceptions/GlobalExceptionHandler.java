@@ -42,6 +42,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Your token has expired! Please login to continue"));
     }
 
+    // Handle all the other exceptions that extends the JwtException class
+    @ExceptionHandler({ JwtException.class })
+    public ResponseEntity<MessageResponse> handleJwtException(JwtException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid token! Please check your token and try again"));
+    }
+
     // A spring authentication thrown when an authentication request is rejected
     @ExceptionHandler({ InsufficientAuthenticationException.class })
     public ResponseEntity<MessageResponse> handleAuthenticationException(InsufficientAuthenticationException e){
