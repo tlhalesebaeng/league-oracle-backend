@@ -37,6 +37,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getStatus()).body(new MessageResponse(e.getMessage()));
     }
 
+    // Java exception thrown when the provided argument is not allowed
+    @ExceptionHandler({ IllegalArgumentException.class })
+    public ResponseEntity<MessageResponse> handleIllegalArgumentException(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(e.getMessage()));
+    }
+
     // A JWT exception thrown when the provided token has expired
     @ExceptionHandler({ ExpiredJwtException.class })
     public ResponseEntity<MessageResponse> handleExpiredJwtException(ExpiredJwtException e) {
