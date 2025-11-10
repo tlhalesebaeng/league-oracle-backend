@@ -56,4 +56,11 @@ public class AuthController {
         // Convert the user object to a user response dto and return it as part of the api response
         return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(isAuth, userService.convertUserToDto(user)));
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logout(HttpServletResponse response) {
+        // Add an empty token as a cookie to the response
+        response.addCookie(cookieService.create("access_jwt", ""));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // No need to return anything to the user
+    }
 }
