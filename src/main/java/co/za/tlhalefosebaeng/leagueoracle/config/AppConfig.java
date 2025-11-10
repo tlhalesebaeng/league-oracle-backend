@@ -3,6 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.config;
 import co.za.tlhalefosebaeng.leagueoracle.filters.JwtFilter;
 import co.za.tlhalefosebaeng.leagueoracle.service.routes.RoutesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @RequiredArgsConstructor
 @Configuration
@@ -26,6 +28,7 @@ public class AppConfig {
     private final JwtFilter jwtFilter;
     private final DelegatedAuthenticationEntryPoint authEntryPoint;
     private final RoutesService routesService;
+    private final @Qualifier("customCorsConfiguration") CorsConfigurationSource configSource;
 
     @Value("${api.password-encoder.strength}")
     private Integer encoderStrength;
@@ -58,6 +61,9 @@ public class AppConfig {
 
         // Disable basic plain text http authentication
         http.httpBasic(AbstractHttpConfigurer::disable);
+
+        // Use the custom cors configuration class to customise cors
+        http.cors(customizer -> customizer.configurationSource(configSource));
 
         // Make the application stateless
         http.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
