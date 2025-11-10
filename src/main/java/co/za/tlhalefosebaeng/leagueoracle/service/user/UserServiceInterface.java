@@ -10,4 +10,5 @@ public interface UserServiceInterface {
     User addUser(SignupRequest user);
     UserResponse convertUserToDto(User user);
     User login(LoginRequest details);
+    User checkAuth(String jwt);
 }
