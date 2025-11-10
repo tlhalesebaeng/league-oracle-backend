@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AuthResponse {
+    private boolean isAuth;
     private UserResponse user;
 
     public AuthResponse(UserResponse user) {
