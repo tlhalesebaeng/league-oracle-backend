@@ -79,12 +79,18 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public User checkAuth(String token) {
-        String username = jwtService.getAllClaims(token).getSubject(); // Get the username from the token
-        User user = this.getUserByEmail(username); // Load the user from the database using the user repository
+        try {
+            String username = jwtService.getAllClaims(token).getSubject(); // Get the username from the token
+            User user = this.getUserByEmail(username); // Load the user from the database using the user repository
 
-        // Return the user if the provided token is valid
-        if(jwtService.validateToken(token, new AppUserDetails(user))) return user;
+            // Return the user if the provided token is valid
+            if(jwtService.validateToken(token, new AppUserDetails(user))) return user;
 
-        return null; // The token was not valid. This will help to confirm this on the controller
+            return null; // The token was not valid. This will help to confirm this on the controller
+        } catch (Exception e) {
+            // We catch any exception thrown here because we only want to tell the user whether they are logged in or not
+            // We don't want to return an error to the user so the advice controller should not handle any exception thrown here
+            return null;
+        }
     }
 }

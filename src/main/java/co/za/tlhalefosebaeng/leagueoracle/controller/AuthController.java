@@ -49,12 +49,13 @@ public class AuthController {
 
     @GetMapping("/check")
     public ResponseEntity<AuthResponse> checkAuth(@CookieValue("access_jwt") String jwt) {
-        boolean isAuth = false; // Stores whether the user is authenticated or not to false i.e. the token is valid
         User user = userService.checkAuth(jwt); // Get the user using the user service
-        if(user != null) isAuth = true; // Set the isAuth boolean accordingly
 
-        // Convert the user object to a user response dto and return it as part of the api response
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(isAuth, userService.convertUserToDto(user)));
+        // When the user is null return isAuth as false and the user as null
+        if(user == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(false, null));
+
+        // When all checks are valid convert the user object to a user response dto and return it as part of the api response
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(true, userService.convertUserToDto(user)));
     }
 
     @GetMapping("/logout")
