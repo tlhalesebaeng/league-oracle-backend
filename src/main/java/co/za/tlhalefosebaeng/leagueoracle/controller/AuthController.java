@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.endpoint.prefix}/auth")
-public class UserController {
+public class AuthController {
     private final UserServiceInterface userService;
     private final JwtServiceInterface jwtService;
     private final CookieService cookieService;
