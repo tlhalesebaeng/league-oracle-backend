@@ -12,10 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,5 +45,15 @@ public class AuthController {
 
         // Convert the user object to a user response dto and return it as part of the api response
         return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(userService.convertUserToDto(user)));
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<AuthResponse> checkAuth(@CookieValue("access_jwt") String jwt) {
+        boolean isAuth = false; // Stores whether the user is authenticated or not to false i.e. the token is valid
+        User user = userService.checkAuth(jwt); // Get the user using the user service
+        if(user != null) isAuth = true; // Set the isAuth boolean accordingly
+
+        // Convert the user object to a user response dto and return it as part of the api response
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(isAuth, userService.convertUserToDto(user)));
     }
 }
