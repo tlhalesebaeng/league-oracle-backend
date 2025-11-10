@@ -15,6 +15,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -74,7 +75,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(message));
     }
 
-    // A spring exception thrown when validation on object fields of an argument annotated with @Valid fails
+    @ExceptionHandler({ MissingRequestCookieException.class })
+    public ResponseEntity<MessageResponse> handleMissingRequestCookieException(MissingRequestCookieException e) {
+        // Derive a descriptive message to send back to the user
+        String message = e.getCookieName() + " required! Please provide " + e.getCookieName() + " as a cookie";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(message));
+    }
+
+        // A spring exception thrown when validation on object fields of an argument annotated with @Valid fails
     @ExceptionHandler({ MethodArgumentNotValidException.class })
     public ResponseEntity<MessageResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         // Retrieve the first error message from the exception
