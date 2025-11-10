@@ -1,6 +1,8 @@
 package co.za.tlhalefosebaeng.leagueoracle.exceptions;
 
 import co.za.tlhalefosebaeng.leagueoracle.response.MessageResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -32,6 +34,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ AppException.class })
     public ResponseEntity<MessageResponse> handleAppException(AppException e) {
         return ResponseEntity.status(e.getStatus()).body(new MessageResponse(e.getMessage()));
+    }
+
+    // A JWT exception thrown when the provided token has expired
+    @ExceptionHandler({ ExpiredJwtException.class })
+    public ResponseEntity<MessageResponse> handleExpiredJwtException(ExpiredJwtException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Your token has expired! Please login to continue"));
     }
 
     // A spring authentication thrown when an authentication request is rejected
