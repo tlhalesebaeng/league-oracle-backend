@@ -26,7 +26,7 @@ public class UserService implements UserServiceInterface{
 
         // Set the properties of the user response and return the user response instance
         userResponse.setId(user.getId());
-        userResponse.setFullName(user.getFullName());
+        userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
         userResponse.setEmail(user.getEmail());
         return userResponse;
@@ -50,7 +50,7 @@ public class UserService implements UserServiceInterface{
 
         // Instantiate a user instance and set the fields accordingly
         User newUser = new User();
-        newUser.setFullName(user.getFullName());
+        newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));

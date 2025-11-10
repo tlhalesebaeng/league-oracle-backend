@@ -22,7 +22,7 @@ public class User {
     private String email;
 
     private String password;
-    private String fullName;
+    private String firstName;
     private String lastName;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.REMOVE, orphanRemoval = true)
