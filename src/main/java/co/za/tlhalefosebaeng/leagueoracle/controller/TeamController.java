@@ -49,7 +49,7 @@ public class TeamController {
     }
 
     @DeleteMapping("/{teamId}")
-    public ResponseEntity<Object> addTeamToLeague(@PathVariable Long teamId) {
+    public ResponseEntity<Object> deleteTeam(@PathVariable Long teamId) {
         teamService.deleteTeam(teamId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
