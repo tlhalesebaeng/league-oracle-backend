@@ -66,7 +66,7 @@ public class FixtureService implements FixtureServiceInterface {
         List<Fixture> fixtures = new ArrayList<>();
         for(Team homeTeam : league.getTeams()) {
             for(Team awayTeam : league.getTeams()) {
-                if(homeTeam.getName().equals(awayTeam.getName())) { // A team cannot play itself
+                if(!homeTeam.getName().equals(awayTeam.getName())) { // A team cannot play itself
                     Fixture fixture = new Fixture();
                     fixture.setLeague(league);
                     fixture.setHomeTeam(homeTeam);
