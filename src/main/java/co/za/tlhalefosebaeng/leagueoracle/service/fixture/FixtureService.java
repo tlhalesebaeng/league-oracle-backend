@@ -61,19 +61,32 @@ public class FixtureService implements FixtureServiceInterface {
             throw new AppException(HttpStatus.BAD_REQUEST, "Cannot create league fixtures! All fixtures have been played");
         }
 
+        List<Team> teams = league.getTeams(); // Get the league teams. For easy reference
+
         // Generate fixtures. The collection we used for storing teams does not store them in the order they arrive, this increases randomization of the fixture generator
         List<Fixture> fixtures = new ArrayList<>();
-        for(Team homeTeam : league.getTeams()) {
-            for(Team awayTeam : league.getTeams()) {
-                if(!homeTeam.getName().equals(awayTeam.getName())) { // A team cannot play itself
-                    Fixture fixture = new Fixture();
-                    fixture.setLeague(league);
-                    fixture.setHomeTeam(homeTeam);
-                    fixture.setAwayTeam(awayTeam);
+        for(int i = 0; i < teams.size() - 1; i++) {
+            boolean isHome = true; // Keep whether we should make the team at index i home or away
 
-                    // Add the saved fixture to the fixture list
-                    fixtures.add(fixtureRepo.save(fixture));
+            for(int j = i+1; j < teams.size(); j++) {
+                Team t1 = teams.get(i);
+                Team t2 = teams.get(j);
+                // With this implementation the teams will never be similar
+
+                Fixture fixture = new Fixture();
+                fixture.setLeague(league);
+                if(isHome) {
+                    fixture.setHomeTeam(t1);
+                    fixture.setAwayTeam(t2);
+                } else {
+                    fixture.setHomeTeam(t2);
+                    fixture.setAwayTeam(t1);
                 }
+
+                // Add the saved fixture to the fixture list
+                fixtures.add(fixtureRepo.save(fixture));
+
+                isHome = !isHome;
             }
         }
 
