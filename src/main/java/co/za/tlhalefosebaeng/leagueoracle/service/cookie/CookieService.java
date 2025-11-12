@@ -14,6 +14,7 @@ public class CookieService implements CookieServiceInterface{
     public Cookie create(String name, String value) {
         Cookie cookie = new Cookie(name, value); // Create a new instance of a cookie
         cookie.isHttpOnly(); // Make the cookie http only
+        cookie.setPath("/"); // Set the URL which the browser should be under for it to send the cookie
 
         // When the server environment is not development make the cookie secure
         if(!environment.equals("development")) cookie.setSecure(true);

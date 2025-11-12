@@ -3,7 +3,6 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
-import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class FixtureController {
     private final FixtureServiceInterface fixtureService;
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> createLeagueFixtures(@RequestParam Long leagueId) {
+    public ResponseEntity<List<FixtureResponse>> createLeagueFixtures(@RequestParam Long leagueId) {
         List<Fixture> fixtures = fixtureService.generateLeagueFixtures(leagueId);
 
         // Convert the fixtures to fixture response dtos
@@ -29,11 +28,11 @@ public class FixtureController {
             fixtureResponses.add(fixtureService.convertFixtureToDto(fixture));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", fixtureResponses));
+        return ResponseEntity.status(HttpStatus.CREATED).body(fixtureResponses);
     }
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse> getAllLeagueFixtures(@RequestParam Long leagueId) {
+    public ResponseEntity<List<FixtureResponse>> getAllLeagueFixtures(@RequestParam Long leagueId) {
         List<Fixture> fixtures = fixtureService.getAllLeagueFixtures(leagueId);
 
         // Convert the fixtures to fixture response dtos
@@ -42,25 +41,25 @@ public class FixtureController {
             fixtureResponses.add(fixtureService.convertFixtureToDto(fixture));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", fixtureResponses));
+        return ResponseEntity.status(HttpStatus.OK).body(fixtureResponses);
     }
 
     @GetMapping("/{fixtureId}")
-    public ResponseEntity<ApiResponse> getFixture(@PathVariable Long fixtureId) {
+    public ResponseEntity<FixtureResponse> getFixture(@PathVariable Long fixtureId) {
         // Get the fixture by the id from the database using the league service
         Fixture fixture = fixtureService.getFixture(fixtureId);
 
         // Convert the fixture to a fixture response and return it
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
+        return ResponseEntity.status(HttpStatus.OK).body(fixtureService.convertFixtureToDto(fixture));
     }
 
     @PatchMapping("/{fixtureId}")
-    public ResponseEntity<ApiResponse> updateFixture(@PathVariable Long fixtureId, @RequestBody UpdateFixtureRequest fixtureRequest) {
+    public ResponseEntity<FixtureResponse> updateFixture(@PathVariable Long fixtureId, @RequestBody UpdateFixtureRequest fixtureRequest) {
         // Update the provided fixture fields using the fixture service
         Fixture fixture = fixtureService.updateFixture(fixtureId, fixtureRequest);
 
         // Convert the fixture to a fixture response and return it
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", fixtureService.convertFixtureToDto(fixture)));
+        return ResponseEntity.status(HttpStatus.OK).body( fixtureService.convertFixtureToDto(fixture));
     }
 
     @DeleteMapping("/{fixtureId}")

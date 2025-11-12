@@ -3,7 +3,6 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
-import co.za.tlhalefosebaeng.leagueoracle.response.ApiResponse;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import jakarta.validation.Valid;
@@ -23,18 +22,18 @@ public class LeagueController {
     public final TeamServiceInterface teamService;
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
+    public ResponseEntity<LeagueResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
         // Persist the league on the database and receive the saved league
         League createdLeague = leagueService.createLeague(league);
 
         // Convert the league to a league response dto
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(createdLeague, teamService::convertTeamToDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("success", leagueResponse));
+        return ResponseEntity.status(HttpStatus.CREATED).body(leagueResponse);
     }
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse> getAllLeagues(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<LeagueResponse>> getAllLeagues(@RequestParam(required = false) String name) {
         // Get all leagues by name from the league service
         List<League> leagues = leagueService.getAllLeagues(name);
 
@@ -44,11 +43,11 @@ public class LeagueController {
             leagueResponses.add(leagueService.convertLeagueToDto(league, teamService::convertTeamToDto));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponses));
+        return ResponseEntity.status(HttpStatus.OK).body(leagueResponses);
     }
 
     @GetMapping("/mine")
-    public ResponseEntity<ApiResponse> getMyLeagues() {
+    public ResponseEntity<List<LeagueResponse>> getMyLeagues() {
         // Get all the leagues that the logged-in user has created
         List<League> leagues = leagueService.getMyLeagues();
 
@@ -58,11 +57,11 @@ public class LeagueController {
             leagueResponses.add(leagueService.convertLeagueToDto(league, teamService::convertTeamToDto));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponses));
+        return ResponseEntity.status(HttpStatus.OK).body(leagueResponses);
     }
 
     @GetMapping("/{leagueId}")
-    public ResponseEntity<ApiResponse> getLeague(@PathVariable Long leagueId) {
+    public ResponseEntity<LeagueResponse> getLeague(@PathVariable Long leagueId) {
         // Get the league by id using the league service
         League league = leagueService.getLeague(leagueId);
 
@@ -70,18 +69,18 @@ public class LeagueController {
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
 
         // Convert the league to a league response dto and return it as part of the response entity
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(leagueResponse);
     }
 
     @PatchMapping("/{leagueId}")
-    public ResponseEntity<ApiResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest league) {
+    public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest league) {
         // Update the league and get the newly updated league
         League updatedLeague = leagueService.updateLeague(leagueId, league);
 
         // Convert the league to a league response dto
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(updatedLeague, teamService::convertTeamToDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("success", leagueResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(leagueResponse);
     }
 
     @DeleteMapping("/{leagueId}")

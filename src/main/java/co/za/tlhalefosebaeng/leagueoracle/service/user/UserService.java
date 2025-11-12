@@ -6,6 +6,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.auth.UserResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.UserRepository;
+import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserService implements UserServiceInterface{
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final JwtServiceInterface jwtService;
 
     @Override
     public UserResponse convertUserToDto(User user) {
@@ -26,7 +28,7 @@ public class UserService implements UserServiceInterface{
 
         // Set the properties of the user response and return the user response instance
         userResponse.setId(user.getId());
-        userResponse.setFullName(user.getFullName());
+        userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
         userResponse.setEmail(user.getEmail());
         return userResponse;
@@ -50,7 +52,7 @@ public class UserService implements UserServiceInterface{
 
         // Instantiate a user instance and set the fields accordingly
         User newUser = new User();
-        newUser.setFullName(user.getFullName());
+        newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -73,5 +75,22 @@ public class UserService implements UserServiceInterface{
 
         // When all checks are successful return the user
         return savedUser;
+    }
+
+    @Override
+    public User checkAuth(String token) {
+        try {
+            String username = jwtService.getAllClaims(token).getSubject(); // Get the username from the token
+            User user = this.getUserByEmail(username); // Load the user from the database using the user repository
+
+            // Return the user if the provided token is valid
+            if(jwtService.validateToken(token, new AppUserDetails(user))) return user;
+
+            return null; // The token was not valid. This will help to confirm this on the controller
+        } catch (Exception e) {
+            // We catch any exception thrown here because we only want to tell the user whether they are logged in or not
+            // We don't want to return an error to the user so the advice controller should not handle any exception thrown here
+            return null;
+        }
     }
 }

@@ -14,7 +14,6 @@ public class FixtureResponse {
     private String venue;
     private String field;
     private String time;
-    private String name; // The name of the league this fixture belongs to
     private TeamResponse homeTeam;
     private TeamResponse awayTeam;
 
