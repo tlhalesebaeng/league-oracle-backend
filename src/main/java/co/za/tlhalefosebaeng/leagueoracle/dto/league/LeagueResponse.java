@@ -15,5 +15,6 @@ public class LeagueResponse {
     private Long id;
     private String name;
     private Long creator;
+    private String createdAt;
     private List<TeamResponse> teams;
 }
