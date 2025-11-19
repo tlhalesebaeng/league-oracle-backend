@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
-import co.za.tlhalefosebaeng.leagueoracle.dto.auth.AuthResponse;
+import co.za.tlhalefosebaeng.leagueoracle.response.AuthResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
@@ -31,7 +31,7 @@ public class AuthController {
         response.addCookie(cookieService.create("access_jwt", jwt)); // Create a cookie using the cookie service and add it to the response
 
         // Convert the user object to a user response dto and return it as part of the api response
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(userService.convertUserToDto(newUser)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, userService.convertUserToDto(newUser)));
     }
 
     @PostMapping("/login")
@@ -44,7 +44,7 @@ public class AuthController {
         response.addCookie(cookieService.create("access_jwt", jwt));
 
         // Convert the user object to a user response dto and return it as part of the api response
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(userService.convertUserToDto(user)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, userService.convertUserToDto(user)));
     }
 
     @GetMapping("/check")
