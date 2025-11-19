@@ -14,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -33,6 +36,10 @@ public class LeagueService implements LeagueServiceInterface {
         leagueResponse.setId(league.getId());
         leagueResponse.setName(league.getName());
         leagueResponse.setCreator(league.getCreator().getId());
+
+        // Convert the date the league was created at to a local date object
+        LocalDate date = league.getCreatedAt().toLocalDate();
+        leagueResponse.setCreatedAt(date.toString()); // Get the yyyy-mm-dd format of the local date
 
         // Convert the league teams to team response DTO
         List<TeamResponse> teamResponses = new ArrayList<>();
@@ -69,9 +76,11 @@ public class LeagueService implements LeagueServiceInterface {
             throw new AppException(HttpStatus.BAD_REQUEST, "Invalid details! Teams should have different names");
         }
 
-        // Instantiate a new league instance that will be saved on the database and set its name
+        // Instantiate a new league instance that will be saved on the database
         League pendingLeague = new League();
-        pendingLeague.setName(league.getName());
+        pendingLeague.setName(league.getName()); // Set the league name
+        pendingLeague.setCreatedAt(LocalDateTime.now()); // Set the date the league was created at to current date
+
 
         // Get the details of the logged-in user from the user details service and set the creator of the league
         User user = userService.getUserByEmail(userDetailsService.getPrincipal().getUsername());
