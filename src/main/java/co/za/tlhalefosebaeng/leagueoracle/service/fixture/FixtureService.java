@@ -6,13 +6,17 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
+import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
+import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
+import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,14 +27,16 @@ public class FixtureService implements FixtureServiceInterface {
     private final FixtureRepository fixtureRepo;
     private final LeagueServiceInterface leagueService;
     private final TeamServiceInterface teamService;
+    private final UserServiceInterface userService;
+    private final AppUserDetailsService userDetailsService;
 
     @Override
     public FixtureResponse convertFixtureToDto(Fixture fixture) {
         FixtureResponse fixtureResponse = new FixtureResponse();
 
         fixtureResponse.setId(fixture.getId());
-        fixtureResponse.setDate(fixture.getDate());
-        fixtureResponse.setTime(fixture.getDate());
+        fixtureResponse.setDate(fixture.getFormattedDate());
+        fixtureResponse.setTime(fixture.getFormattedDate());
         fixtureResponse.setVenue(fixture.getVenue());
         fixtureResponse.setField(fixture.getField());
         fixtureResponse.setHomeTeam(teamService.convertTeamToDto(fixture.getHomeTeam()));
@@ -109,6 +115,25 @@ public class FixtureService implements FixtureServiceInterface {
 
         // Return the fixture if it exists otherwise throw the relevant exception
         return fixture.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST, "Fixture not found! Please check fixture ID and try again"));
+    }
+
+    @Override
+    public List<Fixture> getUpcomingFixtures(Integer month) {
+        // Get all the leagues that the logged-in user has created
+        List<League> leagues = leagueService.getMyLeagues();
+
+        // Generate a list of all the fixtures that are scheduled for the given month
+        List<Fixture> fixtures = new ArrayList<>();
+        for(League league : leagues) {
+            for(Fixture fixture : league.getFixtures()) {
+                LocalDateTime date = fixture.getDate();
+                if(date != null && date.isAfter(LocalDateTime.now()) && date.getMonthValue() == month) {
+                    fixtures.add(fixture);
+                }
+            }
+        }
+
+        return fixtures;
     }
 
     @Override
