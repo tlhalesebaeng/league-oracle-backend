@@ -43,7 +43,7 @@ public class Fixture {
         this.date = AppDates.convertDate(date);
     }
 
-    public String getDate() {
+    public String getFormattedDate() {
         // Avoid null pointer exception
         if(this.date == null) return null;
 
