@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.filters;
 
+import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
 import co.za.tlhalefosebaeng.leagueoracle.service.routes.RoutesService;
@@ -70,7 +71,7 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException | MalformedJwtException |
                  SignatureException | IllegalArgumentException |
-                 UnsupportedJwtException jwtException)
+                 UnsupportedJwtException | AppException jwtException)
         {
             resolver.resolveException(request, response, null, jwtException);
         } catch (IOException | ServletException | UsernameNotFoundException  e) {
