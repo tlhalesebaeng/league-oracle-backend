@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,33 +21,15 @@ public class ResultResponse {
     private TeamResponse homeTeam;
     private TeamResponse awayTeam;
 
-    public void setDate(String date) {
-        // If the date is not provided, set the date property to "TBC". This should be
-        // the default, but we cannot persist this on the database
-        if(date == null) {
-            this.date = "TBC";
-            return;
-        }
+    // Custom setters for the date and time fields
 
-        // Extract the date from the given date string
-        String[] dateTimeDetails = date.split(",");
-
-        // Set the date property to the extracted date details
-        this.date = dateTimeDetails[0];
+    public void setDate(LocalDate date) {
+        if(date != null) this.date = date.toString();
+        else this.date = "TBC";
     }
 
-    public void setTime(String date) {
-        // If the date is not provided, set the time property to "TBC". This should be
-        // the default, but we cannot persist this on the database
-        if(date == null) {
-            this.time = "TBC";
-            return;
-        }
-
-        // Extract time date from the given date string
-        String[] dateTimeDetails = date.split(",");
-
-        // Set the time property to the extracted time details
-        this.time = dateTimeDetails[1];
+    public void setTime(LocalTime time) {
+        if(time != null) this.time = time.toString();
+        else this.time = "TBC";
     }
 }
