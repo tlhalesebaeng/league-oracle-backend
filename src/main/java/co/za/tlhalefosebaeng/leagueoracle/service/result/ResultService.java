@@ -59,7 +59,7 @@ public class ResultService implements ResultServiceInterface {
         // Create a new instance of result and set the properties accordingly
         Result result = new Result();
         result.setLeague(fixture.getLeague());
-        result.setDate(fixture.getDate());
+        result.setDate(fixture.getFormattedDate());
         result.setHomeTeam(fixture.getHomeTeam());
         result.setAwayTeam(fixture.getAwayTeam());
         result.setHomeTeamScore(resultRequest.getHomeTeamScore());
