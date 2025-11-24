@@ -13,4 +13,5 @@ public interface FixtureServiceInterface {
     Fixture getFixture(Long fixtureId);
     Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest);
     void deleteFixture(Long fixtureId);
+    List<Fixture> getUpcomingFixtures(Integer month);
 }
