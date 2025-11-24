@@ -6,7 +6,6 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
@@ -16,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +34,9 @@ public class FixtureService implements FixtureServiceInterface {
         FixtureResponse fixtureResponse = new FixtureResponse();
 
         fixtureResponse.setId(fixture.getId());
-        fixtureResponse.setDate(fixture.getFormattedDate());
-        fixtureResponse.setTime(fixture.getFormattedDate());
+        fixtureResponse.setLeague(fixture.getLeague().getId());
+        fixtureResponse.setDate(fixture.getDate());
+        fixtureResponse.setTime(fixture.getTime());
         fixtureResponse.setVenue(fixture.getVenue());
         fixtureResponse.setField(fixture.getField());
         fixtureResponse.setHomeTeam(teamService.convertTeamToDto(fixture.getHomeTeam()));
@@ -126,8 +126,8 @@ public class FixtureService implements FixtureServiceInterface {
         List<Fixture> fixtures = new ArrayList<>();
         for(League league : leagues) {
             for(Fixture fixture : league.getFixtures()) {
-                LocalDateTime date = fixture.getDate();
-                if(date != null && date.isAfter(LocalDateTime.now()) && date.getMonthValue() == month) {
+                LocalDate date = fixture.getDate();
+                if(date != null && date.isAfter(LocalDate.now()) && date.getMonthValue() == month) {
                     fixtures.add(fixture);
                 }
             }
@@ -151,6 +151,7 @@ public class FixtureService implements FixtureServiceInterface {
 
         // Set the fields if they are provided. The dto makes sure that these fields are not empty
         if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());
+        if(fixtureRequest.getTime() != null) fixture.setTime(fixtureRequest.getTime());
         if(fixtureRequest.getVenue() != null) fixture.setVenue(fixtureRequest.getVenue());
         if(fixtureRequest.getField() != null) fixture.setField(fixtureRequest.getField());
 
