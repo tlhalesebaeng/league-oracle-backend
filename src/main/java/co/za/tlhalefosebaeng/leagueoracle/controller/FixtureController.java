@@ -46,11 +46,25 @@ public class FixtureController {
 
     @GetMapping("/{fixtureId}")
     public ResponseEntity<FixtureResponse> getFixture(@PathVariable Long fixtureId) {
-        // Get the fixture by the id from the database using the league service
+        // Get the fixture by the id from the database using the fixture service
         Fixture fixture = fixtureService.getFixture(fixtureId);
 
         // Convert the fixture to a fixture response and return it
         return ResponseEntity.status(HttpStatus.OK).body(fixtureService.convertFixtureToDto(fixture));
+    }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<FixtureResponse>> getUpcomingFixtures(@RequestParam Integer month) {
+        // Get upcoming fixtures that are scheduled during the provided month using the fixture service
+        List<Fixture> fixtures = fixtureService.getUpcomingFixtures(month);
+
+        // Convert the fixtures to fixture response dtos
+        List<FixtureResponse> fixtureResponses = new ArrayList<>();
+        for(Fixture fixture : fixtures) {
+            fixtureResponses.add(fixtureService.convertFixtureToDto(fixture));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(fixtureResponses);
     }
 
     @PatchMapping("/{fixtureId}")
