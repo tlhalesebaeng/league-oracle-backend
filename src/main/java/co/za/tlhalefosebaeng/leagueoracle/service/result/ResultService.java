@@ -188,24 +188,45 @@ public class ResultService implements ResultServiceInterface {
         }
 
         // Set the team details according to the home team outcome
-        if (oldHomeTeamScore < oldAwayTeamScore && homeTeamOutcome.equals("win")) {
-            // Home team had lost now it won the match
-            homeTeam.setWins(homeTeam.getWins() + 1);
-            homeTeam.setLoses(homeTeam.getLoses() - 1);
+        if (oldHomeTeamScore < oldAwayTeamScore) {
+            if(homeTeamOutcome.equals("win")) {
+                // Home team had lost now it won the match
+                homeTeam.setWins(homeTeam.getWins() + 1);
+                homeTeam.setLoses(homeTeam.getLoses() - 1);
 
-            // Away team had won now it lost the match
-            awayTeam.setWins(awayTeam.getWins() - 1);
-            awayTeam.setLoses(awayTeam.getLoses() + 1);
+                // Away team had won now it lost the match
+                awayTeam.setWins(awayTeam.getWins() - 1);
+                awayTeam.setLoses(awayTeam.getLoses() + 1);
+            } else if(homeTeamOutcome.equals("draw")) {
+                // Home team had lost now the match is drawn
+                homeTeam.setLoses(homeTeam.getLoses() - 1);
+                homeTeam.setDraws(homeTeam.getDraws() + 1);
 
-        } else if (oldHomeTeamScore > oldAwayTeamScore && homeTeamOutcome.equals("lose")) {
-            // Home team had won now it lost the match
-            homeTeam.setWins(homeTeam.getWins() - 1);
-            homeTeam.setLoses(homeTeam.getLoses() + 1);
+                // Away team had won now the match is drawn
+                awayTeam.setWins(awayTeam.getWins() - 1);
+                awayTeam.setDraws(awayTeam.getDraws() + 1);
+            }
 
-            // Away team had lost now it won the match
-            awayTeam.setWins(awayTeam.getWins() + 1);
-            awayTeam.setLoses(awayTeam.getLoses() - 1);
-        } else {
+        } else if (oldHomeTeamScore > oldAwayTeamScore) {
+            if(homeTeamOutcome.equals("lose")) {
+                // Home team had won now it lost the match
+                homeTeam.setWins(homeTeam.getWins() - 1);
+                homeTeam.setLoses(homeTeam.getLoses() + 1);
+
+                // Away team had lost now it won the match
+                awayTeam.setWins(awayTeam.getWins() + 1);
+                awayTeam.setLoses(awayTeam.getLoses() - 1);
+            } else if(homeTeamOutcome.equals("draw")) {
+                // Home team had won now the match is drawn
+                homeTeam.setWins(homeTeam.getWins() - 1);
+                homeTeam.setDraws(homeTeam.getLoses() + 1);
+
+                // Away team had lost now the match is drawn
+                awayTeam.setLoses(awayTeam.getLoses() - 1);
+                awayTeam.setDraws(awayTeam.getLoses() + 1);
+            }
+
+        } else if (oldHomeTeamScore == oldAwayTeamScore) {
             if(homeTeamOutcome.equals("win")) {
                 // The match was drawn now the home team has won the match
                 homeTeam.setDraws(homeTeam.getDraws() - 1);
@@ -214,7 +235,7 @@ public class ResultService implements ResultServiceInterface {
                 // The match was drawn now the away team has lost the match
                 awayTeam.setDraws(awayTeam.getDraws() - 1);
                 awayTeam.setLoses(awayTeam.getLoses() + 1);
-            } else {
+            } else if(homeTeamOutcome.equals("lose")){
                 // The match was drawn now the home team has lost the match
                 homeTeam.setDraws(homeTeam.getDraws() - 1);
                 homeTeam.setLoses(homeTeam.getLoses() + 1);
