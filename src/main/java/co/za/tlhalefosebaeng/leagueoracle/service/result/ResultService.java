@@ -6,6 +6,7 @@ import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
+import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.ResultRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
@@ -42,6 +43,48 @@ public class ResultService implements ResultServiceInterface {
         return resultResponse;
     }
 
+    // Helper method that updates team details out of the provided results
+    private void updateTeams(League league, Result result) {
+        // Get the home and away team from the league
+        Team homeTeam = null;
+        Team awayTeam = null;
+        for(Team team : league.getTeams()) {
+            if(Objects.equals(team.getId(), result.getHomeTeam().getId())) {
+                // Set the home team
+                homeTeam = team;
+            }
+
+            if(Objects.equals(team.getId(), result.getAwayTeam().getId())) {
+                // Set the away team
+                awayTeam = team;
+            }
+        }
+
+        // Avoid null pointer exception
+        if(homeTeam != null && awayTeam != null) {
+            homeTeam.setGoalsAgainst(homeTeam.getGoalsAgainst() + result.getAwayTeamScore());
+            awayTeam.setGoalsAgainst(awayTeam.getGoalsAgainst() + result.getHomeTeamScore());
+
+            homeTeam.setGoalsForward(homeTeam.getGoalsForward() + result.getHomeTeamScore());
+            awayTeam.setGoalsForward(awayTeam.getGoalsForward() + result.getAwayTeamScore());
+
+            // Determine the match results and continue to update fields
+            if(result.getHomeTeamScore() > result.getAwayTeamScore()) {
+                // Home team won the match
+                homeTeam.setWins(homeTeam.getWins() + 1); // Increment home team wins
+                awayTeam.setLoses(awayTeam.getLoses() + 1); // Increment away tem losses
+            } else if (result.getHomeTeamScore() < result.getAwayTeamScore()) {
+                // Away team won the match
+                homeTeam.setLoses(homeTeam.getLoses() + 1); // Increment home team losses
+                awayTeam.setWins(awayTeam.getWins() + 1); // Increment away tem wins
+            } else {
+                // The match is a draw
+                homeTeam.setDraws(homeTeam.getDraws() + 1);
+                awayTeam.setDraws(awayTeam.getDraws() + 1);
+            }
+        }
+    }
+
     @Override
     public Result addResult(Long fixtureId, ResultRequest resultRequest) {
         // Get the fixture with the given id from the database using the fixture service. This
@@ -65,6 +108,12 @@ public class ResultService implements ResultServiceInterface {
         result.setAwayTeam(fixture.getAwayTeam());
         result.setHomeTeamScore(resultRequest.getHomeTeamScore());
         result.setAwayTeamScore(resultRequest.getAwayTeamScore());
+
+        // Update team details accordingly
+        updateTeams(league, result);
+
+        // Save the league using the league service
+        leagueService.saveLeague(league);
 
         // Delete the fixture using the fixture id
         fixtureService.deleteFixture(fixture.getId());
