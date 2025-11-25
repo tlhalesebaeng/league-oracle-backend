@@ -153,17 +153,94 @@ public class ResultService implements ResultServiceInterface {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
-        // Update the result fields when there are differences. We only set the team scores to keep integrity and reliability
-        // of the system since only the scores of the fixture are what should really be changed
-        Integer homeTeamScore = resultRequest.getHomeTeamScore();
-        if(homeTeamScore != null && !Objects.equals(result.getHomeTeamScore(), homeTeamScore)) {
-            result.setHomeTeamScore(homeTeamScore);
+        // Get the home and away team from the league
+        Team homeTeam = null;
+        Team awayTeam = null;
+        for(Team team : league.getTeams()) {
+            if(Objects.equals(team.getId(), result.getHomeTeam().getId())) {
+                // Set the home team
+                homeTeam = team;
+            }
+
+            if(Objects.equals(team.getId(), result.getAwayTeam().getId())) {
+                // Set the away team
+                awayTeam = team;
+            }
         }
 
-        Integer awayTeamScore = resultRequest.getAwayTeamScore();
-        if(awayTeamScore != null && !Objects.equals(result.getAwayTeamScore(), awayTeamScore)) {
-            result.setAwayTeamScore(awayTeamScore);
+        // Update the result fields when there are differences. We only set the team scores to keep integrity and reliability
+        // of the system since only the scores of the fixture are what should really be changed
+
+        int newHomeTeamScore = resultRequest.getHomeTeamScore();
+        int newAwayTeamScore = resultRequest.getAwayTeamScore();
+
+        int oldHomeTeamScore = result.getHomeTeamScore();
+        int oldAwayTeamScore = result.getAwayTeamScore();
+
+        // Determine the new outcomes for each team
+        String homeTeamOutcome;
+        if (newHomeTeamScore > newAwayTeamScore) {
+            homeTeamOutcome = "win";
+        } else if (newHomeTeamScore < newAwayTeamScore) {
+            homeTeamOutcome = "lose";
+        } else {
+            homeTeamOutcome = "draw";
         }
+
+        // Set the team details according to the home team outcome
+        if (oldHomeTeamScore < oldAwayTeamScore && homeTeamOutcome.equals("win")) {
+            // Home team had lost now it won the match
+            homeTeam.setWins(homeTeam.getWins() + 1);
+            homeTeam.setLoses(homeTeam.getLoses() - 1);
+
+            // Away team had won now it lost the match
+            awayTeam.setWins(awayTeam.getWins() - 1);
+            awayTeam.setLoses(awayTeam.getLoses() + 1);
+
+        } else if (oldHomeTeamScore > oldAwayTeamScore && homeTeamOutcome.equals("lose")) {
+            // Home team had won now it lost the match
+            homeTeam.setWins(homeTeam.getWins() - 1);
+            homeTeam.setLoses(homeTeam.getLoses() + 1);
+
+            // Away team had lost now it won the match
+            awayTeam.setWins(awayTeam.getWins() + 1);
+            awayTeam.setLoses(awayTeam.getLoses() - 1);
+        } else {
+            if(homeTeamOutcome.equals("win")) {
+                // The match was drawn now the home team has won the match
+                homeTeam.setDraws(homeTeam.getDraws() - 1);
+                homeTeam.setWins(homeTeam.getWins() + 1);
+
+                // The match was drawn now the away team has lost the match
+                awayTeam.setDraws(awayTeam.getDraws() - 1);
+                awayTeam.setLoses(awayTeam.getLoses() + 1);
+            } else {
+                // The match was drawn now the home team has lost the match
+                homeTeam.setDraws(homeTeam.getDraws() - 1);
+                homeTeam.setLoses(homeTeam.getLoses() + 1);
+
+                // The match was drawn now the away team has won the match
+                awayTeam.setDraws(awayTeam.getDraws() - 1);
+                awayTeam.setWins(awayTeam.getWins() + 1);
+            }
+        }
+
+        // Determine the score differences and update the goal against and forward of teams
+        int homeTeamScoreDifference = oldHomeTeamScore - newHomeTeamScore;
+        int awayTeamScoreDifference = oldAwayTeamScore - newAwayTeamScore;
+
+        homeTeam.setGoalsForward(homeTeam.getGoalsForward() - homeTeamScoreDifference);
+        homeTeam.setGoalsAgainst(homeTeam.getGoalsAgainst() - awayTeamScoreDifference);
+
+        awayTeam.setGoalsForward(awayTeam.getGoalsForward() - awayTeamScoreDifference);
+        awayTeam.setGoalsAgainst(awayTeam.getGoalsAgainst() - homeTeamScoreDifference);
+
+        // Update the result scores
+        result.setHomeTeamScore(newHomeTeamScore);
+        result.setAwayTeamScore(newAwayTeamScore);
+
+        // Save the team details
+        leagueService.saveLeague(league);
 
         // Update the result and return the newly saved result
         return resultRepo.save(result);
