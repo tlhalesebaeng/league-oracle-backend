@@ -50,7 +50,7 @@ public class ResultController {
     }
 
     @PatchMapping("{resultId}")
-    public ResponseEntity<ResultResponse> updateResult(@PathVariable Long resultId, @RequestBody ResultRequest resultRequest) {
+    public ResponseEntity<ResultResponse> updateResult(@PathVariable Long resultId, @Valid @RequestBody ResultRequest resultRequest) {
         // Update the fields of the result with the given id using the result service
         Result result = resultService.updateResult(resultId, resultRequest);
 
