@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -35,4 +36,11 @@ public class League {
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Result> results;
+
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    private void beforePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

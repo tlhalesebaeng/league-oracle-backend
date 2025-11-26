@@ -1,6 +1,5 @@
 package co.za.tlhalefosebaeng.leagueoracle.model;
 
-import co.za.tlhalefosebaeng.leagueoracle.utils.AppDates;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -20,7 +20,8 @@ public class Fixture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime date;
+    private LocalDate date;
+    private LocalTime time;
     private String venue = "TBC";
     private String field = "TBC";
 
@@ -39,16 +40,29 @@ public class Fixture {
     @JsonIgnore
     private Team awayTeam;
 
+    // Custom setters for the date and time fields
+
     public void setDate(String date) {
-        this.date = AppDates.convertDate(date);
+        // Dates that have a "TBC" value are also represented as null on the database
+        if(date.equals("TBC")) {
+            this.date = null;
+            return;
+        }
+
+        // Set the date accordingly. The expected format of the date is yyyy-mm-dd
+        String[] details = date.split("-");
+        this.date = LocalDate.of(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));;
     }
 
-    public String getDate() {
-        // Avoid null pointer exception
-        if(this.date == null) return null;
+    public void setTime(String time) {
+        // Times that have a "TBC" value are also represented as null on the database
+        if(time.equals("TBC")) {
+            this.time = null;
+            return;
+        }
 
-        // Convert the local date and time to string and return them in the correct format
-        return AppDates.retrieveDate(this.date.toLocalDate(), this.date.toLocalTime());
+        // Set the time accordingly. The expected format of the time is HH:MM
+        String[] details = time.split(":");
+        this.time = LocalTime.of(Integer.parseInt(details[0]), Integer.parseInt(details[1]));
     }
-
 }

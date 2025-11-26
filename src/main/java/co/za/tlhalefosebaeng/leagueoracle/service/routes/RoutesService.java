@@ -29,6 +29,7 @@ public class RoutesService implements RoutesServiceInterface {
 
                 // Fixture Routes
                 new RouteDefinition(prefix + "/fixtures", "POST"),
+                new RouteDefinition(prefix + "/fixtures/upcoming", "GET"),
                 new RouteDefinition(prefix + "/fixtures/{fixtureId}", "PATCH"),
                 new RouteDefinition(prefix + "/fixtures/{fixtureId}", "DELETE"),
 

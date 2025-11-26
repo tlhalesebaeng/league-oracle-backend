@@ -9,10 +9,13 @@ import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
+import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
+import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,14 +26,17 @@ public class FixtureService implements FixtureServiceInterface {
     private final FixtureRepository fixtureRepo;
     private final LeagueServiceInterface leagueService;
     private final TeamServiceInterface teamService;
+    private final UserServiceInterface userService;
+    private final AppUserDetailsService userDetailsService;
 
     @Override
     public FixtureResponse convertFixtureToDto(Fixture fixture) {
         FixtureResponse fixtureResponse = new FixtureResponse();
 
         fixtureResponse.setId(fixture.getId());
+        fixtureResponse.setLeague(fixture.getLeague().getId());
         fixtureResponse.setDate(fixture.getDate());
-        fixtureResponse.setTime(fixture.getDate());
+        fixtureResponse.setTime(fixture.getTime());
         fixtureResponse.setVenue(fixture.getVenue());
         fixtureResponse.setField(fixture.getField());
         fixtureResponse.setHomeTeam(teamService.convertTeamToDto(fixture.getHomeTeam()));
@@ -112,6 +118,25 @@ public class FixtureService implements FixtureServiceInterface {
     }
 
     @Override
+    public List<Fixture> getUpcomingFixtures(Integer month) {
+        // Get all the leagues that the logged-in user has created
+        List<League> leagues = leagueService.getMyLeagues();
+
+        // Generate a list of all the fixtures that are scheduled for the given month
+        List<Fixture> fixtures = new ArrayList<>();
+        for(League league : leagues) {
+            for(Fixture fixture : league.getFixtures()) {
+                LocalDate date = fixture.getDate();
+                if(date != null && date.isAfter(LocalDate.now()) && date.getMonthValue() == month) {
+                    fixtures.add(fixture);
+                }
+            }
+        }
+
+        return fixtures;
+    }
+
+    @Override
     public Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest) {
         // Get the fixture with the provided id, this will also confirm that the fixture exists
         Fixture fixture = this.getFixture(fixtureId);
@@ -126,6 +151,7 @@ public class FixtureService implements FixtureServiceInterface {
 
         // Set the fields if they are provided. The dto makes sure that these fields are not empty
         if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());
+        if(fixtureRequest.getTime() != null) fixture.setTime(fixtureRequest.getTime());
         if(fixtureRequest.getVenue() != null) fixture.setVenue(fixtureRequest.getVenue());
         if(fixtureRequest.getField() != null) fixture.setField(fixtureRequest.getField());
 
