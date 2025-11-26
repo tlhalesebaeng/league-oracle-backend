@@ -14,9 +14,9 @@ The backend of league oracle web application. League oracle is a platform where 
 
 -   Java
 -   Spring Boot
+-   Spring Data JPA
 -   Hibernate
 -   MySQL
--   Docker
--   Jenkins
--   AWS EC2
+-   JUnit & Mockito
+
 
