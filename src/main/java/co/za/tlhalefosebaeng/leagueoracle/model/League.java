@@ -38,4 +38,9 @@ public class League {
     private List<Result> results;
 
     private LocalDateTime createdAt;
+
+    @PrePersist
+    private void beforePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

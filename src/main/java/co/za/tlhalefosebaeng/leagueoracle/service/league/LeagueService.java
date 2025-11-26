@@ -79,8 +79,6 @@ public class LeagueService implements LeagueServiceInterface {
         // Instantiate a new league instance that will be saved on the database
         League pendingLeague = new League();
         pendingLeague.setName(league.getName()); // Set the league name
-        pendingLeague.setCreatedAt(LocalDateTime.now()); // Set the date the league was created at to current date
-
 
         // Get the details of the logged-in user from the user details service and set the creator of the league
         User user = userService.getUserByEmail(userDetailsService.getPrincipal().getUsername());
