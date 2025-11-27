@@ -3,6 +3,9 @@ package co.za.tlhalefosebaeng.leagueoracle.mapper;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TeamMapper {
     // Method to convert team objects to team response dtos
     public static TeamResponse toResponse(Team team) {
@@ -17,6 +20,13 @@ public class TeamMapper {
         response.setPlayedGames();
         response.setPoints();
         response.setGoalDifference();
+        return response;
+    }
+
+    // Method to convert a list of team objects to team response dtos
+    public static List<TeamResponse> toResponseList(List<Team> teams) {
+        List<TeamResponse> response = new ArrayList<>();
+        for(Team team : teams) response.add(TeamMapper.toResponse(team));
         return response;
     }
 }
