@@ -1,8 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.league;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
-import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
-import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
@@ -14,13 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -28,30 +21,6 @@ public class LeagueService implements LeagueServiceInterface {
     private final LeagueRepository leagueRepo;
     private final UserServiceInterface userService;
     private final AppUserDetailsService userDetailsService;
-
-    // Helper method to convert a league to the league response DTO
-    @Override
-    public LeagueResponse convertLeagueToDto(League league, Function<Team, TeamResponse> convertTeamToDto) {
-        LeagueResponse leagueResponse = new LeagueResponse();
-        leagueResponse.setId(league.getId());
-        leagueResponse.setName(league.getName());
-        leagueResponse.setCreator(league.getCreator().getId());
-
-        // Convert the date the league was created at to a local date object
-        LocalDate date = league.getCreatedAt().toLocalDate();
-        leagueResponse.setCreatedAt(date.toString()); // Get the yyyy-mm-dd format of the local date
-
-        // Convert the league teams to team response DTO
-        List<TeamResponse> teamResponses = new ArrayList<>();
-        for(Team team : league.getTeams()) {
-            teamResponses.add(convertTeamToDto.apply(team));
-        }
-
-        // Set the league response's teams to the convert team response dtos
-        leagueResponse.setTeams(teamResponses);
-
-        return leagueResponse;
-    }
 
     // Method to verify that the logged-in user is the creator of the given league.
     // This method should be used under protected routes only as the logged-in user details are required
