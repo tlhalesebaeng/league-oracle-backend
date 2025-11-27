@@ -10,5 +10,4 @@ public interface TeamServiceInterface {
     League addTeam(Long leagueId, AddTeamRequest requestDto);
     League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest requestDto);
     void deleteTeam(Long teamId);
-    TeamResponse convertTeamToDto(Team team);
 }
