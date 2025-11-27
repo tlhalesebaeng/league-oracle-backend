@@ -1,7 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.team;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
-import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
