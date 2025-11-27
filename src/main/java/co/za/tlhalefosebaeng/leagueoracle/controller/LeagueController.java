@@ -57,7 +57,7 @@ public class LeagueController {
 
     @GetMapping("/{leagueId}")
     public ResponseEntity<LeagueResponse> getLeague(@PathVariable Long leagueId) {
-        // Get the league corresponding to the provided league id using the league service
+        // Get the league that has the provided league id using the league service
         League league = leagueService.getLeague(leagueId);
 
         // Convert the league to a league response dto
@@ -69,7 +69,7 @@ public class LeagueController {
 
     @PatchMapping("/{leagueId}")
     public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest requestDto) {
-        // Update the league corresponding to the provided league id using the league service
+        // Update the league that has the provided league id using the league service
         League league = leagueService.updateLeague(leagueId, requestDto);
 
         // Convert the league to a league response dto
@@ -81,7 +81,7 @@ public class LeagueController {
 
     @DeleteMapping("/{leagueId}")
     public ResponseEntity<Object> deleteLeague(@PathVariable Long leagueId){
-        // Delete the league corresponding to the provided league id using the league service
+        // Delete the league that has the provided league id using the league service
         leagueService.deleteLeague(leagueId);
 
         // Send only a 200  status code to the client
