@@ -3,6 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.result;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
+import co.za.tlhalefosebaeng.leagueoracle.mapper.TeamMapper;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
@@ -24,7 +25,6 @@ import java.util.Optional;
 public class ResultService implements ResultServiceInterface {
     private final ResultRepository resultRepo;
     private final FixtureServiceInterface fixtureService;
-    private final TeamServiceInterface teamService;
     private final LeagueServiceInterface leagueService;
 
     @Override
@@ -37,8 +37,8 @@ public class ResultService implements ResultServiceInterface {
         resultResponse.setTime(result.getTime());
         resultResponse.setHomeTeamScore(result.getHomeTeamScore());
         resultResponse.setAwayTeamScore(result.getAwayTeamScore());
-        resultResponse.setHomeTeam(teamService.convertTeamToDto(result.getHomeTeam()));
-        resultResponse.setAwayTeam(teamService.convertTeamToDto(result.getAwayTeam()));
+        resultResponse.setHomeTeam(TeamMapper.toResponse(result.getHomeTeam()));
+        resultResponse.setAwayTeam(TeamMapper.toResponse(result.getAwayTeam()));
 
         return resultResponse;
     }

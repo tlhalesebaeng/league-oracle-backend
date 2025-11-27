@@ -3,6 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
+import co.za.tlhalefosebaeng.leagueoracle.mapper.TeamMapper;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
@@ -39,8 +40,8 @@ public class FixtureService implements FixtureServiceInterface {
         fixtureResponse.setTime(fixture.getTime());
         fixtureResponse.setVenue(fixture.getVenue());
         fixtureResponse.setField(fixture.getField());
-        fixtureResponse.setHomeTeam(teamService.convertTeamToDto(fixture.getHomeTeam()));
-        fixtureResponse.setAwayTeam(teamService.convertTeamToDto(fixture.getAwayTeam()));
+        fixtureResponse.setHomeTeam(TeamMapper.toResponse(fixture.getHomeTeam()));
+        fixtureResponse.setAwayTeam(TeamMapper.toResponse(fixture.getAwayTeam()));
 
         return fixtureResponse;
     }
