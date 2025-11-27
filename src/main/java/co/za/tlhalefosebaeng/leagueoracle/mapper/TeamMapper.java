@@ -25,8 +25,8 @@ public class TeamMapper {
 
     // Method to convert a list of team objects to team response dtos
     public static List<TeamResponse> toResponseList(List<Team> teams) {
-        List<TeamResponse> response = new ArrayList<>();
-        for(Team team : teams) response.add(TeamMapper.toResponse(team));
-        return response;
+        List<TeamResponse> responseList = new ArrayList<>();
+        for(Team team : teams) responseList.add(TeamMapper.toResponse(team));
+        return responseList;
     }
 }
