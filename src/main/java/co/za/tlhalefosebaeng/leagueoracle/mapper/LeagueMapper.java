@@ -4,6 +4,8 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeagueMapper {
     // Method used to convert league objects to league response dtos
@@ -19,5 +21,12 @@ public class LeagueMapper {
         response.setCreatedAt(date.toString()); // Get the yyyy-mm-dd format of the local date
 
         return response;
+    }
+
+    // Method used to convert league objects to league response dtos
+    public static List<LeagueResponse> toResponseList(List<League> leagues) {
+        List<LeagueResponse> responseList = new ArrayList<>();
+        for(League league : leagues) responseList.add(LeagueMapper.toResponse(league));
+        return responseList;
     }
 }
