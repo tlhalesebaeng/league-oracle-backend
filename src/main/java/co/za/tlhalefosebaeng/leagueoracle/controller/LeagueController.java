@@ -2,16 +2,15 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
+import co.za.tlhalefosebaeng.leagueoracle.mapper.LeagueMapper;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
-import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,73 +18,73 @@ import java.util.List;
 @RequestMapping("${api.endpoint.prefix}/leagues")
 public class LeagueController {
     public final LeagueServiceInterface leagueService;
-    public final TeamServiceInterface teamService;
 
     @PostMapping("")
     public ResponseEntity<LeagueResponse> createLeague(@Valid @RequestBody LeagueRequest requestDto) {
-        // Persist the league on the database and receive the saved league
-        League createdLeague = leagueService.createLeague(requestDto);
+        // Persist the league using the league service
+        League league = leagueService.createLeague(requestDto);
 
         // Convert the league to a league response dto
-        LeagueResponse leagueResponse = leagueService.convertLeagueToDto(createdLeague, teamService::convertTeamToDto);
+        LeagueResponse responseDto = LeagueMapper.toResponse(league);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(leagueResponse);
+        // Send a 201 status code to the client and the league response dto as the body
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("")
     public ResponseEntity<List<LeagueResponse>> getAllLeagues(@RequestParam(required = false) String name) {
-        // Get all leagues by name from the league service
+        // Get all leagues by the provided name using the league service
         List<League> leagues = leagueService.getAllLeagues(name);
 
-        // Convert all the leagues to the league response dtos and return them as part of the response entity
-        List<LeagueResponse> leagueResponses = new ArrayList<>();
-        for(League league : leagues) {
-            leagueResponses.add(leagueService.convertLeagueToDto(league, teamService::convertTeamToDto));
-        }
+        // Convert all the leagues to a list of league response dtos
+        List<LeagueResponse> responseDto = LeagueMapper.toResponseList(leagues);
 
-        return ResponseEntity.status(HttpStatus.OK).body(leagueResponses);
+        // Send a 200 status code to the client and the list of league response dtos as the body
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @GetMapping("/mine")
     public ResponseEntity<List<LeagueResponse>> getMyLeagues() {
-        // Get all the leagues that the logged-in user has created
+        // Get all the leagues that the authenticated user has created using the service
         List<League> leagues = leagueService.getMyLeagues();
 
-        // Convert all the leagues to the league response dtos and return them as part of the response entity
-        List<LeagueResponse> leagueResponses = new ArrayList<>();
-        for(League league : leagues) {
-            leagueResponses.add(leagueService.convertLeagueToDto(league, teamService::convertTeamToDto));
-        }
+        // Convert all the leagues to a list of league response dtos
+        List<LeagueResponse> responseDto = LeagueMapper.toResponseList(leagues);
 
-        return ResponseEntity.status(HttpStatus.OK).body(leagueResponses);
+        // Send a 200 status code to the client and the list of league response dtos as the body
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @GetMapping("/{leagueId}")
     public ResponseEntity<LeagueResponse> getLeague(@PathVariable Long leagueId) {
-        // Get the league by id using the league service
+        // Get the league corresponding to the provided league id using the league service
         League league = leagueService.getLeague(leagueId);
 
         // Convert the league to a league response dto
-        LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
+        LeagueResponse responseDto = LeagueMapper.toResponse(league);
 
-        // Convert the league to a league response dto and return it as part of the response entity
-        return ResponseEntity.status(HttpStatus.OK).body(leagueResponse);
+        // Send a 200 status code to the client and the league response dto as the body
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @PatchMapping("/{leagueId}")
     public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest requestDto) {
-        // Update the league and get the newly updated league
-        League updatedLeague = leagueService.updateLeague(leagueId, requestDto);
+        // Update the league corresponding to the provided league id using the league service
+        League league = leagueService.updateLeague(leagueId, requestDto);
 
         // Convert the league to a league response dto
-        LeagueResponse leagueResponse = leagueService.convertLeagueToDto(updatedLeague, teamService::convertTeamToDto);
+        LeagueResponse responseDto = LeagueMapper.toResponse(league);
 
-        return ResponseEntity.status(HttpStatus.OK).body(leagueResponse);
+        // Send a 200 status code to the client and the league response dto as the body
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @DeleteMapping("/{leagueId}")
     public ResponseEntity<Object> deleteLeague(@PathVariable Long leagueId){
+        // Delete the league corresponding to the provided league id using the league service
         leagueService.deleteLeague(leagueId);
+
+        // Send only a 200  status code to the client
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
