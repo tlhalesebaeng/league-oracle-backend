@@ -118,7 +118,7 @@ public class LeagueService implements LeagueServiceInterface {
     }
 
     @Override
-    public League updateLeague(Long leagueId, LeagueRequest league) {
+    public League updateLeague(Long leagueId, LeagueRequest requestDto) {
         // Get the league using the provided id. This will confirm that the league exists
         League leagueToUpdate = this.getLeague(leagueId);
 
@@ -128,7 +128,7 @@ public class LeagueService implements LeagueServiceInterface {
         }
 
         // We should only update the league name. There are endpoints to update other properties of the league
-        leagueToUpdate.setName(league.getName());
+        leagueToUpdate.setName(requestDto.getName());
         return this.saveLeague(leagueToUpdate);
     }
 

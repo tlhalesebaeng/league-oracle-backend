@@ -22,9 +22,9 @@ public class LeagueController {
     public final TeamServiceInterface teamService;
 
     @PostMapping("")
-    public ResponseEntity<LeagueResponse> createLeague(@Valid @RequestBody LeagueRequest league) {
+    public ResponseEntity<LeagueResponse> createLeague(@Valid @RequestBody LeagueRequest requestDto) {
         // Persist the league on the database and receive the saved league
-        League createdLeague = leagueService.createLeague(league);
+        League createdLeague = leagueService.createLeague(requestDto);
 
         // Convert the league to a league response dto
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(createdLeague, teamService::convertTeamToDto);
@@ -73,9 +73,9 @@ public class LeagueController {
     }
 
     @PatchMapping("/{leagueId}")
-    public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest league) {
+    public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest requestDto) {
         // Update the league and get the newly updated league
-        League updatedLeague = leagueService.updateLeague(leagueId, league);
+        League updatedLeague = leagueService.updateLeague(leagueId, requestDto);
 
         // Convert the league to a league response dto
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(updatedLeague, teamService::convertTeamToDto);

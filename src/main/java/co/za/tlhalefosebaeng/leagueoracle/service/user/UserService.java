@@ -44,32 +44,32 @@ public class UserService implements UserServiceInterface{
     }
 
     @Override
-    public User addUser(SignupRequest user) {
+    public User addUser(SignupRequest requestDto) {
         // Check that the password and password confirm fields are the same otherwise throw the relevant exception
-        if(!user.getPassword().equals(user.getPasswordConfirm())){
+        if(!requestDto.getPassword().equals(requestDto.getPasswordConfirm())){
             throw new AppException(HttpStatus.BAD_REQUEST, "Passwords do not match! Please re-confirm your password");
         }
 
         // Instantiate a user instance and set the fields accordingly
         User newUser = new User();
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setFirstName(requestDto.getFirstName());
+        newUser.setLastName(requestDto.getLastName());
+        newUser.setEmail(requestDto.getEmail());
+        newUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));
 
         // Save the user and return the saved user
         return userRepo.save(newUser);
     }
 
     @Override
-    public User login(LoginRequest details) {
+    public User login(LoginRequest requestDto) {
         // Get the user from the database using user repository and confirm that the user exists
-        Optional<User> user = userRepo.findByEmail(details.getEmail());
+        Optional<User> user = userRepo.findByEmail(requestDto.getEmail());
         User savedUser = user.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST, "Invalid credentials! Please check your email or password and try again"));
 
 
         // Confirm that the passwords are the same otherwise throw a relevant exception
-        if(!passwordEncoder.matches(details.getPassword(), savedUser.getPassword())) {
+        if(!passwordEncoder.matches(requestDto.getPassword(), savedUser.getPassword())) {
             throw new AppException(HttpStatus.BAD_REQUEST, "Invalid credentials! Please check your email or password and try again");
         }
 

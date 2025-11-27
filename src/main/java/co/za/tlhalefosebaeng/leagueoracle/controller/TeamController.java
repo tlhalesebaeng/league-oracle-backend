@@ -21,9 +21,9 @@ public class TeamController {
 
     // All the team endpoint should return the league because we will never query the team without needing league details
     @PostMapping("")
-    public ResponseEntity<LeagueResponse> addTeam(@RequestParam Long leagueId, @RequestBody AddTeamRequest team){
+    public ResponseEntity<LeagueResponse> addTeam(@RequestParam Long leagueId, @RequestBody AddTeamRequest requestDto){
         // Add the team to the league corresponding to this leagueId
-        League league = teamService.addTeam(leagueId, team);
+        League league = teamService.addTeam(leagueId, requestDto);
 
         // Convert the league to a league response dto
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);
@@ -36,10 +36,10 @@ public class TeamController {
     public ResponseEntity<LeagueResponse> updateTeam(
             @RequestParam Long leagueId,
             @PathVariable Long teamId,
-            @Valid @RequestBody UpdateTeamRequest team
+            @Valid @RequestBody UpdateTeamRequest requestDto
     ) {
         // Update the league team
-        League league = teamService.updateTeam(leagueId, teamId, team);
+        League league = teamService.updateTeam(leagueId, teamId, requestDto);
 
         // Convert the league to a league response dto
         LeagueResponse leagueResponse = leagueService.convertLeagueToDto(league, teamService::convertTeamToDto);

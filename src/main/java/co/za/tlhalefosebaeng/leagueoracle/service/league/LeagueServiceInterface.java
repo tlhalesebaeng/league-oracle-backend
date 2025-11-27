@@ -15,7 +15,7 @@ public interface LeagueServiceInterface {
     League createLeague(LeagueRequest league);
     League getLeague(Long leagueId);
     List<League> getAllLeagues(String name);
-    League updateLeague(Long leagueId, LeagueRequest league);
+    League updateLeague(Long leagueId, LeagueRequest requestDto);
     void deleteLeague(Long leagueId);
     LeagueResponse convertLeagueToDto(League league, Function<Team, TeamResponse> convertTeamToDto);
     boolean isCreator(League league);

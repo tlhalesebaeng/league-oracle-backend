@@ -68,9 +68,9 @@ public class FixtureController {
     }
 
     @PatchMapping("/{fixtureId}")
-    public ResponseEntity<FixtureResponse> updateFixture(@PathVariable Long fixtureId, @RequestBody UpdateFixtureRequest fixtureRequest) {
+    public ResponseEntity<FixtureResponse> updateFixture(@PathVariable Long fixtureId, @RequestBody UpdateFixtureRequest requestDto) {
         // Update the provided fixture fields using the fixture service
-        Fixture fixture = fixtureService.updateFixture(fixtureId, fixtureRequest);
+        Fixture fixture = fixtureService.updateFixture(fixtureId, requestDto);
 
         // Convert the fixture to a fixture response and return it
         return ResponseEntity.status(HttpStatus.OK).body( fixtureService.convertFixtureToDto(fixture));

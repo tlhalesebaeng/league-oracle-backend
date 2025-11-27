@@ -86,7 +86,7 @@ public class ResultService implements ResultServiceInterface {
     }
 
     @Override
-    public Result addResult(Long fixtureId, ResultRequest resultRequest) {
+    public Result addResult(Long fixtureId, ResultRequest requestDto) {
         // Get the fixture with the given id from the database using the fixture service. This
         // will also confirm that the fixture exists otherwise it will throw the relevant exception
         Fixture fixture = fixtureService.getFixture(fixtureId);
@@ -106,8 +106,8 @@ public class ResultService implements ResultServiceInterface {
         result.setTime(fixture.getTime());
         result.setHomeTeam(fixture.getHomeTeam());
         result.setAwayTeam(fixture.getAwayTeam());
-        result.setHomeTeamScore(resultRequest.getHomeTeamScore());
-        result.setAwayTeamScore(resultRequest.getAwayTeamScore());
+        result.setHomeTeamScore(requestDto.getHomeTeamScore());
+        result.setAwayTeamScore(requestDto.getAwayTeamScore());
 
         // Update team details accordingly
         updateTeams(league, result);
@@ -141,7 +141,7 @@ public class ResultService implements ResultServiceInterface {
     }
 
     @Override
-    public Result updateResult(Long resultId, ResultRequest resultRequest) {
+    public Result updateResult(Long resultId, ResultRequest requestDto) {
         // Get the result with the given id from the database using the getResult method
         Result result = this.getResult(resultId);
 
@@ -171,8 +171,8 @@ public class ResultService implements ResultServiceInterface {
         // Update the result fields when there are differences. We only set the team scores to keep integrity and reliability
         // of the system since only the scores of the fixture are what should really be changed
 
-        int newHomeTeamScore = resultRequest.getHomeTeamScore();
-        int newAwayTeamScore = resultRequest.getAwayTeamScore();
+        int newHomeTeamScore = requestDto.getHomeTeamScore();
+        int newAwayTeamScore = requestDto.getAwayTeamScore();
 
         int oldHomeTeamScore = result.getHomeTeamScore();
         int oldAwayTeamScore = result.getAwayTeamScore();

@@ -23,9 +23,9 @@ public class AuthController {
     private final CookieService cookieService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signup(@Valid @RequestBody SignupRequest user, HttpServletResponse response){
+    public ResponseEntity<AuthResponse> signup(@Valid @RequestBody SignupRequest requestDto, HttpServletResponse response){
         // Sign the user up using the user service
-        User newUser = userService.addUser(user);
+        User newUser = userService.addUser(requestDto);
 
         String jwt = jwtService.generateToken(newUser); // Generate the token using the jwt service
         response.addCookie(cookieService.create("access_jwt", jwt)); // Create a cookie using the cookie service and add it to the response
@@ -35,9 +35,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest details, HttpServletResponse response) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest requestDto, HttpServletResponse response) {
         // Get the user from the database using the user service
-        User user = userService.login(details);
+        User user = userService.login(requestDto);
 
         // Generate the token and set it as a cookie in the response
         String jwt = jwtService.generateToken(user);

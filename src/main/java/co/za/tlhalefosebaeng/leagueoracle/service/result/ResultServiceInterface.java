@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ResultServiceInterface {
     ResultResponse convertResultToDto(Result result);
-    Result addResult(Long fixtureId, ResultRequest resultRequest);
+    Result addResult(Long fixtureId, ResultRequest requestDto);
     List<Result> getLeagueResults(Long leagueId);
     Result getResult(Long resultId);
-    Result updateResult(Long resultId, ResultRequest resultRequest);
+    Result updateResult(Long resultId, ResultRequest requestDto);
 }

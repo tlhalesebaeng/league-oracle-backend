@@ -137,7 +137,7 @@ public class FixtureService implements FixtureServiceInterface {
     }
 
     @Override
-    public Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest) {
+    public Fixture updateFixture(Long fixtureId, UpdateFixtureRequest requestDto) {
         // Get the fixture with the provided id, this will also confirm that the fixture exists
         Fixture fixture = this.getFixture(fixtureId);
 
@@ -150,10 +150,10 @@ public class FixtureService implements FixtureServiceInterface {
         }
 
         // Set the fields if they are provided. The dto makes sure that these fields are not empty
-        if(fixtureRequest.getDate() != null) fixture.setDate(fixtureRequest.getDate());
-        if(fixtureRequest.getTime() != null) fixture.setTime(fixtureRequest.getTime());
-        if(fixtureRequest.getVenue() != null) fixture.setVenue(fixtureRequest.getVenue());
-        if(fixtureRequest.getField() != null) fixture.setField(fixtureRequest.getField());
+        if(requestDto.getDate() != null) fixture.setDate(requestDto.getDate());
+        if(requestDto.getTime() != null) fixture.setTime(requestDto.getTime());
+        if(requestDto.getVenue() != null) fixture.setVenue(requestDto.getVenue());
+        if(requestDto.getField() != null) fixture.setField(requestDto.getField());
 
         return fixtureRepo.save(fixture);
     }

@@ -11,7 +11,7 @@ public interface FixtureServiceInterface {
     FixtureResponse convertFixtureToDto(Fixture fixture);
     List<Fixture> getAllLeagueFixtures(Long leagueId);
     Fixture getFixture(Long fixtureId);
-    Fixture updateFixture(Long fixtureId, UpdateFixtureRequest fixtureRequest);
+    Fixture updateFixture(Long fixtureId, UpdateFixtureRequest requestDto);
     void deleteFixture(Long fixtureId);
     List<Fixture> getUpcomingFixtures(Integer month);
 }

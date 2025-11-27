@@ -20,9 +20,9 @@ public class ResultController {
     private final ResultServiceInterface resultService;
 
     @PostMapping("")
-    public ResponseEntity<ResultResponse> addResult(@RequestParam Long fixtureId, @Valid @RequestBody ResultRequest resultRequest) {
+    public ResponseEntity<ResultResponse> addResult(@RequestParam Long fixtureId, @Valid @RequestBody ResultRequest requestDto) {
         // Add results of a fixture to the database using the result service
-        Result result = resultService.addResult(fixtureId, resultRequest);
+        Result result = resultService.addResult(fixtureId, requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultService.convertResultToDto(result));
     }
@@ -50,9 +50,9 @@ public class ResultController {
     }
 
     @PatchMapping("{resultId}")
-    public ResponseEntity<ResultResponse> updateResult(@PathVariable Long resultId, @Valid @RequestBody ResultRequest resultRequest) {
+    public ResponseEntity<ResultResponse> updateResult(@PathVariable Long resultId, @Valid @RequestBody ResultRequest requestDto) {
         // Update the fields of the result with the given id using the result service
-        Result result = resultService.updateResult(resultId, resultRequest);
+        Result result = resultService.updateResult(resultId, requestDto);
 
         // Convert the result into a result response dto and return it
         return ResponseEntity.status(HttpStatus.OK).body(resultService.convertResultToDto(result));

@@ -38,7 +38,7 @@ public class TeamService implements TeamServiceInterface{
     }
 
     @Override
-    public League addTeam(Long leagueId, AddTeamRequest team) {
+    public League addTeam(Long leagueId, AddTeamRequest requestDto) {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
@@ -54,7 +54,7 @@ public class TeamService implements TeamServiceInterface{
 
         // Confirm that the league does not have a team that has a name similar to the add team request dto name
         for(Team t : league.getTeams()) {
-            if(t.getName().equals(team.getName())) {
+            if(t.getName().equals(requestDto.getName())) {
                 throw new AppException(HttpStatus.BAD_REQUEST, "Team names should be unique! Please check your team name and try again");
             }
         }
@@ -62,7 +62,7 @@ public class TeamService implements TeamServiceInterface{
         // Set the necessary team properties
         Team newTeam = new Team();
         newTeam.setLeague(league);
-        newTeam.setName(team.getName());
+        newTeam.setName(requestDto.getName());
 
         // Add the team to the list of teams and return the newly saved league
         league.getTeams().add(newTeam);
@@ -70,7 +70,7 @@ public class TeamService implements TeamServiceInterface{
     }
 
     @Override
-    public League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest team) {
+    public League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest requestDto) {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
@@ -93,12 +93,12 @@ public class TeamService implements TeamServiceInterface{
         if(newTeam == null) throw new AppException(HttpStatus.BAD_REQUEST ,"Team not found! Please check team ID and try again.");
 
         // Update properties of the existing team
-        if(team.getName() != null) newTeam.setName(team.getName());
-        if(team.getWins() != newTeam.getWins()) newTeam.setWins(team.getWins());
-        if(team.getDraws() != newTeam.getDraws()) newTeam.setDraws(team.getDraws());
-        if(team.getLoses() != newTeam.getLoses()) newTeam.setLoses(team.getLoses());
-        if(team.getGoalsForward() != newTeam.getGoalsForward()) newTeam.setGoalsForward(team.getGoalsForward());
-        if(team.getGoalsAgainst() != newTeam.getGoalsAgainst()) newTeam.setGoalsAgainst(team.getGoalsAgainst());
+        if(requestDto.getName() != null) newTeam.setName(requestDto.getName());
+        if(requestDto.getWins() != newTeam.getWins()) newTeam.setWins(requestDto.getWins());
+        if(requestDto.getDraws() != newTeam.getDraws()) newTeam.setDraws(requestDto.getDraws());
+        if(requestDto.getLoses() != newTeam.getLoses()) newTeam.setLoses(requestDto.getLoses());
+        if(requestDto.getGoalsForward() != newTeam.getGoalsForward()) newTeam.setGoalsForward(requestDto.getGoalsForward());
+        if(requestDto.getGoalsAgainst() != newTeam.getGoalsAgainst()) newTeam.setGoalsAgainst(requestDto.getGoalsAgainst());
 
         return leagueService.saveLeague(league);
     }
