@@ -1,5 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
+import co.za.tlhalefosebaeng.leagueoracle.dto.auth.UserResponse;
+import co.za.tlhalefosebaeng.leagueoracle.mapper.UserMapper;
 import co.za.tlhalefosebaeng.leagueoracle.response.AuthResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
@@ -24,10 +26,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@Valid @RequestBody SignupRequest requestDto, HttpServletResponse response){
-        User newUser = userService.addUser(requestDto);
-        String jwt = jwtService.generateToken(newUser);
+        User user = userService.addUser(requestDto);
+        String jwt = jwtService.generateToken(user);
         response.addCookie(cookieService.create("access_jwt", jwt));
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, userService.convertUserToDto(newUser)));
+        UserResponse responseDto = UserMapper.toResponse(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, responseDto));
     }
 
     @PostMapping("/login")
@@ -35,19 +38,21 @@ public class AuthController {
         User user = userService.login(requestDto);
         String jwt = jwtService.generateToken(user);
         response.addCookie(cookieService.create("access_jwt", jwt));
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, userService.convertUserToDto(user)));
+        UserResponse responseDto = UserMapper.toResponse(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, responseDto));
     }
 
     @GetMapping("/check")
     public ResponseEntity<AuthResponse> checkAuth(@CookieValue("access_jwt") String jwt) {
         User user = userService.checkAuth(jwt);
         if(user == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(false, null));
-        return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(true, userService.convertUserToDto(user)));
+        UserResponse responseDto = UserMapper.toResponse(user);
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(true, responseDto));
     }
 
     @GetMapping("/logout")
     public ResponseEntity<Object> logout(HttpServletResponse response) {
         response.addCookie(cookieService.create("access_jwt", ""));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // No need to return anything to the user
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // No need to return anything to the client
     }
 }
