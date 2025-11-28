@@ -21,7 +21,6 @@ public class TeamService implements TeamServiceInterface{
 
     @Override
     public Team addTeam(Long leagueId, AddTeamRequest requestDto) {
-        // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to add teams of a league
@@ -72,10 +71,7 @@ public class TeamService implements TeamServiceInterface{
 
     @Override
     public void deleteTeam(Long teamId) {
-        // Get the team from the database using the team repo otherwise throw the relevant exception
-        Team team = teamRepo.findById(teamId).orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST ,"Team not found! Please check team ID and try again"));
-
-        // Get the league with the team league's id from the database using the league service
+        Team team = this.getTeam(teamId);
         League league = leagueService.getLeague(team.getLeague().getId());
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to delete a team
@@ -83,6 +79,6 @@ public class TeamService implements TeamServiceInterface{
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
-        teamRepo.delete(team); // Delete the team using the repo
+        teamRepo.delete(team);
     }
 }
