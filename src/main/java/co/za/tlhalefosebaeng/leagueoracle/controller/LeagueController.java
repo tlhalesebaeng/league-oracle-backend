@@ -68,7 +68,7 @@ public class LeagueController {
     }
 
     @PatchMapping("/{leagueId}")
-    public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @RequestBody LeagueRequest requestDto) {
+    public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @Valid @RequestBody LeagueRequest requestDto) {
         // Update the league that has the provided league id using the league service
         League league = leagueService.updateLeague(leagueId, requestDto);
 
