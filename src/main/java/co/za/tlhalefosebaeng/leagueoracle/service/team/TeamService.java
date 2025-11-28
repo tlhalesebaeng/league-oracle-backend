@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,6 +68,12 @@ public class TeamService implements TeamServiceInterface{
         if(requestDto.getName() != null) team.setName(requestDto.getName());
 
         return teamRepo.save(team);
+    }
+
+    @Override
+    public List<Team> getAllLeagueTeams(Long leagueId) {
+        League league = leagueService.getLeague(leagueId);
+        return teamRepo.findAllByLeagueId(league.getId());
     }
 
     @Override
