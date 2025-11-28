@@ -10,6 +10,7 @@ public class TeamMapper {
     public static TeamResponse toResponse(Team team) {
         TeamResponse response = new TeamResponse();
         response.setId(team.getId());
+        response.setLeague(team.getLeague().getId());
         response.setName(team.getName());
         response.setWins(team.getWins());
         response.setDraws(team.getDraws());
