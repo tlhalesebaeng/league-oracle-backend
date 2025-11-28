@@ -2,9 +2,12 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
+import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 import co.za.tlhalefosebaeng.leagueoracle.mapper.LeagueMapper;
 import co.za.tlhalefosebaeng.leagueoracle.entity.League;
+import co.za.tlhalefosebaeng.leagueoracle.mapper.TeamMapper;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,13 @@ public class TeamController {
     public ResponseEntity<LeagueResponse> addTeam(@RequestParam Long leagueId, @Valid @RequestBody AddTeamRequest requestDto){
         League league = teamService.addTeam(leagueId, requestDto);
         LeagueResponse responseDto = LeagueMapper.toResponse(league);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @GetMapping("/{teamId}")
+    public ResponseEntity<TeamResponse> getTeam(@PathVariable Long teamId) {
+        Team team = teamService.getTeam(teamId);
+        TeamResponse responseDto = TeamMapper.toResponse(team);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
