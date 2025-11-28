@@ -1,9 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.result;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultRequest;
-import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
-import co.za.tlhalefosebaeng.leagueoracle.mapper.TeamMapper;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Result;
@@ -11,7 +9,6 @@ import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.ResultRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
-import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,22 +23,6 @@ public class ResultService implements ResultServiceInterface {
     private final ResultRepository resultRepo;
     private final FixtureServiceInterface fixtureService;
     private final LeagueServiceInterface leagueService;
-
-    @Override
-    public ResultResponse convertResultToDto(Result result) {
-        ResultResponse resultResponse = new ResultResponse();
-
-        resultResponse.setId(result.getId());
-        resultResponse.setName(result.getLeague().getName());
-        resultResponse.setDate(result.getDate());
-        resultResponse.setTime(result.getTime());
-        resultResponse.setHomeTeamScore(result.getHomeTeamScore());
-        resultResponse.setAwayTeamScore(result.getAwayTeamScore());
-        resultResponse.setHomeTeam(TeamMapper.toResponse(result.getHomeTeam()));
-        resultResponse.setAwayTeam(TeamMapper.toResponse(result.getAwayTeam()));
-
-        return resultResponse;
-    }
 
     // Helper method that updates team details out of the provided results
     private void updateTeams(League league, Result result) {
