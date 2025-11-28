@@ -4,6 +4,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public class FixtureController {
     }
 
     @PatchMapping("/{fixtureId}")
-    public ResponseEntity<FixtureResponse> updateFixture(@PathVariable Long fixtureId, @RequestBody UpdateFixtureRequest requestDto) {
+    public ResponseEntity<FixtureResponse> updateFixture(@PathVariable Long fixtureId, @Valid @RequestBody UpdateFixtureRequest requestDto) {
         Fixture fixture = fixtureService.updateFixture(fixtureId, requestDto);
         return ResponseEntity.status(HttpStatus.OK).body( fixtureService.convertFixtureToDto(fixture));
     }
