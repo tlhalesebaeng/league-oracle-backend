@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +50,12 @@ public class TeamService implements TeamServiceInterface{
         // Add the team to the list of teams and return the newly saved league
         league.getTeams().add(newTeam);
         return leagueService.saveLeague(league);
+    }
+
+    @Override
+    public Team getTeam(Long teamId) {
+        Optional<Team> team = teamRepo.findById(teamId);
+        return team.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST ,"Team not found! Please check team ID and try again"));
     }
 
     @Override
