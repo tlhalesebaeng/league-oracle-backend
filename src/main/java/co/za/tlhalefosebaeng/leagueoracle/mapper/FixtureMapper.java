@@ -3,6 +3,9 @@ package co.za.tlhalefosebaeng.leagueoracle.mapper;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FixtureMapper {
     public static FixtureResponse toResponse(Fixture fixture) {
         FixtureResponse response = new FixtureResponse();
@@ -17,5 +20,11 @@ public class FixtureMapper {
         response.setAwayTeam(TeamMapper.toResponse(fixture.getAwayTeam()));
 
         return response;
+    }
+
+    public static List<FixtureResponse> toResponseList(List<Fixture> fixtures) {
+        List<FixtureResponse> responseList = new ArrayList<>();
+        for(Fixture fixture : fixtures) responseList.add(FixtureMapper.toResponse(fixture));
+        return responseList;
     }
 }
