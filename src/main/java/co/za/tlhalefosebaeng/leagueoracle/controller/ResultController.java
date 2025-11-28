@@ -21,40 +21,30 @@ public class ResultController {
 
     @PostMapping("")
     public ResponseEntity<ResultResponse> addResult(@RequestParam Long fixtureId, @Valid @RequestBody ResultRequest requestDto) {
-        // Add results of a fixture to the database using the result service
         Result result = resultService.addResult(fixtureId, requestDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(resultService.convertResultToDto(result));
     }
 
     @GetMapping("")
     public ResponseEntity<List<ResultResponse>> getLeagueResults(@RequestParam Long leagueId) {
-        // Get a list of all the results that belong to the league with the given league id
         List<Result> results = resultService.getLeagueResults(leagueId);
-
-        // Convert the results into result response dto and return the new list
         List<ResultResponse> convertedResults = new ArrayList<>();
         for(Result result : results) {
             convertedResults.add(resultService.convertResultToDto(result));
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(convertedResults);
     }
 
     @GetMapping("{resultId}")
     public ResponseEntity<ResultResponse> getResult(@PathVariable Long resultId) {
-        // Get the result from the database using the result service
         Result result = resultService.getResult(resultId);
-
-        // Convert the result into a result response dto and return it
         return ResponseEntity.status(HttpStatus.OK).body(resultService.convertResultToDto(result));
     }
 
     @PatchMapping("{resultId}")
     public ResponseEntity<ResultResponse> updateResult(@PathVariable Long resultId, @Valid @RequestBody ResultRequest requestDto) {
-        // Update the fields of the result with the given id using the result service
         Result result = resultService.updateResult(resultId, requestDto);
-
-        // Convert the result into a result response dto and return it
         return ResponseEntity.status(HttpStatus.OK).body(resultService.convertResultToDto(result));
     }
 }

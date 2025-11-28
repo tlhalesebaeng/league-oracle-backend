@@ -24,43 +24,29 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@Valid @RequestBody SignupRequest requestDto, HttpServletResponse response){
-        // Sign the user up using the user service
         User newUser = userService.addUser(requestDto);
-
-        String jwt = jwtService.generateToken(newUser); // Generate the token using the jwt service
-        response.addCookie(cookieService.create("access_jwt", jwt)); // Create a cookie using the cookie service and add it to the response
-
-        // Convert the user object to a user response dto and return it as part of the api response
+        String jwt = jwtService.generateToken(newUser);
+        response.addCookie(cookieService.create("access_jwt", jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, userService.convertUserToDto(newUser)));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest requestDto, HttpServletResponse response) {
-        // Get the user from the database using the user service
         User user = userService.login(requestDto);
-
-        // Generate the token and set it as a cookie in the response
         String jwt = jwtService.generateToken(user);
         response.addCookie(cookieService.create("access_jwt", jwt));
-
-        // Convert the user object to a user response dto and return it as part of the api response
         return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, userService.convertUserToDto(user)));
     }
 
     @GetMapping("/check")
     public ResponseEntity<AuthResponse> checkAuth(@CookieValue("access_jwt") String jwt) {
-        User user = userService.checkAuth(jwt); // Get the user using the user service
-
-        // When the user is null return isAuth as false and the user as null
+        User user = userService.checkAuth(jwt);
         if(user == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(false, null));
-
-        // When all checks are valid convert the user object to a user response dto and return it as part of the api response
         return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(true, userService.convertUserToDto(user)));
     }
 
     @GetMapping("/logout")
     public ResponseEntity<Object> logout(HttpServletResponse response) {
-        // Add an empty token as a cookie to the response
         response.addCookie(cookieService.create("access_jwt", ""));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // No need to return anything to the user
     }
