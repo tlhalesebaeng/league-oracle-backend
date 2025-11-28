@@ -2,7 +2,6 @@ package co.za.tlhalefosebaeng.leagueoracle.service.user;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
-import co.za.tlhalefosebaeng.leagueoracle.dto.auth.UserResponse;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
 import co.za.tlhalefosebaeng.leagueoracle.model.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.UserRepository;
@@ -20,19 +19,6 @@ public class UserService implements UserServiceInterface{
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceInterface jwtService;
-
-    @Override
-    public UserResponse convertUserToDto(User user) {
-        // Instantiate a new user instance
-        UserResponse userResponse = new UserResponse();
-
-        // Set the properties of the user response and return the user response instance
-        userResponse.setId(user.getId());
-        userResponse.setFirstName(user.getFirstName());
-        userResponse.setLastName(user.getLastName());
-        userResponse.setEmail(user.getEmail());
-        return userResponse;
-    }
 
     @Override
     public User getUserByEmail(String email) {
