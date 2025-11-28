@@ -31,13 +31,6 @@ public class LeagueService implements LeagueServiceInterface {
         return username.equals(email); // Emails are unique so if they match then the principal user is the creator of the league
     }
 
-    // Helper method to assist with saving the league. This will allow us to save leagues
-    // on other services without directly using the league repo
-    @Override
-    public League saveLeague(League league) {
-        return leagueRepo.save(league);
-    }
-
     @Override
     public League createLeague(LeagueRequest league) {
         // Confirm that the team names are unique
@@ -45,24 +38,19 @@ public class LeagueService implements LeagueServiceInterface {
             throw new AppException(HttpStatus.BAD_REQUEST, "Invalid details! Teams should have different names");
         }
 
-        // Instantiate a new league instance that will be saved on the database
         League pendingLeague = new League();
-        pendingLeague.setName(league.getName()); // Set the league name
+        pendingLeague.setName(league.getName());
 
         // Get the details of the logged-in user from the user details service and set the creator of the league
         User user = userService.getUserByEmail(userDetailsService.getPrincipal().getUsername());
         pendingLeague.setCreator(user);
 
-        // Assign the reference of the pending league to all teams
         for(Team team : league.getTeams()) {
             team.setLeague(pendingLeague);
         }
 
-        // Assign the refence of teams to the league
         pendingLeague.setTeams(league.getTeams());
-
-        // Save the league and return the saved league
-        return this.saveLeague(pendingLeague);
+        return leagueRepo.save(pendingLeague);
     }
 
     @Override
@@ -88,7 +76,6 @@ public class LeagueService implements LeagueServiceInterface {
 
     @Override
     public League updateLeague(Long leagueId, LeagueRequest requestDto) {
-        // Get the league using the provided id. This will confirm that the league exists
         League leagueToUpdate = this.getLeague(leagueId);
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to update the league
@@ -96,14 +83,12 @@ public class LeagueService implements LeagueServiceInterface {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
-        // We should only update the league name. There are endpoints to update other properties of the league
         leagueToUpdate.setName(requestDto.getName());
-        return this.saveLeague(leagueToUpdate);
+        return leagueRepo.save(leagueToUpdate);
     }
 
     @Override
     public void deleteLeague(Long leagueId) {
-        // Get the league using the provided id. This is to confirm that the league exists
         League leagueToDelete = this.getLeague(leagueId);
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to delete the league
@@ -111,7 +96,7 @@ public class LeagueService implements LeagueServiceInterface {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
-        leagueRepo.delete(leagueToDelete); // Delete the league using the league repo
+        leagueRepo.delete(leagueToDelete);
     }
 
 }
