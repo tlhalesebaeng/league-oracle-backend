@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.endpoint.prefix}/teams")
@@ -22,6 +24,13 @@ public class TeamController {
     public ResponseEntity<TeamResponse> addTeam(@RequestParam Long leagueId, @Valid @RequestBody AddTeamRequest requestDto){
         Team team = teamService.addTeam(leagueId, requestDto);
         TeamResponse responseDto = TeamMapper.toResponse(team);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<TeamResponse>> getAllLeagueTeams(@RequestParam Long leagueId) {
+        List<Team> teams = teamService.getAllLeagueTeams(leagueId);
+        List<TeamResponse> responseDto = TeamMapper.toResponseList(teams);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
