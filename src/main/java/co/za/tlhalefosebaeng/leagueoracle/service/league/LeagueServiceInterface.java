@@ -6,7 +6,6 @@ import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 import java.util.List;
 
 public interface LeagueServiceInterface {
-    League saveLeague(League league);
     League createLeague(LeagueRequest league);
     League getLeague(Long leagueId);
     List<League> getAllLeagues(String name);
