@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface FixtureServiceInterface {
     List<Fixture> generateLeagueFixtures(Long leagueId);
-    FixtureResponse convertFixtureToDto(Fixture fixture);
     List<Fixture> getAllLeagueFixtures(Long leagueId);
     Fixture getFixture(Long fixtureId);
     Fixture updateFixture(Long fixtureId, UpdateFixtureRequest requestDto);
