@@ -13,7 +13,6 @@ public class LeagueMapper {
         response.setId(league.getId());
         response.setName(league.getName());
         response.setCreator(league.getCreator().getId());
-        response.setTeams(TeamMapper.toResponseList(league.getTeams()));
 
         // Set the date in the format yyyy-mm-dd
         LocalDate date = league.getCreatedAt().toLocalDate();
