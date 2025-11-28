@@ -28,7 +28,7 @@ public class League {
     @JsonIgnore
     private User creator;
 
-    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "league", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Team> teams;
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.REMOVE, orphanRemoval = true)
