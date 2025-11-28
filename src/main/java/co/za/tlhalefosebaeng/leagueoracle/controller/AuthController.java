@@ -5,7 +5,7 @@ import co.za.tlhalefosebaeng.leagueoracle.mapper.UserMapper;
 import co.za.tlhalefosebaeng.leagueoracle.response.AuthResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.cookie.CookieService;

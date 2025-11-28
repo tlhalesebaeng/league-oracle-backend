@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.jwt;
 
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

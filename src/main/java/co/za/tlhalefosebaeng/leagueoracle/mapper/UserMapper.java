@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.mapper;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.UserResponse;
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 
 public class UserMapper {
     public static UserResponse toResponse(User user) {

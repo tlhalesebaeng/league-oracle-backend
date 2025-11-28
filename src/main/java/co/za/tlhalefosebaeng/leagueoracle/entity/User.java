@@ -1,4 +1,4 @@
-package co.za.tlhalefosebaeng.leagueoracle.model;
+package co.za.tlhalefosebaeng.leagueoracle.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

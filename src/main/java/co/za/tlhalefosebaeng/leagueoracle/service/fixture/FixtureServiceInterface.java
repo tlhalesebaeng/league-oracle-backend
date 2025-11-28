@@ -1,8 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 
-import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
-import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Fixture;
 
 import java.util.List;
 

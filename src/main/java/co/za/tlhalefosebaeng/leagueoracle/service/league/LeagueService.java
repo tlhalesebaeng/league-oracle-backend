@@ -2,9 +2,9 @@ package co.za.tlhalefosebaeng.leagueoracle.service.league;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
-import co.za.tlhalefosebaeng.leagueoracle.model.League;
-import co.za.tlhalefosebaeng.leagueoracle.model.Team;
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.League;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.LeagueRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
 import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;

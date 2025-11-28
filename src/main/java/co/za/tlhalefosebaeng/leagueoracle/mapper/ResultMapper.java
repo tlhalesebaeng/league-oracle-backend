@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.mapper;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
-import co.za.tlhalefosebaeng.leagueoracle.model.Result;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Result;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.dto.league;
 
-import co.za.tlhalefosebaeng.leagueoracle.model.Team;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

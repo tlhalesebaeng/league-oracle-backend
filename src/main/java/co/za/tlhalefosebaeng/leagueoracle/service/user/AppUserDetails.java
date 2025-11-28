@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.user;
 
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

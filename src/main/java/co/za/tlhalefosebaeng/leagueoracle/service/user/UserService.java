@@ -3,7 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.user;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.LoginRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.auth.SignupRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 import co.za.tlhalefosebaeng.leagueoracle.repository.UserRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.jwt.JwtServiceInterface;
 import lombok.RequiredArgsConstructor;

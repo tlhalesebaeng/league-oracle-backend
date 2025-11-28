@@ -1,6 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.repository;
 
-import co.za.tlhalefosebaeng.leagueoracle.model.User;
+import co.za.tlhalefosebaeng.leagueoracle.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

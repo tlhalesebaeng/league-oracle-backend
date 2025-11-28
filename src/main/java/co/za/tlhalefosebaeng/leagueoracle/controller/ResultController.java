@@ -3,7 +3,7 @@ package co.za.tlhalefosebaeng.leagueoracle.controller;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.mapper.ResultMapper;
-import co.za.tlhalefosebaeng.leagueoracle.model.Result;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Result;
 import co.za.tlhalefosebaeng.leagueoracle.service.result.ResultServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

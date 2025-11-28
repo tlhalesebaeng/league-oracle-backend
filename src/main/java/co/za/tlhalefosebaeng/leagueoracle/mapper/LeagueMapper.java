@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.mapper;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
-import co.za.tlhalefosebaeng.leagueoracle.model.League;
+import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

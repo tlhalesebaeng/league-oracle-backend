@@ -2,9 +2,9 @@ package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
-import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
-import co.za.tlhalefosebaeng.leagueoracle.model.League;
-import co.za.tlhalefosebaeng.leagueoracle.model.Team;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Fixture;
+import co.za.tlhalefosebaeng.leagueoracle.entity.League;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
 import lombok.RequiredArgsConstructor;

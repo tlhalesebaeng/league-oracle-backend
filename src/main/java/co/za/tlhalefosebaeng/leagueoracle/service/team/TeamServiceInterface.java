@@ -2,7 +2,7 @@ package co.za.tlhalefosebaeng.leagueoracle.service.team;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
-import co.za.tlhalefosebaeng.leagueoracle.model.League;
+import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 
 public interface TeamServiceInterface {
     League addTeam(Long leagueId, AddTeamRequest requestDto);

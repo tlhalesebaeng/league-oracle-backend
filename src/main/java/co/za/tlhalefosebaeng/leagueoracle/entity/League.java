@@ -1,4 +1,4 @@
-package co.za.tlhalefosebaeng.leagueoracle.model;
+package co.za.tlhalefosebaeng.leagueoracle.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

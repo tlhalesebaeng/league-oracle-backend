@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.mapper;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
-import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Fixture;
 
 import java.util.ArrayList;
 import java.util.List;

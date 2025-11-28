@@ -2,10 +2,10 @@ package co.za.tlhalefosebaeng.leagueoracle.service.result;
 
 import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
-import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
-import co.za.tlhalefosebaeng.leagueoracle.model.League;
-import co.za.tlhalefosebaeng.leagueoracle.model.Result;
-import co.za.tlhalefosebaeng.leagueoracle.model.Team;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Fixture;
+import co.za.tlhalefosebaeng.leagueoracle.entity.League;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Result;
+import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.ResultRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
