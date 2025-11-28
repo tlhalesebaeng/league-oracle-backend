@@ -90,16 +90,10 @@ public class ResultService implements ResultServiceInterface {
         result.setHomeTeamScore(requestDto.getHomeTeamScore());
         result.setAwayTeamScore(requestDto.getAwayTeamScore());
 
-        // Update team details accordingly
         updateTeams(league, result);
 
-        // Save the league using the league service
-        leagueService.saveLeague(league);
-
-        // Delete the fixture using the fixture id
         fixtureService.deleteFixture(fixture.getId());
 
-        // Save the result and return it
         return resultRepo.save(result);
     }
 
@@ -237,14 +231,9 @@ public class ResultService implements ResultServiceInterface {
         awayTeam.setGoalsForward(awayTeam.getGoalsForward() - awayTeamScoreDifference);
         awayTeam.setGoalsAgainst(awayTeam.getGoalsAgainst() - homeTeamScoreDifference);
 
-        // Update the result scores
         result.setHomeTeamScore(newHomeTeamScore);
         result.setAwayTeamScore(newAwayTeamScore);
 
-        // Save the team details
-        leagueService.saveLeague(league);
-
-        // Update the result and return the newly saved result
         return resultRepo.save(result);
     }
 }
