@@ -1,17 +1,12 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.fixture;
 
-import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.FixtureResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.exceptions.AppException;
-import co.za.tlhalefosebaeng.leagueoracle.mapper.TeamMapper;
 import co.za.tlhalefosebaeng.leagueoracle.model.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.model.League;
 import co.za.tlhalefosebaeng.leagueoracle.model.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
-import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
-import co.za.tlhalefosebaeng.leagueoracle.service.user.AppUserDetailsService;
-import co.za.tlhalefosebaeng.leagueoracle.service.user.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,25 +21,6 @@ import java.util.Optional;
 public class FixtureService implements FixtureServiceInterface {
     private final FixtureRepository fixtureRepo;
     private final LeagueServiceInterface leagueService;
-    private final TeamServiceInterface teamService;
-    private final UserServiceInterface userService;
-    private final AppUserDetailsService userDetailsService;
-
-    @Override
-    public FixtureResponse convertFixtureToDto(Fixture fixture) {
-        FixtureResponse fixtureResponse = new FixtureResponse();
-
-        fixtureResponse.setId(fixture.getId());
-        fixtureResponse.setLeague(fixture.getLeague().getId());
-        fixtureResponse.setDate(fixture.getDate());
-        fixtureResponse.setTime(fixture.getTime());
-        fixtureResponse.setVenue(fixture.getVenue());
-        fixtureResponse.setField(fixture.getField());
-        fixtureResponse.setHomeTeam(TeamMapper.toResponse(fixture.getHomeTeam()));
-        fixtureResponse.setAwayTeam(TeamMapper.toResponse(fixture.getAwayTeam()));
-
-        return fixtureResponse;
-    }
 
     @Override
     public List<Fixture> generateLeagueFixtures(Long leagueId) {
