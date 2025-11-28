@@ -1,12 +1,9 @@
 package co.za.tlhalefosebaeng.leagueoracle.controller;
 
-import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.AddTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.TeamResponse;
 import co.za.tlhalefosebaeng.leagueoracle.dto.team.UpdateTeamRequest;
 import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
-import co.za.tlhalefosebaeng.leagueoracle.mapper.LeagueMapper;
-import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 import co.za.tlhalefosebaeng.leagueoracle.mapper.TeamMapper;
 import co.za.tlhalefosebaeng.leagueoracle.service.team.TeamServiceInterface;
 import jakarta.validation.Valid;
@@ -21,11 +18,10 @@ import org.springframework.web.bind.annotation.*;
 public class TeamController {
     private final TeamServiceInterface teamService;
 
-    // All the team endpoint should return the league because we will never query the team without needing league details
     @PostMapping("")
-    public ResponseEntity<LeagueResponse> addTeam(@RequestParam Long leagueId, @Valid @RequestBody AddTeamRequest requestDto){
-        League league = teamService.addTeam(leagueId, requestDto);
-        LeagueResponse responseDto = LeagueMapper.toResponse(league);
+    public ResponseEntity<TeamResponse> addTeam(@RequestParam Long leagueId, @Valid @RequestBody AddTeamRequest requestDto){
+        Team team = teamService.addTeam(leagueId, requestDto);
+        TeamResponse responseDto = TeamMapper.toResponse(team);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
@@ -37,9 +33,9 @@ public class TeamController {
     }
 
     @PatchMapping("/{teamId}")
-    public ResponseEntity<LeagueResponse> updateTeam(@RequestParam Long leagueId, @PathVariable Long teamId, @Valid @RequestBody UpdateTeamRequest requestDto) {
-        League league = teamService.updateTeam(leagueId, teamId, requestDto);
-        LeagueResponse responseDto = LeagueMapper.toResponse(league);
+    public ResponseEntity<TeamResponse> updateTeam(@RequestParam Long leagueId, @PathVariable Long teamId, @Valid @RequestBody UpdateTeamRequest requestDto) {
+        Team team = teamService.updateTeam(teamId, requestDto);
+        TeamResponse responseDto = TeamMapper.toResponse(team);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 

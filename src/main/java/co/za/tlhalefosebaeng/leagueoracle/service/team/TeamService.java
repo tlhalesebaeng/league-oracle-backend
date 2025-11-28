@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,7 +20,7 @@ public class TeamService implements TeamServiceInterface{
     private final TeamRepository teamRepo;
 
     @Override
-    public League addTeam(Long leagueId, AddTeamRequest requestDto) {
+    public Team addTeam(Long leagueId, AddTeamRequest requestDto) {
         // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
@@ -42,14 +41,11 @@ public class TeamService implements TeamServiceInterface{
             }
         }
 
-        // Set the necessary team properties
-        Team newTeam = new Team();
-        newTeam.setLeague(league);
-        newTeam.setName(requestDto.getName());
+        Team team = new Team();
+        team.setLeague(league);
+        team.setName(requestDto.getName());
 
-        // Add the team to the list of teams and return the newly saved league
-        league.getTeams().add(newTeam);
-        return leagueService.saveLeague(league);
+        return teamRepo.save(team);
     }
 
     @Override
@@ -59,37 +55,19 @@ public class TeamService implements TeamServiceInterface{
     }
 
     @Override
-    public League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest requestDto) {
-        // Get the league from the database using the league service
-        League league = leagueService.getLeague(leagueId);
+    public Team updateTeam(Long teamId, UpdateTeamRequest requestDto) {
+        Team team = this.getTeam(teamId);
+        League league = leagueService.getLeague(team.getLeague().getId());
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to update teams of a league
         if(!leagueService.isCreator(league)) {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
-        // Use linear search to store the team that has the provided team id
-        // Linear search will perform well since leagues have very few teams
-        Team newTeam = null;
-        for(Team t : league.getTeams()) {
-            if(Objects.equals(t.getId(), teamId)) {
-                newTeam = t;
-                break;
-            }
-        }
+        // To increase the integrity of the system, only the team name can be updated. Other team fields should be updated through results
+        if(requestDto.getName() != null) team.setName(requestDto.getName());
 
-        // Throw a relevant exception when the league has no team with the given team id
-        if(newTeam == null) throw new AppException(HttpStatus.BAD_REQUEST ,"Team not found! Please check team ID and try again.");
-
-        // Update properties of the existing team
-        if(requestDto.getName() != null) newTeam.setName(requestDto.getName());
-        if(requestDto.getWins() != newTeam.getWins()) newTeam.setWins(requestDto.getWins());
-        if(requestDto.getDraws() != newTeam.getDraws()) newTeam.setDraws(requestDto.getDraws());
-        if(requestDto.getLoses() != newTeam.getLoses()) newTeam.setLoses(requestDto.getLoses());
-        if(requestDto.getGoalsForward() != newTeam.getGoalsForward()) newTeam.setGoalsForward(requestDto.getGoalsForward());
-        if(requestDto.getGoalsAgainst() != newTeam.getGoalsAgainst()) newTeam.setGoalsAgainst(requestDto.getGoalsAgainst());
-
-        return leagueService.saveLeague(league);
+        return teamRepo.save(team);
     }
 
     @Override

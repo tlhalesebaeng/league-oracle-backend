@@ -6,8 +6,8 @@ import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 
 public interface TeamServiceInterface {
-    League addTeam(Long leagueId, AddTeamRequest requestDto);
+    Team addTeam(Long leagueId, AddTeamRequest requestDto);
     Team getTeam(Long teamId);
-    League updateTeam(Long leagueId, Long teamId, UpdateTeamRequest requestDto);
+    Team updateTeam(Long teamId, UpdateTeamRequest requestDto);
     void deleteTeam(Long teamId);
 }
