@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TeamResponse {
     private Long id;
+    private Long league;
     private String name;
     private int wins;
     private int draws;
