@@ -20,7 +20,7 @@ public class TeamController {
 
     // All the team endpoint should return the league because we will never query the team without needing league details
     @PostMapping("")
-    public ResponseEntity<LeagueResponse> addTeam(@RequestParam Long leagueId, @RequestBody AddTeamRequest requestDto){
+    public ResponseEntity<LeagueResponse> addTeam(@RequestParam Long leagueId, @Valid @RequestBody AddTeamRequest requestDto){
         League league = teamService.addTeam(leagueId, requestDto);
         LeagueResponse responseDto = LeagueMapper.toResponse(league);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
