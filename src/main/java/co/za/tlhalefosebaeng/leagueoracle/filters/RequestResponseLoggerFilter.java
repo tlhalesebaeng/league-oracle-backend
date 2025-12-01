@@ -1,5 +1,6 @@
 package co.za.tlhalefosebaeng.leagueoracle.filters;
 
+import co.za.tlhalefosebaeng.leagueoracle.utils.CustomHttpRequestWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class RequestResponseLoggerFilter extends OncePerRequestFilter {
@@ -17,18 +19,23 @@ public class RequestResponseLoggerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String method = request.getMethod();
-        String uri = request.getRequestURI();
-        String queryString = request.getQueryString();
-        String query = queryString != null ? "?" + queryString : "";
+        CustomHttpRequestWrapper httpRequest = new CustomHttpRequestWrapper(request);
 
-        httpLogger.info("Incoming: {} {}{}", method, uri, query);
+        String method = httpRequest.getMethod();
+        String uri = httpRequest.getRequestURI();
+        String queryString = httpRequest.getQueryString();
+        String query = queryString != null ? "?" + queryString : "";
+        String correlationId = UUID.randomUUID().toString();
+
+        httpRequest.setHeader("X-Correlation-Id", correlationId);
+
+        httpLogger.info("Incoming: {} {} {}{}",correlationId, method, uri, query);
 
         long start = System.currentTimeMillis();
         filterChain.doFilter(request, response);
         long total = System.currentTimeMillis() - start;
 
         int status = response.getStatus();
-        httpLogger.info("Outgoing: HTTP {} {} ms", status, total);
+        httpLogger.info("Outgoing: {} HTTP {} {} ms", correlationId, status, total);
     }
 }
