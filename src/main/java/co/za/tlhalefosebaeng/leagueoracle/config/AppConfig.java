@@ -1,6 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
 import co.za.tlhalefosebaeng.leagueoracle.filters.JwtFilter;
+import co.za.tlhalefosebaeng.leagueoracle.filters.RequestResponseLoggerFilter;
 import co.za.tlhalefosebaeng.leagueoracle.service.routes.RoutesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
+    private final RequestResponseLoggerFilter loggerFilter;
     private final DelegatedAuthenticationEntryPoint authEntryPoint;
     private final RoutesService routesService;
     private final @Qualifier("customCorsConfiguration") CorsConfigurationSource configSource;
@@ -75,6 +78,9 @@ public class AppConfig {
             );
             customizer.anyRequest().permitAll();
         });
+
+        // Add the custom logging filter before the second spring security filter (WebAsyncManager)
+        http.addFilterBefore(loggerFilter, WebAsyncManagerIntegrationFilter.class);
 
         // Add the jwt filter before the filter that extracts the username and password from the request
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
