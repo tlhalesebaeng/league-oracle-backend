@@ -39,7 +39,7 @@ public class AuthController {
         String jwt = jwtService.generateToken(user);
         response.addCookie(cookieService.create("access_jwt", jwt));
         UserResponse responseDto = UserMapper.toResponse(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(true, responseDto));
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(true, responseDto));
     }
 
     @GetMapping("/check")
