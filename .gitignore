@@ -6,6 +6,7 @@ target/
 
 ### App Sensitive Data ###
 application.properties
+/logs/
 
 ### STS ###
 .apt_generated
