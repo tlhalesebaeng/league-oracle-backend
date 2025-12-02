@@ -1,6 +1,5 @@
 package co.za.tlhalefosebaeng.leagueoracle.filters;
 
-import co.za.tlhalefosebaeng.leagueoracle.utils.CustomHttpRequestWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,15 +18,13 @@ public class RequestsLoggerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        CustomHttpRequestWrapper httpRequest = new CustomHttpRequestWrapper(request);
-
-        String method = httpRequest.getMethod();
-        String uri = httpRequest.getRequestURI();
-        String queryString = httpRequest.getQueryString();
+        String method = request.getMethod();
+        String uri = request.getRequestURI();
+        String queryString = request.getQueryString();
         String query = queryString != null ? "?" + queryString : "";
         String correlationId = UUID.randomUUID().toString();
 
-        httpRequest.setHeader("X-Correlation-Id", correlationId);
+        request.setAttribute("X-Correlation-Id", correlationId);
 
         httpLogger.info("Incoming: {} {} {}{}",correlationId, method, uri, query);
 
