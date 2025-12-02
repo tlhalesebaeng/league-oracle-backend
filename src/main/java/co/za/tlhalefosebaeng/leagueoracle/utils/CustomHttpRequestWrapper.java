@@ -7,19 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomHttpRequestWrapper extends HttpServletRequestWrapper {
-    private final Map<String, String> map = new HashMap<>();
+    private final Map<String, String> customHeaders;
 
     public CustomHttpRequestWrapper(HttpServletRequest request) {
         super(request);
+         this.customHeaders = new HashMap<>();
     }
 
     public void setHeader(String name, String value) {
-        map.put(name, value);
+        customHeaders.put(name, value);
     }
 
     @Override
     public String getHeader(String name) {
-        String header = map.get(name);
+        String header = customHeaders.get(name);
         if(header != null) return header;
         return super.getHeader(name);
     }
