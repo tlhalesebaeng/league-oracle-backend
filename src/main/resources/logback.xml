@@ -23,7 +23,7 @@
         </filter>
     </appender>
 
-    <logger name="co.za.tlhalefosebaeng.leagueoracle.filters.RequestResponseLoggerFilter" level="INFO" addivity="false">
+    <logger name="co.za.tlhalefosebaeng.leagueoracle.filters.RequestsLoggerFilter" level="INFO" addivity="false">
         <appender-ref ref="REQUESTS_LOGS" />
     </logger>
 

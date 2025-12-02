@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Component
-public class RequestResponseLoggerFilter extends OncePerRequestFilter {
-    private static final Logger httpLogger = LoggerFactory.getLogger(RequestResponseLoggerFilter.class);
+public class RequestsLoggerFilter extends OncePerRequestFilter {
+    private static final Logger httpLogger = LoggerFactory.getLogger(RequestsLoggerFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

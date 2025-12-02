@@ -1,7 +1,7 @@
 package co.za.tlhalefosebaeng.leagueoracle.config;
 
 import co.za.tlhalefosebaeng.leagueoracle.filters.JwtFilter;
-import co.za.tlhalefosebaeng.leagueoracle.filters.RequestResponseLoggerFilter;
+import co.za.tlhalefosebaeng.leagueoracle.filters.RequestsLoggerFilter;
 import co.za.tlhalefosebaeng.leagueoracle.service.routes.RoutesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +28,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
-    private final RequestResponseLoggerFilter loggerFilter;
+    private final RequestsLoggerFilter loggerFilter;
     private final DelegatedAuthenticationEntryPoint authEntryPoint;
     private final RoutesService routesService;
     private final @Qualifier("customCorsConfiguration") CorsConfigurationSource configSource;
