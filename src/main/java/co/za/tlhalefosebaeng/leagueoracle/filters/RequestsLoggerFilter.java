@@ -24,7 +24,7 @@ public class RequestsLoggerFilter extends OncePerRequestFilter {
         String query = queryString != null ? "?" + queryString : "";
         String correlationId = UUID.randomUUID().toString();
 
-        request.setAttribute("X-Correlation-Id", correlationId);
+        request.setAttribute("correlation-id", correlationId);
 
         httpLogger.info("Incoming: {} {} {}{}",correlationId, method, uri, query);
 
