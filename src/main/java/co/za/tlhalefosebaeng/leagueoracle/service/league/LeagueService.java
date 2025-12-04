@@ -38,19 +38,19 @@ public class LeagueService implements LeagueServiceInterface {
             throw new AppException(HttpStatus.BAD_REQUEST, "Invalid details! Teams should have different names");
         }
 
-        League pendingLeague = new League();
-        pendingLeague.setName(requestDto.getName());
+        League league = new League();
+        league.setName(requestDto.getName());
 
         // Get the details of the logged-in user from the user details service and set the creator of the league
         User user = userService.getUserByEmail(userDetailsService.getPrincipal().getUsername());
-        pendingLeague.setCreator(user);
+        league.setCreator(user);
 
         for(Team team : requestDto.getTeams()) {
-            team.setLeague(pendingLeague);
+            team.setLeague(league);
         }
 
-        pendingLeague.setTeams(requestDto.getTeams());
-        return leagueRepo.save(pendingLeague);
+        league.setTeams(requestDto.getTeams());
+        return leagueRepo.save(league);
     }
 
     @Override
