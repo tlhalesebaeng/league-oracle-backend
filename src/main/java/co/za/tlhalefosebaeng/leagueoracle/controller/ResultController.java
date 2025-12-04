@@ -27,7 +27,7 @@ public class ResultController {
         LOGGER.info("Attempting Add Fixture Result: {} FixtureId {}", correlationId, fixtureId);
         Result result = resultService.addResult(fixtureId, requestDto);
         ResultResponse responseDto = ResultMapper.toResponse(result);
-        LOGGER.info("Add Fixture Result Successful: {} ResultId {}", correlationId, responseDto.getId()); // Use response id to confirm that the ids are similar
+        LOGGER.info("Add Fixture Result Successful: {} ResultId {}", correlationId, responseDto.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
