@@ -5,6 +5,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.fixture.UpdateFixtureRequest;
 import co.za.tlhalefosebaeng.leagueoracle.mapper.FixtureMapper;
 import co.za.tlhalefosebaeng.leagueoracle.entity.Fixture;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,9 +22,11 @@ import java.util.List;
 public class FixtureController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FixtureController.class);
     private final FixtureServiceInterface fixtureService;
+    private final HttpServletRequest request;
 
     @PostMapping("")
-    public ResponseEntity<List<FixtureResponse>> createLeagueFixtures(@RequestAttribute("correlation-id") String correlationId, @RequestParam Long leagueId) {
+    public ResponseEntity<List<FixtureResponse>> createLeagueFixtures(@RequestParam Long leagueId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Create League Fixtures: {} LeagueId {}", correlationId, leagueId);
         List<Fixture> fixtures = fixtureService.generateLeagueFixtures(leagueId);
         List<FixtureResponse> responseDto = FixtureMapper.toResponseList(fixtures);
@@ -32,7 +35,8 @@ public class FixtureController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<FixtureResponse>> getAllLeagueFixtures(@RequestAttribute("correlation-id") String correlationId, @RequestParam Long leagueId) {
+    public ResponseEntity<List<FixtureResponse>> getAllLeagueFixtures(@RequestParam Long leagueId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get All League Fixtures: {} LeagueId {}", correlationId, leagueId);
         List<Fixture> fixtures = fixtureService.getAllLeagueFixtures(leagueId);
         List<FixtureResponse> responseDto = FixtureMapper.toResponseList(fixtures);
@@ -41,7 +45,8 @@ public class FixtureController {
     }
 
     @GetMapping("/{fixtureId}")
-    public ResponseEntity<FixtureResponse> getFixture(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long fixtureId) {
+    public ResponseEntity<FixtureResponse> getFixture(@PathVariable Long fixtureId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get Fixture: {} FixtureId {}", correlationId, fixtureId);
         Fixture fixture = fixtureService.getFixture(fixtureId);
         FixtureResponse responseDto = FixtureMapper.toResponse(fixture);
@@ -50,7 +55,8 @@ public class FixtureController {
     }
 
     @GetMapping("/upcoming")
-    public ResponseEntity<List<FixtureResponse>> getUpcomingFixtures(@RequestAttribute("correlation-id") String correlationId, @RequestParam Integer month) {
+    public ResponseEntity<List<FixtureResponse>> getUpcomingFixtures(@RequestParam Integer month) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get Upcoming Fixtures: {} Month {}", correlationId, month);
         List<Fixture> fixtures = fixtureService.getUpcomingFixtures(month);
         List<FixtureResponse> responseDto = FixtureMapper.toResponseList(fixtures);
@@ -59,7 +65,8 @@ public class FixtureController {
     }
 
     @PatchMapping("/{fixtureId}")
-    public ResponseEntity<FixtureResponse> updateFixture(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long fixtureId, @Valid @RequestBody UpdateFixtureRequest requestDto) {
+    public ResponseEntity<FixtureResponse> updateFixture(@PathVariable Long fixtureId, @Valid @RequestBody UpdateFixtureRequest requestDto) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Update Fixture: {} FixtureId {}", correlationId, fixtureId);
         Fixture fixture = fixtureService.updateFixture(fixtureId, requestDto);
         FixtureResponse responseDto = FixtureMapper.toResponse(fixture);
@@ -68,7 +75,8 @@ public class FixtureController {
     }
 
     @DeleteMapping("/{fixtureId}")
-    public ResponseEntity<Object> deleteFixture(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long fixtureId) {
+    public ResponseEntity<Object> deleteFixture(@PathVariable Long fixtureId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Delete Fixture: {} FixtureId {}", correlationId, fixtureId);
         fixtureService.deleteFixture(fixtureId);
         LOGGER.info("Delete Fixture Successful: {}", correlationId);

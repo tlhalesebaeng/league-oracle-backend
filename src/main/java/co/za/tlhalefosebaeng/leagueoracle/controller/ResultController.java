@@ -5,6 +5,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.result.ResultResponse;
 import co.za.tlhalefosebaeng.leagueoracle.mapper.ResultMapper;
 import co.za.tlhalefosebaeng.leagueoracle.entity.Result;
 import co.za.tlhalefosebaeng.leagueoracle.service.result.ResultServiceInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,9 +22,11 @@ import java.util.List;
 public class ResultController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultController.class);
     private final ResultServiceInterface resultService;
+    private final HttpServletRequest request;
 
     @PostMapping("")
-    public ResponseEntity<ResultResponse> addResult(@RequestAttribute("correlation-id") String correlationId, @RequestParam Long fixtureId, @Valid @RequestBody ResultRequest requestDto) {
+    public ResponseEntity<ResultResponse> addResult(@RequestParam Long fixtureId, @Valid @RequestBody ResultRequest requestDto) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Add Fixture Result: {} FixtureId {}", correlationId, fixtureId);
         Result result = resultService.addResult(fixtureId, requestDto);
         ResultResponse responseDto = ResultMapper.toResponse(result);
@@ -32,7 +35,8 @@ public class ResultController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ResultResponse>> getLeagueResults(@RequestAttribute("correlation-id") String correlationId, @RequestParam Long leagueId) {
+    public ResponseEntity<List<ResultResponse>> getLeagueResults(@RequestParam Long leagueId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get All League Results: {} LeagueId {}", correlationId, leagueId);
         List<Result> results = resultService.getLeagueResults(leagueId);
         List<ResultResponse> responseDto = ResultMapper.toResponseList(results);
@@ -41,7 +45,8 @@ public class ResultController {
     }
 
     @GetMapping("{resultId}")
-    public ResponseEntity<ResultResponse> getResult(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long resultId) {
+    public ResponseEntity<ResultResponse> getResult(@PathVariable Long resultId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get Result: {} ResultId {}", correlationId, resultId);
         Result result = resultService.getResult(resultId);
         ResultResponse responseDto = ResultMapper.toResponse(result);
@@ -50,7 +55,8 @@ public class ResultController {
     }
 
     @PatchMapping("{resultId}")
-    public ResponseEntity<ResultResponse> updateResult(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long resultId, @Valid @RequestBody ResultRequest requestDto) {
+    public ResponseEntity<ResultResponse> updateResult(@PathVariable Long resultId, @Valid @RequestBody ResultRequest requestDto) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Update Result: {} ResultId {}", correlationId, resultId);
         Result result = resultService.updateResult(resultId, requestDto);
         ResultResponse responseDto = ResultMapper.toResponse(result);

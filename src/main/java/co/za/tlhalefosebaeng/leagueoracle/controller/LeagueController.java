@@ -5,6 +5,7 @@ import co.za.tlhalefosebaeng.leagueoracle.dto.league.LeagueResponse;
 import co.za.tlhalefosebaeng.leagueoracle.mapper.LeagueMapper;
 import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,9 +22,11 @@ import java.util.List;
 public class LeagueController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LeagueController.class);
     public final LeagueServiceInterface leagueService;
+    private final HttpServletRequest request;
 
     @PostMapping("")
-    public ResponseEntity<LeagueResponse> createLeague(@RequestAttribute("correlation-id") String correlationId, @Valid @RequestBody LeagueRequest requestDto) {
+    public ResponseEntity<LeagueResponse> createLeague(@Valid @RequestBody LeagueRequest requestDto) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Create League: {}", correlationId);
         League league = leagueService.createLeague(requestDto);
         LeagueResponse responseDto = LeagueMapper.toResponse(league);
@@ -32,7 +35,8 @@ public class LeagueController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<LeagueResponse>> getAllLeagues(@RequestAttribute("correlation-id") String correlationId, @RequestParam(required = false) String name) {
+    public ResponseEntity<List<LeagueResponse>> getAllLeagues(@RequestParam(required = false) String name) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get All Leagues: {} Name {}", correlationId, name);
         List<League> leagues = leagueService.getAllLeagues(name);
         List<LeagueResponse> responseDto = LeagueMapper.toResponseList(leagues);
@@ -41,7 +45,8 @@ public class LeagueController {
     }
 
     @GetMapping("/mine")
-    public ResponseEntity<List<LeagueResponse>> getMyLeagues(@RequestAttribute("correlation-id") String correlationId) {
+    public ResponseEntity<List<LeagueResponse>> getMyLeagues() {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get My Leagues: {}", correlationId);
         List<League> leagues = leagueService.getMyLeagues();
         List<LeagueResponse> responseDto = LeagueMapper.toResponseList(leagues);
@@ -50,7 +55,8 @@ public class LeagueController {
     }
 
     @GetMapping("/{leagueId}")
-    public ResponseEntity<LeagueResponse> getLeague(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long leagueId) {
+    public ResponseEntity<LeagueResponse> getLeague(@PathVariable Long leagueId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Get League: {} LeagueId {}", correlationId, leagueId);
         League league = leagueService.getLeague(leagueId);
         LeagueResponse responseDto = LeagueMapper.toResponse(league);
@@ -59,7 +65,8 @@ public class LeagueController {
     }
 
     @PatchMapping("/{leagueId}")
-    public ResponseEntity<LeagueResponse> updateLeague(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long leagueId, @Valid @RequestBody LeagueRequest requestDto) {
+    public ResponseEntity<LeagueResponse> updateLeague(@PathVariable Long leagueId, @Valid @RequestBody LeagueRequest requestDto) {
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Update League: {} LeagueId {}", correlationId, leagueId);
         League league = leagueService.updateLeague(leagueId, requestDto);
         LeagueResponse responseDto = LeagueMapper.toResponse(league);
@@ -68,7 +75,8 @@ public class LeagueController {
     }
 
     @DeleteMapping("/{leagueId}")
-    public ResponseEntity<Object> deleteLeague(@RequestAttribute("correlation-id") String correlationId, @PathVariable Long leagueId){
+    public ResponseEntity<Object> deleteLeague(@PathVariable Long leagueId){
+        String correlationId = (String) request.getAttribute("correlation-id");
         LOGGER.info("Attempting Delete League: {} LeagueId {}", correlationId, leagueId);
         leagueService.deleteLeague(leagueId);
         LOGGER.info("Delete League Successful: {}", correlationId);
