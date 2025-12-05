@@ -2,7 +2,6 @@
 <configuration>
     <property name="LOGS_HOME" value="./logs" />
     <property name="REQUESTS_LOGS_FILE_NAME" value="requests"/>
-    <property name="AUDIT_LOGS_FILE_NAME" value="audit"/>
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -24,8 +23,18 @@
         </filter>
     </appender>
 
-    <appender name="AUDIT_LOGS" class="ch.qos.logback.core.FileAppender">
-        <file>${LOGS_HOME}/${AUDIT_LOGS_FILE_NAME}.log</file>
+    <appender name="CONTROLLER_AUDIT_LOGS" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_HOME}/controller-audit.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="SERVICE_AUDIT_LOGS" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS_HOME}/service-audit.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
@@ -39,11 +48,11 @@
     </logger>
 
     <logger name="co.za.tlhalefosebaeng.leagueoracle.controller" level="INFO">
-        <appender-ref ref="AUDIT_LOGS" />
+        <appender-ref ref="CONTROLLER_AUDIT_LOGS" />
     </logger>
 
     <logger name="co.za.tlhalefosebaeng.leagueoracle.service" level="INFO">
-        <appender-ref ref="AUDIT_LOGS" />
+        <appender-ref ref="SERVICE_AUDIT_LOGS" />
     </logger>
 
     <root level="INFO">
