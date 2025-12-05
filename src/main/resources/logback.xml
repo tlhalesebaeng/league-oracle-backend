@@ -42,6 +42,10 @@
         <appender-ref ref="AUDIT_LOGS" />
     </logger>
 
+    <logger name="co.za.tlhalefosebaeng.leagueoracle.service" level="INFO">
+        <appender-ref ref="AUDIT_LOGS" />
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
     </root>
