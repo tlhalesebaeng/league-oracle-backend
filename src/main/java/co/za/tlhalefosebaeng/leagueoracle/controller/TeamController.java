@@ -41,7 +41,7 @@ public class TeamController {
         LOGGER.info("Attempting Get All League Teams: {} LeagueId {}", correlationId, leagueId);
         List<Team> teams = teamService.getAllLeagueTeams(leagueId);
         List<TeamResponse> responseDto = TeamMapper.toResponseList(teams);
-        LOGGER.info("Get All League Teams Successful: {} Leagues {}", correlationId, responseDto.size());
+        LOGGER.info("Get All League Teams Successful: {} Teams {}", correlationId, responseDto.size());
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
