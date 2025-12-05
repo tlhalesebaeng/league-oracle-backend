@@ -7,7 +7,10 @@ import co.za.tlhalefosebaeng.leagueoracle.entity.League;
 import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.FixtureRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +22,18 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class FixtureService implements FixtureServiceInterface {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FixtureService.class);
     private final FixtureRepository fixtureRepo;
     private final LeagueServiceInterface leagueService;
+    private final HttpServletRequest request;
 
     @Override
     public List<Fixture> generateLeagueFixtures(Long leagueId) {
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing Fixture Generation: {} LeagueId {}", correlationId, leagueId);
+
         // Only home fixtures are generated for now
 
-        // Get the league from the database using the league service
         League league = leagueService.getLeague(leagueId);
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to generate fixtures
@@ -78,25 +85,28 @@ public class FixtureService implements FixtureServiceInterface {
 
     @Override
     public List<Fixture> getAllLeagueFixtures(Long leagueId) {
-        // Confirm that the league with the given id exists using the league service
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to fetch all league fixtures: {} LeagueId {}", correlationId, leagueId);
         League league = leagueService.getLeague(leagueId);
-
-        // Find all the fixtures that belong to the retrieved league using the league repository
-        return fixtureRepo.findAllByLeagueId(league.getId());
+        List<Fixture> fixtures = fixtureRepo.findAllByLeagueId(league.getId());
+        LOGGER.info("Successfully fetched all league fixtures: {} Fixtures {}", correlationId, fixtures.size());
+        return fixtures;
     }
 
     @Override
     public Fixture getFixture(Long fixtureId) {
-        // Get the fixture from the database using the repo
-        Optional<Fixture> fixture = fixtureRepo.findById(fixtureId);
-
-        // Return the fixture if it exists otherwise throw the relevant exception
-        return fixture.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST, "Fixture not found! Please check fixture ID and try again"));
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to fetch fixture: {} FixtureId {}", correlationId, fixtureId);
+        Optional<Fixture> dbFixture = fixtureRepo.findById(fixtureId);
+        Fixture fixture = dbFixture.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST, "Fixture not found! Please check fixture ID and try again"));
+        LOGGER.info("Successfully fetched fixture: {} FixtureId {}", correlationId, fixture.getId()); // Log the fixture id to confirm that the ids are the same
+        return fixture;
     }
 
     @Override
     public List<Fixture> getUpcomingFixtures(Integer month) {
-        // Get all the leagues that the logged-in user has created
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to fetch upcoming fixtures: {} Month {}", correlationId, month);
         List<League> leagues = leagueService.getMyLeagues();
 
         // Generate a list of all the fixtures that are scheduled for the given month
@@ -110,15 +120,15 @@ public class FixtureService implements FixtureServiceInterface {
             }
         }
 
+        LOGGER.info("Successfully fetched upcoming fixtures: {} Fixtures {}", correlationId, fixtures.size());
         return fixtures;
     }
 
     @Override
     public Fixture updateFixture(Long fixtureId, UpdateFixtureRequest requestDto) {
-        // Get the fixture with the provided id, this will also confirm that the fixture exists
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to update fixture: {} FixtureId {}", correlationId, fixtureId);
         Fixture fixture = this.getFixture(fixtureId);
-
-        // Get the league with fixture league's id from the database using the league service
         League league = leagueService.getLeague(fixture.getLeague().getId());
 
         // Confirm the creator of this league - Only logged-in creator of the league should be able to update league fixtures
@@ -132,15 +142,16 @@ public class FixtureService implements FixtureServiceInterface {
         if(requestDto.getVenue() != null) fixture.setVenue(requestDto.getVenue());
         if(requestDto.getField() != null) fixture.setField(requestDto.getField());
 
-        return fixtureRepo.save(fixture);
+        Fixture updatedFixture = fixtureRepo.save(fixture);
+        LOGGER.info("Successfully updated fixture: {} FixtureId {}", correlationId, updatedFixture.getId()); // Log the updated fixture id to confirm that the ids are the same
+        return updatedFixture;
     }
 
     @Override
     public void deleteFixture(Long fixtureId) {
-        // Get the fixture from the database. This will also confirm that the fixture exists
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to delete fixture: {} FixtureId {}", correlationId, fixtureId);
         Fixture fixture = this.getFixture(fixtureId);
-
-        // Get the league with the fixture league's id from the database using the league service
         League league = leagueService.getLeague(fixture.getLeague().getId());
 
         // Confirm the creator of this league - Only logged-in creator of league should be able to delete a fixture
@@ -148,7 +159,8 @@ public class FixtureService implements FixtureServiceInterface {
             throw new AppException(HttpStatus.UNAUTHORIZED, "You have to be the league creator to perform this operation");
         }
 
-        fixtureRepo.delete(fixture); // Delete the fixture using the fixture repo
+        fixtureRepo.delete(fixture);
+        LOGGER.info("Successfully deleted fixture: {}", correlationId);
     }
 
 }

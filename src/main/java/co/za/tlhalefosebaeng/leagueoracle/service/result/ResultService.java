@@ -9,7 +9,10 @@ import co.za.tlhalefosebaeng.leagueoracle.entity.Team;
 import co.za.tlhalefosebaeng.leagueoracle.repository.ResultRepository;
 import co.za.tlhalefosebaeng.leagueoracle.service.fixture.FixtureServiceInterface;
 import co.za.tlhalefosebaeng.leagueoracle.service.league.LeagueServiceInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +23,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ResultService implements ResultServiceInterface {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultService.class);
     private final ResultRepository resultRepo;
     private final FixtureServiceInterface fixtureService;
     private final LeagueServiceInterface leagueService;
+    private final HttpServletRequest request;
 
     // Helper method that updates team details out of the provided results
     private void updateTeams(League league, Result result) {
@@ -68,11 +73,10 @@ public class ResultService implements ResultServiceInterface {
 
     @Override
     public Result addResult(Long fixtureId, ResultRequest requestDto) {
-        // Get the fixture with the given id from the database using the fixture service. This
-        // will also confirm that the fixture exists otherwise it will throw the relevant exception
-        Fixture fixture = fixtureService.getFixture(fixtureId);
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to add fixture result: {} LeagueId {}", correlationId, fixtureId);
 
-        // Get the league with fixture league's id from the database using the league service
+        Fixture fixture = fixtureService.getFixture(fixtureId);
         League league = leagueService.getLeague(fixture.getLeague().getId());
 
         // Confirm the creator of this league - Only logged-in creator of the league should be able to add league results
@@ -93,34 +97,36 @@ public class ResultService implements ResultServiceInterface {
         updateTeams(league, result);
 
         fixtureService.deleteFixture(fixture.getId());
-
-        return resultRepo.save(result);
+        Result dbResult = resultRepo.save(result);
+        LOGGER.info("Successfully added fixture result: {} ResultId {}", correlationId, dbResult.getId());
+        return dbResult;
     }
 
     @Override
     public List<Result> getLeagueResults(Long leagueId) {
-        // Get the league corresponding to provided league id. This will also confirm that the league exists and throw a relevant exception otherwise
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to fetch all league results: {} LeagueId {}", correlationId, leagueId);
         League league = leagueService.getLeague(leagueId);
-
-        // Retrieve all the results that belong to the above league
-        return resultRepo.findAllByLeagueId(league.getId());
+        List<Result> results = resultRepo.findAllByLeagueId(league.getId());
+        LOGGER.info("Successfully fetched all league results: {} LeagueId {} Results {}", correlationId, leagueId, results.size());
+        return results;
     }
 
     @Override
     public Result getResult(Long resultId) {
-        // Get the result from the database using the result repository
-        Optional<Result> result = resultRepo.findById(resultId);
-
-        // Return the result or throw a resource not found exception
-        return result.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST ,"Result not found! Please check result ID and try again"));
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to fetch result: {} ResultId {}", correlationId, resultId);
+        Optional<Result> dbResult = resultRepo.findById(resultId);
+        Result result = dbResult.orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST ,"Result not found! Please check result ID and try again"));
+        LOGGER.info("Successfully fetched result: {} ResultId {}", correlationId, result.getId()); // Log the result id to confirm that the ids are the same
+        return result;
     }
 
     @Override
     public Result updateResult(Long resultId, ResultRequest requestDto) {
-        // Get the result with the given id from the database using the getResult method
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to update result: {} ResultId {}", correlationId, resultId);
         Result result = this.getResult(resultId);
-
-        // Get the league with the result league's id from the database using the league service
         League league = leagueService.getLeague(result.getLeague().getId());
 
         // Confirm the creator of this league - Only logged-in creator of the league should be able to update league results
@@ -234,6 +240,8 @@ public class ResultService implements ResultServiceInterface {
         result.setHomeTeamScore(newHomeTeamScore);
         result.setAwayTeamScore(newAwayTeamScore);
 
-        return resultRepo.save(result);
+        Result dbResult = resultRepo.save(result);
+        LOGGER.info("Successfully updated result: {} ResultId {}", correlationId, dbResult); // Log the result id to confirm that the ids are the same
+        return dbResult;
     }
 }
