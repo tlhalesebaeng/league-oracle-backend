@@ -1,25 +1,34 @@
 package co.za.tlhalefosebaeng.leagueoracle.service.cookie;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class CookieService implements CookieServiceInterface{
+    private static final Logger LOGGER = LoggerFactory.getLogger(CookieService.class);
+    private final HttpServletRequest request;
+
     @Value("${api.environment}")
     private String environment;
 
     // Helper method that creates a cookie with all the necessary configuration
     @Override
     public Cookie create(String name, String value) {
-        Cookie cookie = new Cookie(name, value); // Create a new instance of a cookie
-        cookie.isHttpOnly(); // Make the cookie http only
+        String correlationId = (String) request.getAttribute("correlation-id");
+        LOGGER.info("Preparing to create cookie: {} Name {}", correlationId,  name);
+
+        Cookie cookie = new Cookie(name, value);
+        cookie.isHttpOnly();
         cookie.setPath("/"); // Set the URL which the browser should be under for it to send the cookie
 
-        // When the server environment is not development make the cookie secure
-        if(!environment.equals("development")) cookie.setSecure(true);
+        LOGGER.info("Cookie created successfully: {} Name {}", correlationId,  name);
 
-        // When all configuration are done return the cookie
         return cookie;
     }
 }
