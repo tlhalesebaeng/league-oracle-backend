@@ -31,7 +31,7 @@ public class AppConfig {
     private final RequestsLoggerFilter loggerFilter;
     private final DelegatedAuthenticationEntryPoint authEntryPoint;
     private final RoutesService routesService;
-    private final @Qualifier("customCorsConfiguration") CorsConfigurationSource configSource;
+    private final @Qualifier("corsConfig") CorsConfigurationSource configSource;
 
     @Value("${api.password-encoder.strength}")
     private Integer encoderStrength;
